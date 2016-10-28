@@ -210,7 +210,7 @@ class DB
 	 */
 	function getEnableList()
 	{
-		is_a($this, 'DB') ? $self = $this : $self = self::getInstance();
+		is_a($this, 'DB') ? $self = $this : $self = this::getInstance();
 		
 		if(!$self->supported_list)
 		{
@@ -239,7 +239,7 @@ class DB
 	 */
 	function getDisableList()
 	{
-		is_a($this, 'DB') ? $self = $this : $self = self::getInstance();
+		is_a($this, 'DB') ? $self = $this : $self = this::getInstance();
 		
 		if(!$self->supported_list)
 		{
@@ -352,7 +352,7 @@ class DB
 	 */
 	function isSupported()
 	{
-		return self::$isSupported;
+		return this::$isSupported;
 	}
 
 	/**

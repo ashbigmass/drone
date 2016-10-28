@@ -72,6 +72,7 @@
         /* Public functions */
         function ftp_connect($server, $port = 21)
         {
+			if(!$server) return false;
             $this->ftp_debug("Trying to ".$server.":".$port." ...\n");
             $this->ftp_sock = @fsockopen($server, $port, $errno, $errstr, $this->timeout);
 
