@@ -1,56 +1,26 @@
 <?php
-/* Copyright (C) NAVER <http://www.navercorp.com> */
-
-/**
- * admin class
- * Base class of admin module
- *
- * @author NAVER (developers@xpressengine.com)
- * @package /modules/admin
- * @version 0.1
- */
-class admin extends ModuleObject
-{
+class admin extends ModuleObject {
 
 	private $adminMenuName = '__ADMINMENU_V17__';
-	public function getAdminMenuName()
-	{
+	public function getAdminMenuName() {
 		return $this->adminMenuName;
 	}
 
-	/**
-	 * Install admin module
-	 * @return Object
-	 */
-	function moduleInstall()
-	{
+	function moduleInstall() {
 		return new Object();
 	}
 
-	/**
-	 * If update is necessary it returns true
-	 * @return bool
-	 */
-	function checkUpdate()
-	{
+	function checkUpdate() {
 		$oDB = DB::getInstance();
-		if(!$oDB->isColumnExists("admin_favorite", "type"))
-		{
+		if(!$oDB->isColumnExists("admin_favorite", "type")) {
 			return TRUE;
 		}
-
 		return FALSE;
 	}
 
-	/**
-	 * Update module
-	 * @return Object
-	 */
-	function moduleUpdate()
-	{
+	function moduleUpdate() {
 		$oDB = DB::getInstance();
-		if(!$oDB->isColumnExists("admin_favorite", "type"))
-		{
+		if(!$oDB->isColumnExists("admin_favorite", "type")) {
 			$oAdminAdminModel = getAdminModel('admin');
 			$output = $oAdminAdminModel->getFavoriteList();
 			$favoriteList = $output->get('favoriteList');
@@ -58,12 +28,10 @@ class admin extends ModuleObject
 			$oDB->dropColumn('admin_favorite', 'admin_favorite_srl');
 			$oDB->addColumn('admin_favorite', "admin_favorite_srl", "number", 11, 0);
 			$oDB->addColumn('admin_favorite', "type", "varchar", 30, 'module');
-			if(is_array($favoriteList))
-			{
+			if(is_array($favoriteList)) {
 				$oAdminAdminController = getAdminController('admin');
 				$oAdminAdminController->_deleteAllFavorite();
-				foreach($favoriteList AS $key => $value)
-				{
+				foreach($favoriteList AS $key => $value) {
 					$oAdminAdminController->_insertFavorite($value->site_srl, $value->module);
 				}
 			}
@@ -71,17 +39,10 @@ class admin extends ModuleObject
 		return new Object();
 	}
 
-	/**
-	 * Regenerate cache file
-	 * @return void
-	 */
-	function recompileCache()
-	{
-
+	function recompileCache() {
 	}
 
-	public function checkAdminMenu()
-	{
+	public function checkAdminMenu() {
 		// for admin menu
 		if(Context::isInstalled())
 		{
@@ -163,90 +124,27 @@ class admin extends ModuleObject
 		unset($args);
 
 		$gnbModuleList = array(
-			0 => array(
-				'module' => 'menu',
-				'subMenu' => array('siteMap', 'siteDesign'),
-			),
-			1 => array(
-				'module' => 'member',
-				'subMenu' => array('userList', 'userSetting', 'userGroup'),
-			),
-			2 => array(
-				'module' => 'document',
-				'subMenu' => array('document'),
-			),
-			3 => array(
-				'module' => 'comment',
-				'subMenu' => array('comment'),
-			),
-			4 => array(
-				'module' => 'file',
-				'subMenu' => array('file'),
-			),
-			5 => array(
-				'module' => 'poll',
-				'subMenu' => array('poll'),
-			),
-			6 => array(
-				'module' => 'rss',
-				'subMenu' => array('rss'),
-			),
-			7 => array(
-				'module' => 'module',
-				'subMenu' => array('multilingual'),
-			),
-			8 => array(
-				'module' => 'importer',
-				'subMenu' => array('importer'),
-			),
-			9 => array(
-				'module' => 'trash',
-				'subMenu' => array('trash'),
-			),
-			10 => array(
-				'module' => 'autoinstall',
-				'subMenu' => array('easyInstall'),
-			),
-			11 => array(
-				'module' => 'layout',
-				'subMenu' => array('installedLayout'),
-			),
-			12 => array(
-				'module' => 'module',
-				'subMenu' => array('installedModule'),
-			),
-			13 => array(
-				'module' => 'widget',
-				'subMenu' => array('installedWidget'),
-			),
-			14 => array(
-				'module' => 'addon',
-				'subMenu' => array('installedAddon'),
-			),
-			15 => array(
-				'module' => 'editor',
-				'subMenu' => array('editor'),
-			),
-			16 => array(
-				'module' => 'spamfilter',
-				'subMenu' => array('spamFilter'),
-			),
-			17 => array(
-				'module' => 'admin',
-				'subMenu' => array('adminConfigurationGeneral', 'adminConfigurationFtp', 'adminMenuSetup'),
-			),
-			18 => array(
-				'module' => 'file',
-				'subMenu' => array('fileUpload'),
-			),
-			19 => array(
-				'module' => 'module',
-				'subMenu' => array('filebox'),
-			),
-			20 => array(
-				'module' => 'point',
-				'subMenu' => array('point')
-			),
+			0 => array('module' => 'menu', 'subMenu' => array('siteMap', 'siteDesign'),),
+			1 => array('module' => 'member', 'subMenu' => array('userList', 'userSetting', 'userGroup'),),
+			2 => array('module' => 'document', 'subMenu' => array('document'),),
+			3 => array('module' => 'comment', 'subMenu' => array('comment'),),
+			4 => array('module' => 'file', 'subMenu' => array('file'),),
+			5 => array('module' => 'poll', 'subMenu' => array('poll'),),
+			6 => array('module' => 'rss', 'subMenu' => array('rss'),),
+			7 => array('module' => 'module', 'subMenu' => array('multilingual'),),
+			8 => array('module' => 'importer', 'subMenu' => array('importer'),),
+			9 => array('module' => 'trash', 'subMenu' => array('trash'),),
+			10 => array('module' => 'autoinstall', 'subMenu' => array('easyInstall'),),
+			11 => array('module' => 'layout', 'subMenu' => array('installedLayout'),),
+			12 => array('module' => 'module', 'subMenu' => array('installedModule'),),
+			13 => array('module' => 'widget', 'subMenu' => array('installedWidget'),),
+			14 => array('module' => 'addon', 'subMenu' => array('installedAddon'),),
+			15 => array('module' => 'editor', 'subMenu' => array('editor'),),
+			16 => array('module' => 'spamfilter', 'subMenu' => array('spamFilter'),),
+			17 => array('module' => 'admin', 'subMenu' => array('adminConfigurationGeneral', 'adminConfigurationFtp', 'adminMenuSetup'),),
+			18 => array('module' => 'file', 'subMenu' => array('fileUpload'),),
+			19 => array('module' => 'module', 'subMenu' => array('filebox'),),
+			20 => array('module' => 'point', 'subMenu' => array('point')),
 		);
 
 		$oMemberModel = getModel('member');
@@ -301,51 +199,27 @@ class admin extends ModuleObject
 	{
 		switch($menuName)
 		{
-			case 'siteMap':
-			case 'siteDesign':
+			case 'siteMap': case 'siteDesign':
 				return 'menu';
 				break;
-			case 'userList':
-			case 'userSetting':
-			case 'userGroup':
-			case 'point':
+			case 'userList': case 'userSetting': case 'userGroup': case 'point':
 				return 'user';
 				break;
-			case 'document':
-			case 'comment':
-			case 'file':
-			case 'poll':
-			case 'rss':
-			case 'multilingual':
-			case 'importer':
-			case 'trash':
-			case 'spamFilter':
+			case 'document': case 'comment': case 'file': case 'poll': case 'rss': case 'multilingual': case 'importer': case 'trash': case 'spamFilter': 
 				return 'content';
 				break;
-			case 'easyInstall':
-			case 'installedLayout':
-			case 'installedModule':
-			case 'installedWidget':
-			case 'installedAddon':
-			case 'editor':
+			case 'easyInstall': case 'installedLayout': case 'installedModule': case 'installedWidget': case 'installedAddon': case 'editor':
 				return 'advanced';
 				break;
-			case 'adminConfigurationGeneral':
-			case 'adminConfigurationFtp':
-			case 'adminMenuSetup':
-			case 'fileUpload':
-			case 'filebox':
+			case 'adminConfigurationGeneral': case 'adminConfigurationFtp': case 'adminMenuSetup': case 'fileUpload': case 'filebox':
 				return 'configuration';
 				break;
 			default:
 				return 'advanced';
+			break;
 		}
 	}
 
-	/**
-	 * Return parent old menu key by child menu
-	 * @return string
-	 */
 	function _getOldGnbKey($menuName)
 	{
 		switch($menuName)
@@ -353,36 +227,16 @@ class admin extends ModuleObject
 			case 'siteMap':
 				return 'menu';
 				break;
-			case 'userList':
-			case 'userSetting':
-			case 'userGroup':
-			case 'point':
+			case 'userList': case 'userSetting': case 'userGroup': case 'point':
 				return 'user';
 				break;
-			case 'document':
-			case 'comment':
-			case 'file':
-			case 'poll':
-			case 'rss':
-			case 'multilingual':
-			case 'importer':
-			case 'trash':
+			case 'document': case 'comment': case 'file': case 'poll': case 'rss': case 'multilingual': case 'importer':case 'trash':
 				return 'content';
 				break;
-			case 'easyInstall':
-			case 'installedLayout':
-			case 'installedModule':
-			case 'installedWidget':
-			case 'installedAddon':
-			case 'editor':
-			case 'spamFilter':
+			case 'easyInstall': case 'installedLayout': case 'installedModule': case 'installedWidget': case 'installedAddon': case 'editor': case 'spamFilter':
 				return 'extensions';
 				break;
-			case 'adminConfigurationGeneral':
-			case 'adminConfigurationFtp':
-			case 'adminMenuSetup':
-			case 'fileUpload':
-			case 'filebox':
+			case 'adminConfigurationGeneral': case 'adminConfigurationFtp': case 'adminMenuSetup': case 'fileUpload': case 'filebox':
 				return 'configuration';
 				break;
 			default:
@@ -482,5 +336,3 @@ class admin extends ModuleObject
 	}
 
 }
-/* End of file admin.class.php */
-/* Location: ./modules/admin/admin.class.php */
