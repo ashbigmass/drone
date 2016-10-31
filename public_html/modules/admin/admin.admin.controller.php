@@ -1,61 +1,23 @@
 <?php
-/* Copyright (C) NAVER <http://www.navercorp.com> */
-
-/**
- * adminAdminController class
- * admin controller class of admin module
- * @author NAVER (developers@xpressengine.com)
- * @package /modules/admin
- * @version 0.1
- */
-class adminAdminController extends admin
-{
-
-	/**
-	 * initialization
-	 * @return void
-	 */
-	function init()
-	{
-		// forbit access if the user is not an administrator
+class adminAdminController extends admin {
+	function init() {
 		$oMemberModel = getModel('member');
 		$logged_info = $oMemberModel->getLoggedInfo();
-		if($logged_info->is_admin != 'Y')
-		{
-			return $this->stop("msg_is_not_administrator");
-		}
+		if($logged_info->is_admin != 'Y') return $this->stop("msg_is_not_administrator");
 	}
 
-	/**
-	 * Admin menu reset
-	 * @return void
-	 */
-	function procAdminMenuReset()
-	{
+	function procAdminMenuReset() {
 		$menuSrl = Context::get('menu_srl');
-		if(!$menuSrl)
-		{
-			return $this->stop('msg_invalid_request');
-		}
+		if(!$menuSrl) return $this->stop('msg_invalid_request');
 
 		$oMenuAdminController = getAdminController('menu');
 		$output = $oMenuAdminController->deleteMenu($menuSrl);
-		if(!$output->toBool())
-		{
-			return $output;
-		}
-
+		if(!$output->toBool()) return $output;
 		FileHandler::removeDir('./files/cache/menu/admin_lang/');
-
 		$this->setRedirectUrl(Context::get('error_return_url'));
 	}
 
-	/**
-	 * Regenerate all cache files
-	 * @return void
-	 */
-	function procAdminRecompileCacheFile()
-	{
+	function procAdminRecompileCacheFile() {
 		// rename cache dir
 		$temp_cache_dir = './files/cache_' . $_SERVER['REQUEST_TIME'];
 		FileHandler::rename('./files/cache', $temp_cache_dir);
