@@ -1,121 +1,54 @@
 <?php
-/* Copyright (C) NAVER <http://www.navercorp.com> */
-
-/**
- * commentAdminController class
- * admin controller class of the comment module
- *
- * @author NAVER (developers@xpressengine.com)
- * @package /modules/comment
- * @version 0.1
- */
-class commentAdminController extends comment
-{
-
-	/**
-	 * Initialization
-	 * @return void
-	 */
-	function init()
-	{
-
-	}
-
-	/**
-	 * Modify comment(s) status to publish/unpublish if calling module is using Comment Approval System
-	 * @return void
-	 */
-	function procCommentAdminChangePublishedStatusChecked()
-	{
-		// Error display if none is selected
-		$cart = Context::get('cart');
-		if(!is_array($cart))
-		{
-			$comment_srl_list = explode('|@|', $cart);
+class commentAdminController extends comment {
+	function init() {	}
+	function procCommentAdminChangePublishedStatusChecked() {
+		$basket = Context::get('basket');
+		if(!is_array($basket)) {
+			$comment_srl_list = explode('|@|', $basket);
+		} else {
+			$comment_srl_list = $basket;
 		}
-		else
-		{
-			$comment_srl_list = $cart;
-		}
-
 		$this->procCommentAdminChangeStatus();
-
 		$returnUrl = Context::get('success_return_url') ? Context::get('success_return_url') : getNotEncodedUrl('', 'module', 'admin', 'act', 'dispCommentAdminList', 'search_keyword', '');
 		$this->setRedirectUrl($returnUrl);
 	}
 
-	/**
-	 * Change comment status
-	 * @return void|object
-	 */
-	function procCommentAdminChangeStatus()
-	{
+	function procCommentAdminChangeStatus() {
 		$will_publish = Context::get('will_publish');
-
-		// Error display if none is selected
-		$cart = Context::get('cart');
-		if(!$cart)
-		{
-			return $this->stop('msg_cart_is_null');
-		}
-		if(!is_array($cart))
-		{
-			$comment_srl_list = explode('|@|', $cart);
-		}
-		else
-		{
-			$comment_srl_list = $cart;
+		$basket = Context::get('basket');
+		if(!$basket) return $this->stop('msg_basket_is_null');
+		if(!is_array($basket)) {
+			$comment_srl_list = explode('|@|', $basket);
+		} else {
+			$comment_srl_list = $basket;
 		}
 
 		$args = new stdClass();
 		$args->status = $will_publish;
 		$args->comment_srls_list = $comment_srl_list;
 		$output = executeQuery('comment.updatePublishedStatus', $args);
-		if(!$output->toBool())
-		{
+		if(!$output->toBool()) {
 			return $output;
-		}
-		else
-		{
-			//update comment count for document
+		} else {
 			$updated_documents_arr = array();
-			// create the controller object of the document
 			$oDocumentController = getController('document');
-			// create the model object of the document
 			$oDocumentModel = getModel('document');
-			// create the comment model object
 			$oCommentModel = getModel('comment');
-			//get admin info
 			$logged_info = Context::get('logged_info');
-			//$oMemberModule = getModel("member");
-			//$logged_info = $oMemberModule->getMemberInfoByMemberSrl($logged_member_srl);
 			$new_status = ($will_publish) ? "published" : "unpublished";
-			foreach($comment_srl_list as $comment_srl)
-			{
-				// check if comment already exists
+			foreach($comment_srl_list as $comment_srl) {
 				$comment = $oCommentModel->getComment($comment_srl);
-				if($comment->comment_srl != $comment_srl)
-				{
-					return new Object(-1, 'msg_invalid_request');
-				}
+				if($comment->comment_srl != $comment_srl) return new Object(-1, 'msg_invalid_request');
 				$document_srl = $comment->document_srl;
-				if(!in_array($document_srl, $updated_documents_arr))
-				{
+				if(!in_array($document_srl, $updated_documents_arr)) {
 					$updated_documents_arr[] = $document_srl;
-					// update the number of comments
 					$comment_count = $oCommentModel->getCommentCount($document_srl);
-					// update comment count of the article posting
 					$output = $oDocumentController->updateCommentCount($document_srl, $comment_count, NULL, FALSE);
-
 					$oDocument = $oDocumentModel->getDocument($document_srl);
 					$author_email = $oDocument->variables['email_address'];
-
 					$oModuleModel = getModel("module");
 					$module_info = $oModuleModel->getModuleInfoByModuleSrl($comment->module_srl);
 					$already_sent = array();
-
-					// send email to comment's author, all admins and thread(document) subscribers - START
-					// -------------------------------------------------------
 					$oMail = new Mail();
 					$mail_title = "[XE - " . $module_info->mid . "] comment(s) status changed to " . $new_status . " on document: \"" . $oDocument->getTitleText() . "\"";
 					$oMail->setTitle($mail_title);
@@ -128,23 +61,12 @@ class commentAdminController extends comment
 						";
 					$oMail->setContent($mail_content);
 					$oMail->setSender($logged_info->user_name, $logged_info->email_address);
-
 					$document_author_email = $oDocument->variables['email_address'];
-
-					//mail to author of thread - START
-					/**
-				 	 * @todo Removed code send email to document author.
-					*/
-					/*
-					if($document_author_email != $comment->email_address && $logged_info->email_address != $document_author_email)
-					{
+					if($document_author_email != $comment->email_address && $logged_info->email_address != $document_author_email) {
 						$oMail->setReceiptor($document_author_email, $document_author_email);
 						$oMail->send();
 						$already_sent[] = $document_author_email;
 					}
-					*/
-					//mail to author of thread - STOP
-					//mail to all emails set for administrators - START
 					if($module_info->admin_mail)
 					{
 						$target_mail = explode(',', $module_info->admin_mail);
@@ -194,23 +116,23 @@ class commentAdminController extends comment
 		$isTrash = Context::get('is_trash');
 
 		// Error display if none is selected
-		$cart = Context::get('cart');
-		if(!$cart)
+		$basket = Context::get('basket');
+		if(!$basket)
 		{
-			return $this->stop('msg_cart_is_null');
+			return $this->stop('msg_basket_is_null');
 		}
-		if(!is_array($cart))
+		if(!is_array($basket))
 		{
-			$comment_srl_list = explode('|@|', $cart);
+			$comment_srl_list = explode('|@|', $basket);
 		}
 		else
 		{
-			$comment_srl_list = $cart;
+			$comment_srl_list = $basket;
 		}
 		$comment_count = count($comment_srl_list);
 		if(!$comment_count)
 		{
-			return $this->stop('msg_cart_is_null');
+			return $this->stop('msg_basket_is_null');
 		}
 
 		$oCommentController = getController('comment');
@@ -393,7 +315,7 @@ class commentAdminController extends comment
 	 * Comment add to _SESSION
 	 * @return void
 	 */
-	function procCommentAdminAddCart()
+	function procCommentAdminAddbasket()
 	{
 		$comment_srl = (int) Context::get('comment_srl');
 
