@@ -11,16 +11,19 @@ if(!defined('__XE__'))
  * @author NAVER (developers@xpressengine.com)
  * @brief Add-on to resize images in the body
  */
+
+$LF[0] = './addons/resize_image/css/resize_image.mobile.css';
+$LF[1] = './addons/resize_image/js/resize_image.min.js';
 if($called_position == 'after_module_proc' && Context::getResponseMethod() == "HTML" && !isCrawler())
 {
 	if(Mobile::isFromMobilePhone())
 	{
-		Context::loadFile('./addons/resize_image/css/resize_image.mobile.css', true);
+		Context::loadFile($LF[0], true);
 	}
 	else
 	{
 		Context::loadJavascriptPlugin('ui');
-		Context::loadFile(array('./addons/resize_image/js/resize_image.min.js', 'body', '', null), true);
+		Context::loadFile(array($LF[1], 'body', '', null), true);
 	}
 }
 
