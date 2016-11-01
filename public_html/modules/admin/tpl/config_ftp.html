@@ -41,42 +41,6 @@
 			</div>
 		</div>
 	</section>
-	<section class="section collapsed" style="margin-bottom:0">
-		<h1>{$lang->subtitle_advanced}</h1>
-		<div class="x_control-group">
-			<label class="x_control-label" for="ftp_host">{$lang->ftp_host}</label>
-			<div class="x_controls">
-				<input type="text" name="ftp_host" id="ftp_host" value="{$ftp_info->ftp_host ? $ftp_info->ftp_host : '127.0.0.1'}" /> Default : 127.0.0.1
-			</div>
-		</div>
-		<div class="x_control-group">
-			<label class="x_control-label" for="ftp_port">{$lang->ftp_port}</label>
-			<div class="x_controls">
-				<input type="number" name="ftp_port" id="ftp_port" value="{$ftp_info->ftp_port ? $ftp_info->ftp_port : '21'}" /> Default : 21
-			</div>
-		</div>
-		<div class="x_control-group">
-			<div class="x_control-label">{$lang->use_ftp_passive_mode}</div>
-			<div class="x_controls">
-				<label class="x_inline" for="ftp_passive_y">
-					<input type="radio" name="ftp_pasv" id="ftp_passive_y" value="Y" checked="checked"|cond="$ftp_info->ftp_pasv == 'Y'" />
-					{$lang->cmd_yes}
-				</label>
-				<label class="x_inline" for="ftp_passive_n">
-					<input type="radio" name="ftp_pasv" id="ftp_passive_n" value="N" checked="checked"|cond="$ftp_info->ftp_pasv != 'Y'" />
-					{$lang->cmd_no}
-				</label>
-			</div>
-		</div>
-		<div class="x_control-group">
-			<label class="x_control-label" for="sftp_n">{$lang->use_sftp_support}</label>
-			<div class="x_controls">
-				<label class="x_inline" for="sftp_y"><input type="radio" name="sftp" id="sftp_y" value="Y" checked="checked"|cond="$ftp_info->sftp == 'Y'" disabled|cond="!$sftp_support" />{$lang->cmd_yes}</label>
-				<label class="x_inline" for="sftp_n"><input type="radio" name="sftp" id="sftp_n" value="N" checked="checked"|cond="$ftp_info->sftp != 'Y'" /> {$lang->cmd_no}</label>
-				<p class="x_help-black" cond="!$sftp_support">{$lang->disable_sftp_support}</p>
-			</div>
-		</div>
-	</section>
 	<div class="btnArea" style="margin-top:0">
 		<input type="submit" value="{$lang->cmd_save}" class="x_btn x_btn-primary x_pull-right" />
 	</div>
