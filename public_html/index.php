@@ -48,19 +48,11 @@ $oContext->init();
 /**
  * @brief If default_url is set and it is different from the current url, attempt to redirect for SSO authentication and then process the module
  **/
-if($oContext->checkSSO())
-{
+if($oContext->checkSSO()) {
 	$oModuleHandler = new ModuleHandler();
-
-	try
-	{
-		if($oModuleHandler->init())
-		{
-			$oModuleHandler->displayContent($oModuleHandler->procModule());
-		}
-	}
-	catch(Exception $e)
-	{
+	try {
+		if($oModuleHandler->init()) $oModuleHandler->displayContent($oModuleHandler->procModule());
+	} catch(Exception $e) {
 		htmlHeader();
 		echo Context::getLang($e->getMessage());
 		htmlFooter();
@@ -71,5 +63,3 @@ $oContext->close();
 
 /* End of file index.php */
 /* Location: ./index.php */
-
-/* 추가 작업자 lemontreeyk */
