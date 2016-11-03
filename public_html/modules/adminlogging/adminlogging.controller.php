@@ -1,42 +1,14 @@
 <?php
-/* Copyright (C) NAVER <http://www.navercorp.com> */
+class adminloggingController extends adminlogging {
 
-/**
- * adminloggingController class
- * controller class of adminlogging module
- *
- * @author NAVER (developers@xpressengine.com)
- * @package /modules/adminlogging
- * @version 0.1
- */
-class adminloggingController extends adminlogging
-{
-
-	/**
-	 * Initialization
-	 * @return void
-	 */
-	function init()
-	{
-		// forbit access if the user is not an administrator
+	function init() {
 		$oMemberModel = getModel('member');
 		$logged_info = $oMemberModel->getLoggedInfo();
-		if($logged_info->is_admin != 'Y')
-		{
-			return $this->stop("msg_is_not_administrator");
-		}
+		if($logged_info->is_admin != 'Y') return $this->stop("msg_is_not_administrator");
 	}
 
-	/**
-	 * Insert log
-	 * @return void
-	 */
-	function insertLog($module, $act)
-	{
-		if(!$module || !$act)
-		{
-			return;
-		}
+	function insertLog($module, $act) {
+		if(!$module || !$act) return;
 
 		$args = new stdClass();
 		$args->module = $module;
@@ -49,5 +21,3 @@ class adminloggingController extends adminlogging
 	}
 
 }
-/* End of file adminlogging.controller.php */
-/* Location: ./modules/adminlogging/adminlogging.controller.php */
