@@ -1,406 +1,152 @@
 <?php
-/* Copyright (C) NAVER <http://www.navercorp.com> */
-
-/**
- * - DB parent class
- * - usage of db in XE is via xml
- * - there are 2 types of xml - query xml, schema xml
- * - in case of query xml, DB::executeQuery() method compiles xml file into php code and then execute it
- * - query xml has unique query id, and will be created in module
- * - queryid = module_name.query_name
- *
- * @author NAVER (developers@xpressengine.com)
- * @package /classes/db
- * @version 0.1
- */
-class DB
-{
+class DB {
 
 	static $isSupported = FALSE;
 
-	/**
-	 * priority of DBMS
-	 * @var array
-	 */
 	var $priority_dbms = array(
-		'mysqli' => 6,
-		'mysqli_innodb' => 5,
-		'mysql' => 4,
-		'mysql_innodb' => 3,
-		'cubrid' => 2,
-		'mssql' => 1
+		'mysqli' => 6, 'mysqli_innodb' => 5, 'mysql' => 4, 'mysql_innodb' => 3, 'cubrid' => 2, 'mssql' => 1
 	);
-
-	/**
-	 * count cache path
-	 * @var string
-	 */
 	var $count_cache_path = 'files/cache/db';
-
-	/**
-	 * operations for condition
-	 * @var array
-	 */
 	var $cond_operation = array(
-		'equal' => '=',
-		'more' => '>=',
-		'excess' => '>',
-		'less' => '<=',
-		'below' => '<',
-		'notequal' => '<>',
-		'notnull' => 'is not null',
-		'null' => 'is null',
+		'equal' => '=', 'more' => '>=', 'excess' => '>', 'less' => '<=', 'below' => '<', 'notequal' => '<>', 'notnull' => 'is not null', 'null' => 'is null',
 	);
-
-	/**
-	 * master database connection string
-	 * @var array
-	 */
 	var $master_db = NULL;
-
-	/**
-	 * array of slave databases connection strings
-	 * @var array
-	 */
 	var $slave_db = NULL;
 	var $result = NULL;
-
-	/**
-	 * error code (0 means no error)
-	 * @var int
-	 */
 	var $errno = 0;
-
-	/**
-	 * error message
-	 * @var string
-	 */
 	var $errstr = '';
-
-	/**
-	 * query string of latest executed query
-	 * @var string
-	 */
 	var $query = '';
 	var $connection = '';
-
-	/**
-	 * elapsed time of latest executed query
-	 * @var int
-	 */
 	var $elapsed_time = 0;
-
-	/**
-	 * elapsed time of latest executed DB class
-	 * @var int
-	 */
 	var $elapsed_dbclass_time = 0;
-
-	/**
-	 * transaction flag
-	 * @var boolean
-	 */
 	var $transaction_started = FALSE;
 	var $is_connected = FALSE;
-
-	/**
-	 * returns enable list in supported dbms list
-	 * will be written by classes/DB/DB***.class.php
-	 * @var array
-	 */
 	var $supported_list = array();
-
-	/**
-	 * location of query cache
-	 * @var string
-	 */
 	var $cache_file = 'files/cache/queries/';
-
-	/**
-	 * stores database type: 'mysql','cubrid','mssql' etc. or 'db' when database is not yet set
-	 * @var string
-	 */
 	var $db_type;
-
-	/**
-	 * flag to decide if class prepared statements or not (when supported); can be changed from db.config.info
-	 * @var string
-	 */
 	var $use_prepared_statements;
-
-	/**
-	 * leve of transaction
-	 * @var unknown
-	 */
 	private $transactionNestedLevel = 0;
 
-	/**
-	 * returns instance of certain db type
-	 * @param string $db_type type of db
-	 * @return DB return DB object instance
-	 */
-	function &getInstance($db_type = NULL)
-	{
-		if(!$db_type)
-		{
-			$db_type = Context::getDBType();
-		}
-		if(!$db_type && Context::isInstalled())
-		{
-			return new Object(-1, 'msg_db_not_setted');
-		}
-
-		if(!isset($GLOBALS['__DB__']))
-		{
-			$GLOBALS['__DB__'] = array();
-		}
-		if(!isset($GLOBALS['__DB__'][$db_type]))
-		{
+	function &getInstance($db_type = NULL) {
+		if(!$db_type) $db_type = Context::getDBType();
+		if(!$db_type && Context::isInstalled()) return new Object(-1, 'msg_db_not_setted');
+		if(!isset($GLOBALS['__DB__'])) $GLOBALS['__DB__'] = array();
+		if(!isset($GLOBALS['__DB__'][$db_type])) {
 			$class_name = 'DB' . ucfirst($db_type);
 			$class_file = _XE_PATH_ . "classes/db/$class_name.class.php";
-			if(!file_exists($class_file))
-			{
-				return new Object(-1, 'msg_db_not_setted');
-			}
-
-			// get a singletone instance of the database driver class
+			if(!file_exists($class_file)) return new Object(-1, 'msg_db_not_setted');
 			require_once($class_file);
 			$GLOBALS['__DB__'][$db_type] = call_user_func(array($class_name, 'create'));
 			$GLOBALS['__DB__'][$db_type]->db_type = $db_type;
 		}
-
 		return $GLOBALS['__DB__'][$db_type];
 	}
 
-	/**
-	 * returns instance of db
-	 * @return DB return DB object instance
-	 */
-	function create()
-	{
+	function create() {
 		return new DB;
 	}
 
-	/**
-	 * constructor
-	 * @return void
-	 */
-	function DB()
-	{
+	function DB() {
 		$this->count_cache_path = _XE_PATH_ . $this->count_cache_path;
 		$this->cache_file = _XE_PATH_ . $this->cache_file;
 	}
 
-	/**
-	 * returns list of supported dbms list
-	 * this list return by directory list
-	 * check by instance can creatable
-	 * @return array return supported DBMS list
-	 */
-	function getSupportedList()
-	{
+	function getSupportedList() {
 		$oDB = new DB();
 		return $oDB->_getSupportedList();
 	}
 
-	/**
-	 * returns enable list in supported dbms list
-	 * this list return by child class
-	 * @return array return enable DBMS list in supported dbms list
-	 */
-	function getEnableList()
-	{
+	function getEnableList() {
 		is_a($this, 'DB') ? $self = $this : $self = this::getInstance();
-		
-		if(!$self->supported_list)
-		{
+		if(!$self->supported_list) {
 			$oDB = new DB();
 			$self->supported_list = $oDB->_getSupportedList();
 		}
-
 		$enableList = array();
-		if(is_array($self->supported_list))
-		{
-			foreach($self->supported_list AS $key => $value)
-			{
-				if($value->enable)
-				{
-					$enableList[] = $value;
-				}
+		if(is_array($self->supported_list)) {
+			foreach($self->supported_list AS $key => $value) {
+				if($value->enable) $enableList[] = $value;
 			}
 		}
 		return $enableList;
 	}
 
-	/**
-	 * returns list of disable in supported dbms list
-	 * this list return by child class
-	 * @return array return disable DBMS list in supported dbms list
-	 */
-	function getDisableList()
-	{
+	function getDisableList() {
 		is_a($this, 'DB') ? $self = $this : $self = this::getInstance();
-		
-		if(!$self->supported_list)
-		{
+		if(!$self->supported_list) {
 			$oDB = new DB();
 			$self->supported_list = $oDB->_getSupportedList();
 		}
-
 		$disableList = array();
-		if(is_array($self->supported_list))
-		{
-			foreach($self->supported_list AS $key => $value)
-			{
-				if(!$value->enable)
-				{
-					$disableList[] = $value;
-				}
+		if(is_array($self->supported_list)) {
+			foreach($self->supported_list AS $key => $value) {
+				if(!$value->enable) $disableList[] = $value;
 			}
 		}
 		return $disableList;
 	}
 
-	/**
-	 * returns list of supported dbms list
-	 * this method is private
-	 * @return array return supported DBMS list
-	 */
-	function _getSupportedList()
-	{
+	function _getSupportedList() {
 		static $get_supported_list = '';
-		if(is_array($get_supported_list))
-		{
+		if(is_array($get_supported_list)) {
 			$this->supported_list = $get_supported_list;
 			return $this->supported_list;
 		}
 		$get_supported_list = array();
-		$db_classes_path = _XE_PATH_ . "classes/db/";
+		$path = 'classes/db/';
+		$db_classes_path = _XE_PATH_ . $ptah;
 		$filter = "/^DB([^\.]+)\.class\.php/i";
 		$supported_list = FileHandler::readDir($db_classes_path, $filter, TRUE);
-
-		// after creating instance of class, check is supported
-		for($i = 0; $i < count($supported_list); $i++)
-		{
+		for($i = 0; $i < count($supported_list); $i++) {
 			$db_type = $supported_list[$i];
-
 			$class_name = sprintf("DB%s%s", strtoupper(substr($db_type, 0, 1)), strtolower(substr($db_type, 1)));
 			$class_file = sprintf(_XE_PATH_ . "classes/db/%s.class.php", $class_name);
-			if(!file_exists($class_file))
-			{
-				continue;
-			}
-
+			if(!file_exists($class_file)) continue;
 			unset($oDB);
 			require_once($class_file);
 			$oDB = new $class_name();
-
-			if(!$oDB)
-			{
-				continue;
-			}
-
+			if(!$oDB) continue;
 			$obj = new stdClass;
 			$obj->db_type = $db_type;
 			$obj->enable = $oDB->isSupported() ? TRUE : FALSE;
-
 			$get_supported_list[] = $obj;
 		}
-
-		// sort
 		@usort($get_supported_list, array($this, '_sortDBMS'));
-
 		$this->supported_list = $get_supported_list;
 		return $this->supported_list;
 	}
 
-	/**
-	 * sort dbms as priority
-	 */
-	function _sortDBMS($a, $b)
-	{
-		if(!isset($this->priority_dbms[$a->db_type]))
-		{
-			$priority_a = 0;
-		}
-		else
-		{
-			$priority_a = $this->priority_dbms[$a->db_type];
-		}
-
-		if(!isset($this->priority_dbms[$b->db_type]))
-		{
-			$priority_b = 0;
-		}
-		else
-		{
-			$priority_b = $this->priority_dbms[$b->db_type];
-		}
-
-		if($priority_a == $priority_b)
-		{
-			return 0;
-		}
-
+	function _sortDBMS($a, $b) {
+		if(!isset($this->priority_dbms[$a->db_type])) $priority_a = 0;
+		else $priority_a = $this->priority_dbms[$a->db_type];
+		if(!isset($this->priority_dbms[$b->db_type])) $priority_b = 0;
+		else $priority_b = $this->priority_dbms[$b->db_type];
+		if($priority_a == $priority_b) return 0;
 		return ($priority_a > $priority_b) ? -1 : 1;
 	}
 
-	/**
-	 * Return dbms supportable status
-	 * The value is set in the child class
-	 * @return boolean true: is supported, false: is not supported
-	 */
-	function isSupported()
-	{
+	function isSupported() {
 		return this::$isSupported;
 	}
 
-	/**
-	 * Return connected status
-	 * @param string $type master or slave
-	 * @param int $indx key of server list
-	 * @return boolean true: connected, false: not connected
-	 */
-	function isConnected($type = 'master', $indx = 0)
-	{
-		if($type == 'master')
-		{
-			return $this->master_db["is_connected"] ? TRUE : FALSE;
-		}
-		else
-		{
-			return $this->slave_db[$indx]["is_connected"] ? TRUE : FALSE;
-		}
+	function isConnected($type = 'master', $indx = 0) {
+		if($type == 'master') return $this->master_db["is_connected"] ? TRUE : FALSE;
+		else return $this->slave_db[$indx]["is_connected"] ? TRUE : FALSE;
 	}
 
-	/**
-	 * start recording log
-	 * @param string $query query string
-	 * @return void
-	 */
-	function actStart($query)
-	{
+	function actStart($query) {
 		$this->setError(0, 'success');
 		$this->query = $query;
 		$this->act_start = getMicroTime();
 		$this->elapsed_time = 0;
 	}
 
-	/**
-	 * finish recording log
-	 * @return void
-	 */
-	function actFinish()
-	{
-		if(!$this->query)
-		{
-			return;
-		}
+	function actFinish() {
+		if(!$this->query) return;
 		$this->act_finish = getMicroTime();
 		$elapsed_time = $this->act_finish - $this->act_start;
 		$this->elapsed_time = $elapsed_time;
 		$GLOBALS['__db_elapsed_time__'] += $elapsed_time;
-
 		$site_module_info = Context::get('site_module_info');
 		$log = array();
 		$log['query'] = $this->query;
@@ -410,13 +156,9 @@ class DB
 		$log['module'] = $site_module_info->module;
 		$log['act'] = Context::get('act');
 		$log['time'] = date('Y-m-d H:i:s');
-
 		$bt = version_compare(PHP_VERSION, '5.3.6', '>=') ? debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS) : debug_backtrace();
-
-		foreach($bt as $no => $call)
-		{
-			if($call['function'] == 'executeQuery' || $call['function'] == 'executeQueryArray')
-			{
+		foreach($bt as $no => $call) {
+			if($call['function'] == 'executeQuery' || $call['function'] == 'executeQueryArray') {
 				$call_no = $no;
 				$call_no++;
 				$log['called_file'] = $bt[$call_no]['file'].':'.$bt[$call_no]['line'];
@@ -426,33 +168,22 @@ class DB
 				break;
 			}
 		}
-
-		// leave error log if an error occured (if __DEBUG_DB_OUTPUT__ is defined)
-		if($this->isError())
-		{
+		if($this->isError()) {
 			$log['result'] = 'Failed';
 			$log['errno'] = $this->errno;
 			$log['errstr'] = $this->errstr;
 
-			if(__DEBUG_DB_OUTPUT__ == 1)
-			{
+			if(__DEBUG_DB_OUTPUT__ == 1) {
 				$debug_file = _XE_PATH_ . "files/_debug_db_query.php";
 				$buff = array();
-				if(!file_exists($debug_file))
-				{
-					$buff[] = '<?php exit(); ?' . '>';
-				}
+				if(!file_exists($debug_file)) $buff[] = '<?php exit(); ?' . '>';
 				$buff[] = print_r($log, TRUE);
 				@file_put_contents($log_file, implode("\n", $buff) . "\n\n", FILE_APPEND|LOCK_EX);
 			}
-		}
-		else
-		{
+		} else {
 			$log['result'] = 'Success';
 		}
-
 		$this->setQueryLog($log);
-
 		$log_args = new stdClass;
 		$log_args->query = $this->query;
 		$log_args->query_id = $this->query_id;
@@ -461,155 +192,75 @@ class DB
 		writeSlowlog('query', $elapsed_time, $log_args);
 	}
 
-	/**
-	 * set query debug log
-	 * @param array $log values set query debug
-	 * @return void
-	*/
-	function setQueryLog($log)
-	{
+	function setQueryLog($log) {
 		$GLOBALS['__db_queries__'][] = $log;
 	}
 
-	/**
-	 * set error
-	 * @param int $errno error code
-	 * @param string $errstr error message
-	 * @return void
-	 */
-	function setError($errno = 0, $errstr = 'success')
-	{
+	function setError($errno = 0, $errstr = 'success') {
 		$this->errno = $errno;
 		$this->errstr = $errstr;
 	}
 
-	/**
-	 * Return error status
-	 * @return boolean true: error, false: no error
-	 */
-	function isError()
-	{
+	function isError() {
 		return ($this->errno !== 0);
 	}
 
-	/**
-	 * Returns object of error info
-	 * @return object object of error
-	 */
-	function getError()
-	{
+	function getError() {
 		$this->errstr = Context::convertEncodingStr($this->errstr);
 		return new Object($this->errno, $this->errstr);
 	}
 
-	/**
-	 * Execute Query that result of the query xml file
-	 * This function finds xml file or cache file of $query_id, compiles it and then execute it
-	 * @param string $query_id query id (module.queryname)
-	 * @param array|object $args arguments for query
-	 * @param array $arg_columns column list. if you want get specific colums from executed result, add column list to $arg_columns
-	 * @return object result of query
-	 */
-	function executeQuery($query_id, $args = NULL, $arg_columns = NULL, $type = NULL)
-	{
+	function executeQuery($query_id, $args = NULL, $arg_columns = NULL, $type = NULL) {
 		static $cache_file = array();
-
-		if(!$query_id)
-		{
-			return new Object(-1, 'msg_invalid_queryid');
-		}
-		if(!$this->db_type)
-		{
-			return;
-		}
-
+		if(!$query_id) return new Object(-1, 'msg_invalid_queryid');
+		if(!$this->db_type) return;
 		$this->actDBClassStart();
-
 		$this->query_id = $query_id;
-
-		if(!isset($cache_file[$query_id]) || !file_exists($cache_file[$query_id]))
-		{
+		if(!isset($cache_file[$query_id]) || !file_exists($cache_file[$query_id])) {
 			$id_args = explode('.', $query_id);
-			if(count($id_args) == 2)
-			{
+			if(count($id_args) == 2) {
 				$target = 'modules';
 				$module = $id_args[0];
 				$id = $id_args[1];
-			}
-			elseif(count($id_args) == 3)
-			{
+			} elseif(count($id_args) == 3) {
 				$target = $id_args[0];
 				$typeList = array('addons' => 1, 'widgets' => 1);
-				if(!isset($typeList[$target]))
-				{
+				if(!isset($typeList[$target])) {
 					$this->actDBClassFinish();
 					return;
 				}
 				$module = $id_args[1];
 				$id = $id_args[2];
 			}
-			if(!$target || !$module || !$id)
-			{
+			if(!$target || !$module || !$id) {
 				$this->actDBClassFinish();
 				return new Object(-1, 'msg_invalid_queryid');
 			}
-
 			$xml_file = sprintf('%s%s/%s/queries/%s.xml', _XE_PATH_, $target, $module, $id);
-			if(!file_exists($xml_file))
-			{
+			if(!file_exists($xml_file)) {
 				$this->actDBClassFinish();
 				return new Object(-1, 'msg_invalid_queryid');
 			}
-
-			// look for cache file
 			$cache_file[$query_id] = $this->checkQueryCacheFile($query_id, $xml_file);
 		}
 		$result = $this->_executeQuery($cache_file[$query_id], $args, $query_id, $arg_columns, $type);
-
 		$this->actDBClassFinish();
-		// execute query
 		return $result;
 	}
 
-	/**
-	 * Look for query cache file
-	 * @param string $query_id query id for finding
-	 * @param string $xml_file original xml query file
-	 * @return string cache file
-	 */
-	function checkQueryCacheFile($query_id, $xml_file)
-	{
-		// first try finding cache file
+	function checkQueryCacheFile($query_id, $xml_file) {
 		$cache_file = sprintf('%s%s%s.%s.%s.cache.php', _XE_PATH_, $this->cache_file, $query_id, __ZBXE_VERSION__, $this->db_type);
-
 		$cache_time = -1;
-		if(file_exists($cache_file))
-		{
-			$cache_time = filemtime($cache_file);
-		}
-
-		// if there is no cache file or is not new, find original xml query file and parse it
-		if($cache_time < filemtime($xml_file) || $cache_time < filemtime(_XE_PATH_ . 'classes/db/DB.class.php') || $cache_time < filemtime(_XE_PATH_ . 'classes/xml/XmlQueryParser.class.php'))
-		{
+		if(file_exists($cache_file)) $cache_time = filemtime($cache_file);
+		if($cache_time < filemtime($xml_file) || $cache_time < filemtime(_XE_PATH_ . 'classes/db/DB.class.php') || $cache_time < filemtime(_XE_PATH_ . 'classes/xml/XmlQueryParser.class.php')) {
 			$oParser = new XmlQueryParser();
 			$oParser->parse($query_id, $xml_file, $cache_file);
 		}
-
 		return $cache_file;
 	}
 
-	/**
-	 * Execute query and return the result
-	 * @param string $cache_file cache file of query
-	 * @param array|object $source_args arguments for query
-	 * @param string $query_id query id
-	 * @param array $arg_columns column list. if you want get specific colums from executed result, add column list to $arg_columns
-	 * @return object result of query
-	 */
-	function _executeQuery($cache_file, $source_args, $query_id, $arg_columns, $type)
-	{
+	function _executeQuery($cache_file, $source_args, $query_id, $arg_columns, $type) {
 		global $lang;
-		
 		if(!in_array($type, array('master','slave'))) $type = 'slave';
 
 		if(!file_exists($cache_file))
