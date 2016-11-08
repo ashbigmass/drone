@@ -1,0 +1,4 @@
+data = [
+{sentence: time: 74633.656250, latitude: 0.000000, longitude: 0.000000, speed: 14.8, head: 0.000000} ,
+{sentence: time: 74633.656250, latitude: 37.505802, longitude: 126.873581, speed: 3.0, head: 0.000000} ,
+]
