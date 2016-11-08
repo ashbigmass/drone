@@ -393,54 +393,12 @@ class adminAdminController extends admin {
 		$this->setRedirectUrl($returnUrl);
 	}
 
-	/**
-	 * Insert favorite
-	 * @return object query result
-	 */
-	function _insertFavorite($siteSrl, $module, $type = 'module')
-	{
-		$args = new stdClass();
-		$args->adminFavoriteSrl = getNextSequence();
-		$args->site_srl = $siteSrl;
-		$args->module = $module;
-		$args->type = $type;
-		$output = executeQuery('admin.insertFavorite', $args);
-		return $output;
-	}
-
-	/**
-	 * Delete favorite
-	 * @return object query result
-	 */
-	function _deleteFavorite($favoriteSrl)
-	{
-		$args = new stdClass();
-		$args->admin_favorite_srl = $favoriteSrl;
-		$output = executeQuery('admin.deleteFavorite', $args);
-		return $output;
-	}
-
-	/**
-	 * Delete all favorite
-	 * @return object query result
-	 */
-	function _deleteAllFavorite()
-	{
-		$args = new stdClass;
-		$output = executeQuery('admin.deleteAllFavorite', $args);
-		return $output;
-	}
-
-	/**
-	 * Remove admin icon
-	 * @return object|void
-	 */
 	function procAdminRemoveIcons()
 	{
 
 		$site_info = Context::get('site_module_info');
 		$virtual_site = '';
-		if($site_info->site_srl) 
+		if($site_info->site_srl)
 		{
 			$virtual_site = $site_info->site_srl . '/';
 		}
