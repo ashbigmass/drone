@@ -1,11 +1,5 @@
 <?php
-/* Copyright (C) NAVER <http://www.navercorp.com> */
-/**
- * @class content
- * @author NAVER (developers@xpressengine.com)
- * @brief widget to display content
- * @version 0.1
- */
+
 class content extends WidgetHandler {
 
 	function proc($args) {
