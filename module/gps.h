@@ -3,7 +3,7 @@
 #include <Time.h>
 
 void gps_setup();
-void  gps_data();
+void gps_data();
 int get_day();
 int get_month();
 int get_year();
