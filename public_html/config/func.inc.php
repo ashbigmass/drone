@@ -1,31 +1,13 @@
 <?php
-/* Copyright (C) NAVER <http://www.navercorp.com> */
-
-/**
- * function library files for convenience
- *
- * @author NAVER (developers@xpressengine.com)
- */
-if(!defined('__XE__'))
-{
-	exit();
-}
-
-// define an empty function to avoid errors when iconv function doesn't exist
-if(!function_exists('iconv'))
-{
+if(!defined('__XE__')) exit();
+if(!function_exists('iconv')) {
 	eval('
-		function iconv($in_charset, $out_charset, $str)
-		{
+		function iconv($in_charset, $out_charset, $str) {
 			return $str;
 		}
 	');
 }
 
-/**
- * Time zone
- * @var array
- */
 $time_zone = array(
 	'-1200' => '[GMT -12:00] Baker Island Time',
 	'-1100' => '[GMT -11:00] Niue Time, Samoa Standard Time',
@@ -68,330 +50,126 @@ $time_zone = array(
 	'+1400' => '[GMT +14:00] Line Island Time'
 );
 
-/**
- * Define a function to use {@see ModuleHandler::getModuleObject()} ($module_name, $type)
- *
- * @param string $module_name The module name to get a instance
- * @param string $type disp, proc, controller, class
- * @param string $kind admin, null
- * @return mixed Module instance
- */
-function getModule($module_name, $type = 'view', $kind = '')
-{
+function getModule($module_name, $type = 'view', $kind = '') {
 	return ModuleHandler::getModuleInstance($module_name, $type, $kind);
 }
 
-/**
- * Create a controller instance of the module
- *
- * @param string $module_name The module name to get a controller instance
- * @return mixed Module controller instance
- */
-function getController($module_name)
-{
+function getController($module_name) {
 	return getModule($module_name, 'controller');
 }
 
-/**
- * Create a admin controller instance of the module
- *
- * @param string $module_name The module name to get a admin controller instance
- * @return mixed Module admin controller instance
- */
-function getAdminController($module_name)
-{
+function getAdminController($module_name) {
 	return getModule($module_name, 'controller', 'admin');
 }
 
-/**
- * Create a view instance of the module
- *
- * @param string $module_name The module name to get a view instance
- * @return mixed Module view instance
- */
-function getView($module_name)
-{
+function getView($module_name) {
 	return getModule($module_name, 'view');
 }
 
-/**
- * Create a mobile instance of the module
- *
- * @param string $module_name The module name to get a mobile instance
- * @return mixed Module mobile instance
- */
-function &getMobile($module_name)
-{
+function &getMobile($module_name) {
 	return getModule($module_name, 'mobile');
 }
 
-/**
- * Create a admin view instance of the module
- *
- * @param string $module_name The module name to get a admin view instance
- * @return mixed Module admin view instance
- */
-function getAdminView($module_name)
-{
+function getAdminView($module_name) {
 	return getModule($module_name, 'view', 'admin');
 }
 
-/**
- * Create a model instance of the module
- *
- * @param string $module_name The module name to get a model instance
- * @return mixed Module model instance
- */
-function getModel($module_name)
-{
+function getModel($module_name) {
 	return getModule($module_name, 'model');
 }
 
-/**
- * Create an admin model instance of the module
- *
- * @param string $module_name The module name to get a admin model instance
- * @return mixed Module admin model instance
- */
-function getAdminModel($module_name)
-{
+function getAdminModel($module_name) {
 	return getModule($module_name, 'model', 'admin');
 }
 
-/**
- * Create an api instance of the module
- *
- * @param string $module_name The module name to get a api instance
- * @return mixed Module api class instance
- */
-function getAPI($module_name)
-{
+function getAPI($module_name) {
 	return getModule($module_name, 'api');
 }
 
-/**
- * Create a wap instance of the module
- *
- * @param string $module_name The module name to get a wap instance
- * @return mixed Module wap class instance
- */
-function getWAP($module_name)
-{
+function getWAP($module_name) {
 	return getModule($module_name, 'wap');
 }
 
-/**
- * Create a class instance of the module
- *
- * @param string $module_name The module name to get a class instance
- * @return mixed Module class instance
- */
-function getClass($module_name)
-{
+function getClass($module_name) {
 	return getModule($module_name, 'class');
 }
 
-/**
- * The alias of DB::executeQuery()
- *
- * @see DB::executeQuery()
- * @param string $query_id (module name.query XML file)
- * @param object $args values of args object
- * @param string[] $arg_columns Column list
- * @return object Query result data
- */
-function executeQuery($query_id, $args = NULL, $arg_columns = NULL)
-{
+function executeQuery($query_id, $args = NULL, $arg_columns = NULL) {
 	$oDB = DB::getInstance();
 	return $oDB->executeQuery($query_id, $args, $arg_columns);
 }
 
-/**
- * Function to handle the result of DB::executeQuery() as an array
- *
- * @see DB::executeQuery()
- * @see executeQuery()
- * @param string $query_id (module name.query XML file)
- * @param object $args values of args object
- * @param string[] $arg_columns Column list
- * @return object Query result data
- */
-function executeQueryArray($query_id, $args = NULL, $arg_columns = NULL)
-{
+function executeQueryArray($query_id, $args = NULL, $arg_columns = NULL) {
 	$oDB = DB::getInstance();
 	$output = $oDB->executeQuery($query_id, $args, $arg_columns);
-	if(!is_array($output->data) && count($output->data) > 0)
-	{
-		$output->data = array($output->data);
-	}
+	if(!is_array($output->data) && count($output->data) > 0) $output->data = array($output->data);
 	return $output;
 }
 
-/**
- * Alias of DB::getNextSequence()
- *
- * @see DB::getNextSequence()
- * @return int
- */
-function getNextSequence()
-{
+function getNextSequence() {
 	$oDB = DB::getInstance();
 	$seq = $oDB->getNextSequence();
 	setUserSequence($seq);
 	return $seq;
 }
 
-/**
- * Set Sequence number to session
- *
- * @param int $seq sequence number
- * @return void
- */
-function setUserSequence($seq)
-{
+function setUserSequence($seq) {
 	$arr_seq = array();
-	if(isset($_SESSION['seq']))
-	{
-		$arr_seq = $_SESSION['seq'];
-	}
+	if(isset($_SESSION['seq'])) $arr_seq = $_SESSION['seq'];
 	$arr_seq[] = $seq;
 	$_SESSION['seq'] = $arr_seq;
 }
 
-/**
- * Check Sequence number grant
- *
- * @param int $seq sequence number
- * @return boolean
- */
-function checkUserSequence($seq)
-{
-	if(!isset($_SESSION['seq']))
-	{
-		return false;
-	}
-	if(!in_array($seq, $_SESSION['seq']))
-	{
-		return false;
-	}
-
+function checkUserSequence($seq) {
+	if(!isset($_SESSION['seq'])) return false;
+	if(!in_array($seq, $_SESSION['seq'])) return false;
 	return true;
 }
 
-/**
- * Get a encoded url. Define a function to use Context::getUrl()
- *
- * getUrl() returns the URL transformed from given arguments of RequestURI
- * <ol>
- *  <li>argument format follows as (key, value).
- * ex) getUrl('key1', 'val1', 'key2',''): transform key1 and key2 to val1 and '' respectively</li>
- * <li>returns URL without the argument if no argument is given.</li>
- * <li>URL made of args_list added to RequestUri if the first argument value is ''.</li>
- * </ol>
- *
- * @return string
- */
-function getUrl()
-{
+function getUrl() {
 	$num_args = func_num_args();
 	$args_list = func_get_args();
-
-	if($num_args)
-		$url = Context::getUrl($num_args, $args_list);
-	else
-		$url = Context::getRequestUri();
-
+	if($num_args) $url = Context::getUrl($num_args, $args_list);
+	else $url = Context::getRequestUri();
 	return preg_replace('@\berror_return_url=[^&]*|\w+=(?:&|$)@', '', $url);
 }
 
-/**
- * Get a not encoded(html entity) url
- *
- * @see getUrl()
- * @return string
- */
-function getNotEncodedUrl()
-{
+function getNotEncodedUrl() {
 	$num_args = func_num_args();
 	$args_list = func_get_args();
-
-	if($num_args)
-	{
-		$url = Context::getUrl($num_args, $args_list, NULL, FALSE);
-	}
-	else
-	{
-		$url = Context::getRequestUri();
-	}
-
+	if($num_args) $url = Context::getUrl($num_args, $args_list, NULL, FALSE);
+	else $url = Context::getRequestUri();
 	return preg_replace('@\berror_return_url=[^&]*|\w+=(?:&|$)@', '', $url);
 }
 
-/**
- * Get a encoded url. If url is encoded, not encode. Otherwise html encode the url.
- *
- * @see getUrl()
- * @return string
- */
-function getAutoEncodedUrl()
-{
+function getAutoEncodedUrl() {
 	$num_args = func_num_args();
 	$args_list = func_get_args();
-
-	if($num_args)
-	{
-		$url = Context::getUrl($num_args, $args_list, NULL, TRUE, TRUE);
-	}
-	else
-	{
-		$url = Context::getRequestUri();
-	}
-
+	if($num_args) $url = Context::getUrl($num_args, $args_list, NULL, TRUE, TRUE);
+	else $url = Context::getRequestUri();
 	return preg_replace('@\berror_return_url=[^&]*|\w+=(?:&|$)@', '', $url);
 }
 
-/**
- * Return the value adding request uri to getUrl() to get the full url
- *
- * @return string
- */
-function getFullUrl()
-{
+function getFullUrl() {
 	$num_args = func_num_args();
 	$args_list = func_get_args();
 	$request_uri = Context::getRequestUri();
-	if(!$num_args)
-	{
-		return $request_uri;
-	}
-
+	if(!$num_args) return $request_uri;
 	$url = Context::getUrl($num_args, $args_list);
-	if(strncasecmp('http', $url, 4) !== 0)
-	{
+	if(strncasecmp('http', $url, 4) !== 0) {
 		preg_match('/^(http|https):\/\/([^\/]+)\//', $request_uri, $match);
 		return substr($match[0], 0, -1) . $url;
 	}
 	return $url;
 }
 
-/**
- * Return the value adding request uri to getUrl() to get the not encoded full url
- *
- * @return string
- */
-function getNotEncodedFullUrl()
-{
+function getNotEncodedFullUrl() {
 	$num_args = func_num_args();
 	$args_list = func_get_args();
 	$request_uri = Context::getRequestUri();
-	if(!$num_args)
-	{
-		return $request_uri;
-	}
-
+	if(!$num_args) return $request_uri;
 	$url = Context::getUrl($num_args, $args_list, NULL, FALSE);
-	if(strncasecmp('http', $url, 4) !== 0)
-	{
+	if(strncasecmp('http', $url, 4) !== 0) {
 		preg_match('/^(http|https):\/\/([^\/]+)\//', $request_uri, $match);
 		$url = Context::getUrl($num_args, $args_list, NULL, FALSE);
 		return substr($match[0], 0, -1) . $url;
@@ -399,291 +177,134 @@ function getNotEncodedFullUrl()
 	return $url;
 }
 
-/**
- * getSiteUrl() returns the URL by transforming the given argument value of domain
- * The first argument should consist of domain("http://" not included) and path
- * 
- * @return string
- */
-function getSiteUrl()
-{
+function getSiteUrl() {
 	$num_args = func_num_args();
 	$args_list = func_get_args();
-
-	if(!$num_args)
-	{
-		return Context::getRequestUri();
-	}
-
+	if(!$num_args) return Context::getRequestUri();
 	$domain = array_shift($args_list);
 	$num_args = count($args_list);
-
 	return Context::getUrl($num_args, $args_list, $domain);
 }
 
-/**
- * getSiteUrl() returns the not encoded URL by transforming the given argument value of domain
- * The first argument should consist of domain("http://" not included) and path
- * 
- * @return string
- */
-function getNotEncodedSiteUrl()
-{
+function getNotEncodedSiteUrl() {
 	$num_args = func_num_args();
 	$args_list = func_get_args();
-
-	if(!$num_args)
-	{
-		return Context::getRequestUri();
-	}
-
+	if(!$num_args) return Context::getRequestUri();
 	$domain = array_shift($args_list);
 	$num_args = count($args_list);
-
 	return Context::getUrl($num_args, $args_list, $domain, FALSE);
 }
 
-/**
- * Return the value adding request uri to the getSiteUrl() To get the full url
- *
- * @return string
- */
-function getFullSiteUrl()
-{
+function getFullSiteUrl() {
 	$num_args = func_num_args();
 	$args_list = func_get_args();
-
 	$request_uri = Context::getRequestUri();
-	if(!$num_args)
-	{
-		return $request_uri;
-	}
-
+	if(!$num_args) return $request_uri;
 	$domain = array_shift($args_list);
 	$num_args = count($args_list);
-
 	$url = Context::getUrl($num_args, $args_list, $domain);
-	if(strncasecmp('http', $url, 4) !== 0)
-	{
+	if(strncasecmp('http', $url, 4) !== 0) {
 		preg_match('/^(http|https):\/\/([^\/]+)\//', $request_uri, $match);
 		return substr($match[0], 0, -1) . $url;
 	}
 	return $url;
 }
 
-/**
- * Return the exact url of the current page
- *
- * @return string
- */
-function getCurrentPageUrl()
-{
+function getCurrentPageUrl() {
 	$protocol = $_SERVER['HTTPS'] == 'on' ? 'https://' : 'http://';
 	$url = $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 	return htmlspecialchars($url, ENT_COMPAT, 'UTF-8', FALSE);
 }
 
-/**
- * Return if domain of the virtual site is url type or id type
- *
- * @param string $domain
- * @return bool
- */
-function isSiteID($domain)
-{
+function isSiteID($domain) {
 	return preg_match('/^([a-zA-Z0-9\_]+)$/', $domain);
 }
 
-/**
- * Put a given tail after trimming string to the specified size
- *
- * @param string $string The original string to trim
- * @param int $cut_size The size to be
- * @param string $tail Tail to put in the end of the string after trimming
- * @return string
- */
-function cut_str($string, $cut_size = 0, $tail = '...')
-{
-	if($cut_size < 1 || !$string)
-	{
-		return $string;
-	}
-
-	if($GLOBALS['use_mb_strimwidth'] || function_exists('mb_strimwidth'))
-	{
+function cut_str($string, $cut_size = 0, $tail = '...') {
+	if($cut_size < 1 || !$string) return $string;
+	if($GLOBALS['use_mb_strimwidth'] || function_exists('mb_strimwidth')) {
 		$GLOBALS['use_mb_strimwidth'] = TRUE;
 		return mb_strimwidth($string, 0, $cut_size + 4, $tail, 'utf-8');
 	}
-
 	$chars = array(12, 4, 3, 5, 7, 7, 11, 8, 4, 5, 5, 6, 6, 4, 6, 4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 4, 4, 8, 6, 8, 6, 10, 8, 8, 9, 8, 8, 7, 9, 8, 3, 6, 7, 7, 11, 8, 9, 8, 9, 8, 8, 7, 8, 8, 10, 8, 8, 8, 6, 11, 6, 6, 6, 4, 7, 7, 7, 7, 7, 3, 7, 7, 3, 3, 6, 3, 9, 7, 7, 7, 7, 4, 7, 3, 7, 6, 10, 6, 6, 7, 6, 6, 6, 9);
 	$max_width = $cut_size * $chars[0] / 2;
 	$char_width = 0;
-
 	$string_length = strlen($string);
 	$char_count = 0;
-
 	$idx = 0;
-	while($idx < $string_length && $char_count < $cut_size && $char_width <= $max_width)
-	{
+	while($idx < $string_length && $char_count < $cut_size && $char_width <= $max_width) {
 		$c = ord(substr($string, $idx, 1));
 		$char_count++;
-		if($c < 128)
-		{
+		if($c < 128) {
 			$char_width += (int) $chars[$c - 32];
 			$idx++;
-		}
-		else if(191 < $c && $c < 224)
-		{
+		} else if(191 < $c && $c < 224) {
 			$char_width += $chars[4];
 			$idx += 2;
-		}
-		else
-		{
+		} else {
 			$char_width += $chars[0];
 			$idx += 3;
 		}
 	}
-
 	$output = substr($string, 0, $idx);
-	if(strlen($output) < $string_length)
-	{
-		$output .= $tail;
-	}
-
+	if(strlen($output) < $string_length) $output .= $tail;
 	return $output;
 }
 
-/**
- * Get a time gap between server's timezone and XE's timezone
- *
- * @return int
- */
-function zgap()
-{
+function zgap() {
 	$time_zone = $GLOBALS['_time_zone'];
-	if($time_zone < 0)
-	{
-		$to = -1;
-	}
-	else
-	{
-		$to = 1;
-	}
-
+	if($time_zone < 0) $to = -1;
+	else $to = 1;
 	$t_hour = substr($time_zone, 1, 2) * $to;
 	$t_min = substr($time_zone, 3, 2) * $to;
-
 	$server_time_zone = date("O");
-	if($server_time_zone < 0)
-	{
-		$so = -1;
-	}
-	else
-	{
-		$so = 1;
-	}
-
+	if($server_time_zone < 0) $so = -1;
+	else $so = 1;
 	$c_hour = substr($server_time_zone, 1, 2) * $so;
 	$c_min = substr($server_time_zone, 3, 2) * $so;
-
 	$g_min = $t_min - $c_min;
 	$g_hour = $t_hour - $c_hour;
-
 	$gap = $g_min * 60 + $g_hour * 60 * 60;
 	return $gap;
 }
 
-/**
- * YYYYMMDDHHIISS format changed to unix time value
- *
- * @param string $str Time value in format of YYYYMMDDHHIISS
- * @return int
- */
-function ztime($str)
-{
-	if(!$str)
-	{
-		return;
-	}
-
+function ztime($str) {
+	if(!$str) return;
 	$hour = (int) substr($str, 8, 2);
 	$min = (int) substr($str, 10, 2);
 	$sec = (int) substr($str, 12, 2);
 	$year = (int) substr($str, 0, 4);
 	$month = (int) substr($str, 4, 2);
 	$day = (int) substr($str, 6, 2);
-	if(strlen($str) <= 8)
-	{
-		$gap = 0;
-	}
-	else
-	{
-		$gap = zgap();
-	}
-
+	if(strlen($str) <= 8) $gap = 0;
+	else $gap = zgap();
 	return mktime($hour, $min, $sec, $month ? $month : 1, $day ? $day : 1, $year) + $gap;
 }
 
-/**
- * If the recent post within a day, output format of YmdHis is "min/hours ago from now". If not within a day, it return format string.
- *
- * @param string $date Time value in format of YYYYMMDDHHIISS
- * @param string $format If gap is within a day, returns this format.
- * @return string
- */
-function getTimeGap($date, $format = 'Y.m.d')
-{
+function getTimeGap($date, $format = 'Y.m.d') {
 	$gap = $_SERVER['REQUEST_TIME'] + zgap() - ztime($date);
-
 	$lang_time_gap = Context::getLang('time_gap');
-	if($gap < 60)
-	{
+	if($gap < 60) {
 		$buff = sprintf($lang_time_gap['min'], (int) ($gap / 60) + 1);
-	}
-	elseif($gap < 60 * 60)
-	{
+	} elseif($gap < 60 * 60) {
 		$buff = sprintf($lang_time_gap['mins'], (int) ($gap / 60) + 1);
-	}
-	elseif($gap < 60 * 60 * 2)
-	{
+	} elseif($gap < 60 * 60 * 2) {
 		$buff = sprintf($lang_time_gap['hour'], (int) ($gap / 60 / 60) + 1);
-	}
-	elseif($gap < 60 * 60 * 24)
-	{
+	} elseif($gap < 60 * 60 * 24) {
 		$buff = sprintf($lang_time_gap['hours'], (int) ($gap / 60 / 60) + 1);
-	}
-	else
-	{
+	} else {
 		$buff = zdate($date, $format);
 	}
-
 	return $buff;
 }
 
-/**
- * Name of the month return
- *
- * @param int $month Month
- * @param boot $short If set, returns short string
- * @return string
- */
-function getMonthName($month, $short = TRUE)
-{
+function getMonthName($month, $short = TRUE) {
 	$short_month = array('', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec');
 	$long_month = array('', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
 	return !$short ? $long_month[$month] : $short_month[$month];
 }
 
-/**
- * Change the time format YYYYMMDDHHIISS to the user defined format
- *
- * @param string|int $str YYYYMMDDHHIISS format time values
- * @param string $format Time format of php date() function
- * @param bool $conversion Means whether to convert automatically according to the language
- * @return string
- */
-function zdate($str, $format = 'Y-m-d H:i:s', $conversion = TRUE)
-{
+function zdate($str, $format = 'Y-m-d H:i:s', $conversion = TRUE) {
 	// return null if no target time is specified
 	if(!$str)
 	{
@@ -757,7 +378,7 @@ function zdate($str, $format = 'Y-m-d H:i:s', $conversion = TRUE)
 	}
 	else
 	{
-		// if year value is greater than 1970, get unixtime by using ztime() for date() function's argument. 
+		// if year value is greater than 1970, get unixtime by using ztime() for date() function's argument.
 		$string = date($format, ztime($str));
 	}
 	// change day and am/pm for each language
@@ -785,7 +406,7 @@ function getEncodeEmailAddress($email)
 }
 
 /**
- * Prints debug messages 
+ * Prints debug messages
  *
  * Display $buff contents into the file ./files/_debug_message.php.
  * You can see the file on your prompt by command: tail-f./files/_debug_message.php
@@ -1039,7 +660,7 @@ function getDestroyXeVars(&$vars)
 }
 
 /**
- * Change error_handing to debugPrint on php5 higher 
+ * Change error_handing to debugPrint on php5 higher
  *
  * @param int $errno
  * @param string $errstr
@@ -1302,7 +923,7 @@ if(!function_exists('hexrgb'))
 
 /**
  * Php function for mysql old_password()
- * provides backward compatibility for zero board4 which uses old_password() of mysql 4.1 earlier versions. 
+ * provides backward compatibility for zero board4 which uses old_password() of mysql 4.1 earlier versions.
  * the function implemented by referring to the source codes of password.c file in mysql
  *
  * @param string $password
