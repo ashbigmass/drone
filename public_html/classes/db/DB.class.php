@@ -1,15 +1,9 @@
 <?php
 class DB {
-
 	static $isSupported = FALSE;
-
-	var $priority_dbms = array(
-		'mysqli' => 6, 'mysqli_innodb' => 5, 'mysql' => 4, 'mysql_innodb' => 3, 'cubrid' => 2, 'mssql' => 1
-	);
+	var $priority_dbms = array('mysqli' => 6, 'mysqli_innodb' => 5, 'mysql' => 4, 'mysql_innodb' => 3, 'cubrid' => 2, 'mssql' => 1);
 	var $count_cache_path = 'files/cache/db';
-	var $cond_operation = array(
-		'equal' => '=', 'more' => '>=', 'excess' => '>', 'less' => '<=', 'below' => '<', 'notequal' => '<>', 'notnull' => 'is not null', 'null' => 'is null',
-	);
+	var $cond_operation = array('equal' => '=', 'more' => '>=', 'excess' => '>', 'less' => '<=', 'below' => '<', 'notequal' => '<>', 'notnull' => 'is not null', 'null' => 'is null');
 	var $master_db = NULL;
 	var $slave_db = NULL;
 	var $result = NULL;
@@ -262,293 +256,90 @@ class DB {
 	function _executeQuery($cache_file, $source_args, $query_id, $arg_columns, $type) {
 		global $lang;
 		if(!in_array($type, array('master','slave'))) $type = 'slave';
-
-		if(!file_exists($cache_file))
-		{
-			return new Object(-1, 'msg_invalid_queryid');
-		}
-
-		if($source_args)
-		{
-			$args = clone $source_args;
-		}
-
+		if(!file_exists($cache_file)) return new Object(-1, 'msg_invalid_queryid');
+		if($source_args) $args = clone $source_args;
 		$output = include($cache_file);
-
-		if((is_a($output, 'Object') || is_subclass_of($output, 'Object')) && !$output->toBool())
-		{
-			return $output;
-		}
-
-		// execute appropriate query
-		switch($output->getAction())
-		{
+		if((is_a($output, 'Object') || is_subclass_of($output, 'Object')) && !$output->toBool()) return $output;
+		switch($output->getAction()) {
 			case 'insert' :
 			case 'insert-select' :
 				$this->resetCountCache($output->tables);
 				$output = $this->_executeInsertAct($output);
-				break;
+			break;
 			case 'update' :
 				$this->resetCountCache($output->tables);
 				$output = $this->_executeUpdateAct($output);
-				break;
+			break;
 			case 'delete' :
 				$this->resetCountCache($output->tables);
 				$output = $this->_executeDeleteAct($output);
-				break;
+			break;
 			case 'select' :
 				$arg_columns = is_array($arg_columns) ? $arg_columns : array();
 				$output->setColumnList($arg_columns);
 				$connection = $this->_getConnection($type);
 				$output = $this->_executeSelectAct($output, $connection);
-				break;
+			break;
 		}
 
-		if($this->isError())
-		{
-			$output = $this->getError();
-		}
-		else if(!is_a($output, 'Object') && !is_subclass_of($output, 'Object'))
-		{
-			$output = new Object();
-		}
+		if($this->isError()) $output = $this->getError();
+		else if(!is_a($output, 'Object') && !is_subclass_of($output, 'Object')) $output = new Object();
 		$output->add('_query', $this->query);
 		$output->add('_elapsed_time', sprintf("%0.5f", $this->elapsed_time));
-
 		return $output;
 	}
 
-	/**
-	 * Returns counter cache data
-	 * @param array|string $tables tables to get data
-	 * @param string $condition condition to get data
-	 * @return int count of cache data
-	 */
-	function getCountCache($tables, $condition)
-	{
+	function getCountCache($tables, $condition) {
 		return FALSE;
-/*
-		if(!$tables)
-		{
-			return FALSE;
-		}
-		if(!is_dir($this->count_cache_path))
-		{
-			return FileHandler::makeDir($this->count_cache_path);
-		}
-
-		$condition = md5($condition);
-
-		if(!is_array($tables))
-		{
-			$tables_str = $tables;
-		}
-		else
-		{
-			$tables_str = implode('.', $tables);
-		}
-
-		$cache_path = sprintf('%s/%s%s', $this->count_cache_path, $this->prefix, $tables_str);
-		FileHandler::makeDir($cache_path);
-
-		$cache_filename = sprintf('%s/%s.%s', $cache_path, $tables_str, $condition);
-		if(!file_exists($cache_filename))
-		{
-			return FALSE;
-		}
-
-		$cache_mtime = filemtime($cache_filename);
-
-		if(!is_array($tables))
-		{
-			$tables = array($tables);
-		}
-		foreach($tables as $alias => $table)
-		{
-			$table_filename = sprintf('%s/cache.%s%s', $this->count_cache_path, $this->prefix, $table);
-			if(!file_exists($table_filename) || filemtime($table_filename) > $cache_mtime)
-			{
-				return FALSE;
-			}
-		}
-
-		$count = (int) FileHandler::readFile($cache_filename);
-		return $count;
-*/
 	}
 
-	/**
-	 * Save counter cache data
-	 * @param array|string $tables tables to save data
-	 * @param string $condition condition to save data
-	 * @param int $count count of cache data to save
-	 * @return void
-	 */
-	function putCountCache($tables, $condition, $count = 0)
-	{
+	function putCountCache($tables, $condition, $count = 0) {
 		return FALSE;
-/*
-		if(!$tables)
-		{
-			return FALSE;
-		}
-		if(!is_dir($this->count_cache_path))
-		{
-			return FileHandler::makeDir($this->count_cache_path);
-		}
-
-		$condition = md5($condition);
-
-		if(!is_array($tables))
-		{
-			$tables_str = $tables;
-		}
-		else
-		{
-			$tables_str = implode('.', $tables);
-		}
-
-		$cache_path = sprintf('%s/%s%s', $this->count_cache_path, $this->prefix, $tables_str);
-		FileHandler::makeDir($cache_path);
-
-		$cache_filename = sprintf('%s/%s.%s', $cache_path, $tables_str, $condition);
-
-		FileHandler::writeFile($cache_filename, $count);
-*/
 	}
 
-	/**
-	 * Reset counter cache data
-	 * @param array|string $tables tables to reset cache data
-	 * @return boolean true: success, false: failed
-	 */
-	function resetCountCache($tables)
-	{
+	function resetCountCache($tables) {
 		return FALSE;
-/*
-		if(!$tables)
-		{
-			return FALSE;
-		}
-		return FileHandler::makeDir($this->count_cache_path);
-
-		if(!is_array($tables))
-		{
-			$tables = array($tables);
-		}
-		foreach($tables as $alias => $table)
-		{
-			$filename = sprintf('%s/cache.%s%s', $this->count_cache_path, $this->prefix, $table);
-			FileHandler::removeFile($filename);
-			FileHandler::writeFile($filename, '');
-		}
-
-		return TRUE;
- */
 	}
 
-	/**
-	 * Drop tables
-	 * @param string $table_name
-	 * @return void
-	 */
-	function dropTable($table_name)
-	{
-		if(!$table_name)
-		{
-			return;
-		}
+	function dropTable($table_name) {
+		if(!$table_name) return;
 		$query = sprintf("drop table %s%s", $this->prefix, $table_name);
 		$this->_query($query);
 	}
 
-	/**
-	 * Return select query string
-	 * @param object $query
-	 * @param boolean $with_values
-	 * @return string
-	 */
-	function getSelectSql($query, $with_values = TRUE)
-	{
+	function getSelectSql($query, $with_values = TRUE) {
 		$select = $query->getSelectString($with_values);
-		if($select == '')
-		{
-			return new Object(-1, "Invalid query");
-		}
+		if($select == '') return new Object(-1, "Invalid query");
 		$select = 'SELECT ' . $select;
-
 		$from = $query->getFromString($with_values);
-		if($from == '')
-		{
-			return new Object(-1, "Invalid query");
-		}
+		if($from == '') return new Object(-1, "Invalid query");
 		$from = ' FROM ' . $from;
-
 		$where = $query->getWhereString($with_values);
-		if($where != '')
-		{
-			$where = ' WHERE ' . $where;
-		}
-
+		if($where != '') $where = ' WHERE ' . $where;
 		$tableObjects = $query->getTables();
 		$index_hint_list = '';
-		foreach($tableObjects as $tableObject)
-		{
-			if(is_a($tableObject, 'CubridTableWithHint'))
-			{
-				$index_hint_list .= $tableObject->getIndexHintString() . ', ';
-			}
+		foreach($tableObjects as $tableObject) {
+			if(is_a($tableObject, 'CubridTableWithHint')) $index_hint_list .= $tableObject->getIndexHintString() . ', ';
 		}
 		$index_hint_list = substr($index_hint_list, 0, -2);
-		if($index_hint_list != '')
-		{
-			$index_hint_list = 'USING INDEX ' . $index_hint_list;
-		}
-
+		if($index_hint_list != '') $index_hint_list = 'USING INDEX ' . $index_hint_list;
 		$groupBy = $query->getGroupByString();
-		if($groupBy != '')
-		{
-			$groupBy = ' GROUP BY ' . $groupBy;
-		}
-
+		if($groupBy != '') $groupBy = ' GROUP BY ' . $groupBy;
 		$orderBy = $query->getOrderByString();
-		if($orderBy != '')
-		{
-			$orderBy = ' ORDER BY ' . $orderBy;
-		}
-
+		if($orderBy != '') $orderBy = ' ORDER BY ' . $orderBy;
 		$limit = $query->getLimitString();
-		if($limit != '')
-		{
-			$limit = ' LIMIT ' . $limit;
-		}
-
+		if($limit != '') $limit = ' LIMIT ' . $limit;
 		return $select . ' ' . $from . ' ' . $where . ' ' . $index_hint_list . ' ' . $groupBy . ' ' . $orderBy . ' ' . $limit;
 	}
 
-	/**
-	 * Given a SELECT statement that uses click count
-	 * returns the corresponding update sql string
-	 * for databases that don't have click count support built in
-	 * (aka all besides CUBRID)
-	 *
-	 * Function does not check if click count columns exist!
-	 * You must call $query->usesClickCount() before using this function
-	 *
-	 * @param $queryObject
-	 */
-	function getClickCountQuery($queryObject)
-	{
+	function getClickCountQuery($queryObject) {
 		$new_update_columns = array();
 		$click_count_columns = $queryObject->getClickCountColumns();
-		foreach($click_count_columns as $click_count_column)
-		{
+		foreach($click_count_columns as $click_count_column) {
 			$click_count_column_name = $click_count_column->column_name;
-
 			$increase_by_1 = new Argument($click_count_column_name, null);
 			$increase_by_1->setColumnOperation('+');
 			$increase_by_1->ensureDefaultValue(1);
-
 			$update_expression = new UpdateExpression($click_count_column_name, $increase_by_1);
 			$new_update_columns[] = $update_expression;
 		}
@@ -556,320 +347,123 @@ class DB {
 		return $queryObject;
 	}
 
-	/**
-	 * Return delete query string
-	 * @param object $query
-	 * @param boolean $with_values
-	 * @param boolean $with_priority
-	 * @return string
-	 */
-	function getDeleteSql($query, $with_values = TRUE, $with_priority = FALSE)
-	{
+	function getDeleteSql($query, $with_values = TRUE, $with_priority = FALSE) {
 		$sql = 'DELETE ';
-
 		$sql .= $with_priority ? $query->getPriority() : '';
 		$tables = $query->getTables();
-
 		$sql .= $tables[0]->getAlias();
-
 		$from = $query->getFromString($with_values);
-		if($from == '')
-		{
-			return new Object(-1, "Invalid query");
-		}
+		if($from == '') return new Object(-1, "Invalid query");
 		$sql .= ' FROM ' . $from;
-
 		$where = $query->getWhereString($with_values);
-		if($where != '')
-		{
-			$sql .= ' WHERE ' . $where;
-		}
-
+		if($where != '') $sql .= ' WHERE ' . $where;
 		return $sql;
 	}
 
-	/**
-	 * Return update query string
-	 * @param object $query
-	 * @param boolean $with_values
-	 * @param boolean $with_priority
-	 * @return string
-	 */
-	function getUpdateSql($query, $with_values = TRUE, $with_priority = FALSE)
-	{
+	function getUpdateSql($query, $with_values = TRUE, $with_priority = FALSE) {
 		$columnsList = $query->getUpdateString($with_values);
-		if($columnsList == '')
-		{
-			return new Object(-1, "Invalid query");
-		}
-
+		if($columnsList == '') return new Object(-1, "Invalid query");
 		$tables = $query->getFromString($with_values);
-		if($tables == '')
-		{
-			return new Object(-1, "Invalid query");
-		}
-
+		if($tables == '') return new Object(-1, "Invalid query");
 		$where = $query->getWhereString($with_values);
-		if($where != '')
-		{
-			$where = ' WHERE ' . $where;
-		}
-
+		if($where != '') $where = ' WHERE ' . $where;
 		$priority = $with_priority ? $query->getPriority() : '';
-
 		return "UPDATE $priority $tables SET $columnsList " . $where;
 	}
 
-	/**
-	 * Return insert query string
-	 * @param object $query
-	 * @param boolean $with_values
-	 * @param boolean $with_priority
-	 * @return string
-	 */
-	function getInsertSql($query, $with_values = TRUE, $with_priority = FALSE)
-	{
+	function getInsertSql($query, $with_values = TRUE, $with_priority = FALSE) {
 		$tableName = $query->getFirstTableName();
 		$values = $query->getInsertString($with_values);
 		$priority = $with_priority ? $query->getPriority() : '';
-
 		return "INSERT $priority INTO $tableName \n $values";
 	}
 
-	/**
-	 * Return index from slave server list
-	 * @return int
-	 */
-	function _getSlaveConnectionStringIndex()
-	{
+	function _getSlaveConnectionStringIndex() {
 		$max = count($this->slave_db);
 		$indx = rand(0, $max - 1);
 		return $indx;
 	}
 
-	/**
-	 * Return connection resource
-	 * @param string $type use 'master' or 'slave'. default value is 'master'
-	 * @param int $indx if indx value is NULL, return rand number in slave server list
-	 * @return resource
-	 */
-	function _getConnection($type = 'master', $indx = NULL)
-	{
-		if($type == 'master')
-		{
-			if(!$this->master_db['is_connected'])
-			{
-				$this->_connect($type);
-			}
+	function _getConnection($type = 'master', $indx = NULL) {
+		if($type == 'master') {
+			if(!$this->master_db['is_connected']) $this->_connect($type);
 			$this->connection = 'Master ' . $this->master_db['db_hostname'];
 			return $this->master_db["resource"];
 		}
-
-		if($indx === NULL)
-		{
-			$indx = $this->_getSlaveConnectionStringIndex($type);
-		}
-
-		if(!$this->slave_db[$indx]['is_connected'])
-		{
-			$this->_connect($type, $indx);
-		}
-
+		if($indx === NULL) $indx = $this->_getSlaveConnectionStringIndex($type);
+		if(!$this->slave_db[$indx]['is_connected']) $this->_connect($type, $indx);
 		$this->connection = 'Slave ' . $this->slave_db[$indx]['db_hostname'];
 		return $this->slave_db[$indx]["resource"];
 	}
 
-	/**
-	 * check db information exists
-	 * @return boolean
-	 */
-	function _dbInfoExists()
-	{
-		if(!$this->master_db)
-		{
-			return FALSE;
-		}
-		if(count($this->slave_db) === 0)
-		{
-			return FALSE;
-		}
+	function _dbInfoExists() {
+		if(!$this->master_db) return FALSE;
+		if(count($this->slave_db) === 0) return FALSE;
 		return TRUE;
 	}
 
-	/**
-	 * DB disconnection
-	 * this method is protected
-	 * @param resource $connection
-	 * @return void
-	 */
-	function _close($connection)
-	{
-
+	function _close($connection) {
 	}
 
-	/**
-	 * DB disconnection
-	 * @param string $type 'master' or 'slave'
-	 * @param int $indx number in slave dbms server list
-	 * @return void
-	 */
-	function close($type = 'master', $indx = 0)
-	{
-		if(!$this->isConnected($type, $indx))
-		{
-			return;
-		}
-
-		if($type == 'master')
-		{
-			$connection = &$this->master_db;
-		}
-		else
-		{
-			$connection = &$this->slave_db[$indx];
-		}
-
+	function close($type = 'master', $indx = 0) {
+		if(!$this->isConnected($type, $indx)) return;
+		if($type == 'master') $connection = &$this->master_db;
+		else $connection = &$this->slave_db[$indx];
 		$this->commit();
 		$this->_close($connection["resource"]);
-
 		$connection["is_connected"] = FALSE;
 	}
 
-	/**
-	 * DB transaction start
-	 * this method is protected
-	 * @return boolean
-	 */
-	function _begin($transactionLevel = 0)
-	{
+	function _begin($transactionLevel = 0) {
 		return TRUE;
 	}
 
-	/**
-	 * DB transaction start
-	 * @return void
-	 */
-	function begin()
-	{
-		if(!$this->isConnected())
-		{
-			return;
-		}
-
-		if($this->_begin($this->transactionNestedLevel))
-		{
+	function begin() {
+		if(!$this->isConnected()) return;
+		if($this->_begin($this->transactionNestedLevel)) {
 			$this->transaction_started = TRUE;
 			$this->transactionNestedLevel++;
 		}
 	}
 
-	/**
-	 * DB transaction rollback
-	 * this method is protected
-	 * @return boolean
-	 */
-	function _rollback($transactionLevel = 0)
-	{
+	function _rollback($transactionLevel = 0) {
 		return TRUE;
 	}
 
-	/**
-	 * DB transaction rollback
-	 * @return void
-	 */
-	function rollback()
-	{
-		if(!$this->isConnected() || !$this->transaction_started)
-		{
-			return;
-		}
-		if($this->_rollback($this->transactionNestedLevel))
-		{
+	function rollback() {
+		if(!$this->isConnected() || !$this->transaction_started) return;
+		if($this->_rollback($this->transactionNestedLevel)) {
 			$this->transactionNestedLevel--;
-
-			if(!$this->transactionNestedLevel)
-			{
-				$this->transaction_started = FALSE;
-			}
+			if(!$this->transactionNestedLevel) $this->transaction_started = FALSE;
 		}
 	}
 
-	/**
-	 * DB transaction commit
-	 * this method is protected
-	 * @return boolean
-	 */
-	function _commit()
-	{
+	function _commit() {
 		return TRUE;
 	}
 
-	/**
-	 * DB transaction commit
-	 * @param boolean $force regardless transaction start status or connect status, forced to commit
-	 * @return void
-	 */
-	function commit($force = FALSE)
-	{
-		if(!$force && (!$this->isConnected() || !$this->transaction_started))
-		{
-			return;
-		}
-		if($this->transactionNestedLevel == 1 && $this->_commit())
-		{
+	function commit($force = FALSE) {
+		if(!$force && (!$this->isConnected() || !$this->transaction_started)) return;
+		if($this->transactionNestedLevel == 1 && $this->_commit()) {
 			$this->transaction_started = FALSE;
 			$this->transactionNestedLevel = 0;
-		}
-		else
-		{
+		} else {
 			$this->transactionNestedLevel--;
 		}
 	}
 
-	/**
-	 * Execute the query
-	 * this method is protected
-	 * @param string $query
-	 * @param resource $connection
-	 * @return void
-	 */
-	function __query($query, $connection)
-	{
-
+	function __query($query, $connection) {
 	}
 
-	/**
-	 * Execute the query
-	 * this method is protected
-	 * @param string $query
-	 * @param resource $connection
-	 * @return resource
-	 */
-	function _query($query, $connection = NULL)
-	{
-		if($connection == NULL)
-		{
-			$connection = $this->_getConnection('master');
-		}
-		// Notify to start a query execution
+	function _query($query, $connection = NULL) {
+		if($connection == NULL) $connection = $this->_getConnection('master');
 		$this->actStart($query);
-
-		// Run the query statement
 		$result = $this->__query($query, $connection);
-
-		// Notify to complete a query execution
 		$this->actFinish();
-		// Return result
 		return $result;
 	}
 
-	/**
-	 * DB info settings
-	 * this method is protected
-	 * @return void
-	 */
-	function _setDBInfo()
-	{
+	function _setDBInfo() {
 		$db_info = Context::getDBInfo();
 		$this->master_db = $db_info->master_db;
 		if($db_info->master_db["db_hostname"] == $db_info->slave_db[0]["db_hostname"]
@@ -877,138 +471,59 @@ class DB {
 				&& $db_info->master_db["db_userid"] == $db_info->slave_db[0]["db_userid"]
 				&& $db_info->master_db["db_password"] == $db_info->slave_db[0]["db_password"]
 				&& $db_info->master_db["db_database"] == $db_info->slave_db[0]["db_database"]
-		)
-		{
+		) {
 			$this->slave_db[0] = &$this->master_db;
-		}
-		else
-		{
+		} else {
 			$this->slave_db = $db_info->slave_db;
 		}
 		$this->prefix = $db_info->master_db["db_table_prefix"];
 		$this->use_prepared_statements = $db_info->use_prepared_statements;
 	}
 
-	/**
-	 * DB Connect
-	 * this method is protected
-	 * @param array $connection
-	 * @return void
-	 */
-	function __connect($connection)
-	{
-
+	function __connect($connection) {
 	}
 
-	/**
-	 * If have a task after connection, add a taks in this method
-	 * this method is protected
-	 * @param resource $connection
-	 * @return void
-	 */
-	function _afterConnect($connection)
-	{
-
+	function _afterConnect($connection) {
 	}
 
-	/**
-	 * DB Connect
-	 * this method is protected
-	 * @param string $type 'master' or 'slave'
-	 * @param int $indx number in slave dbms server list
-	 * @return void
-	 */
-	function _connect($type = 'master', $indx = 0)
-	{
-		if($this->isConnected($type, $indx))
-		{
+	function _connect($type = 'master', $indx = 0) {
+		if($this->isConnected($type, $indx)) return;
+		if(!$this->_dbInfoExists()) {
 			return;
-		}
-
-		// Ignore if no DB information exists
-		if(!$this->_dbInfoExists())
-		{
-			return;
-		}
-
-		if($type == 'master')
-		{
-			$connection = &$this->master_db;
-		}
-		else
-		{
-			$connection = &$this->slave_db[$indx];
-		}
-
+		if($type == 'master') $connection = &$this->master_db;
+		else $connection = &$this->slave_db[$indx];
 		$result = $this->__connect($connection);
-		if($result === NULL || $result === FALSE)
-		{
+		if($result === NULL || $result === FALSE) {
 			$connection["is_connected"] = FALSE;
 			return;
 		}
-
-		// Check connections
 		$connection["resource"] = $result;
 		$connection["is_connected"] = TRUE;
-
-		// Save connection info for db logs
 		$this->connection = ucfirst($type) . ' ' . $connection["db_hostname"];
-
-		// regist $this->close callback
 		register_shutdown_function(array($this, "close"));
-
 		$this->_afterConnect($result);
 	}
 
-	/**
-	 * Start recording DBClass log
-	 * @return void
-	 */
-	function actDBClassStart()
-	{
+	function actDBClassStart() {
 		$this->setError(0, 'success');
 		$this->act_dbclass_start = getMicroTime();
 		$this->elapsed_dbclass_time = 0;
 	}
 
-	/**
-	 * Finish recording DBClass log
-	 * @return void
-	 */
-	function actDBClassFinish()
-	{
-		if(!$this->query)
-		{
-			return;
-		}
+	function actDBClassFinish() {
+		if(!$this->query) return;
 		$this->act_dbclass_finish = getMicroTime();
 		$elapsed_dbclass_time = $this->act_dbclass_finish - $this->act_dbclass_start;
 		$this->elapsed_dbclass_time = $elapsed_dbclass_time;
 		$GLOBALS['__dbclass_elapsed_time__'] += $elapsed_dbclass_time;
 	}
 
-	/**
-	 * Returns a database specific parser instance
-	 * used for escaping expressions and table/column identifiers
-	 *
-	 * Requires an implementation of the DB class (won't work if database is not set)
-	 * this method is singleton
-	 *
-	 * @param boolean $force force load DBParser instance
-	 * @return DBParser
-	 */
-	function &getParser($force = FALSE)
-	{
+	function &getParser($force = FALSE) {
 		static $dbParser = NULL;
-		if(!$dbParser || $force)
-		{
+		if(!$dbParser || $force) {
 			$oDB = DB::getInstance();
 			$dbParser = $oDB->getParser();
 		}
-
 		return $dbParser;
 	}
-
 }
-/* End of file DB.class.php */
-/* Location: ./classes/db/DB.class.php */

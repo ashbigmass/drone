@@ -1,306 +1,114 @@
 <?php
-/* Copyright (C) NAVER <http://www.navercorp.com> */
-
-/**
- * Class to use MySQL DBMS
- * mysql handling class
- *
- * Does not use prepared statements, since mysql driver does not support them
- *
- * @author NAVER (developers@xpressengine.com)
- * @package /classes/db
- * @version 0.1
- */
-class DBMysql extends DB
-{
-
-	/**
-	 * prefix of a tablename (One or more XEs can be installed in a single DB)
-	 * @var string
-	 */
+class DBMysql extends DB {
 	var $prefix = 'xe_'; // / <
 	var $comment_syntax = '/* %s */';
+	var $column_type = array( 'bignumber' => 'bigint', 'number' => 'bigint', 'varchar' => 'varchar', 'char' => 'char', 'text' => 'text', 'bigtext' => 'longtext', 'date' => 'varchar(14)', 'float' => 'float');
 
-	/**
-	 * Column type used in MySQL
-	 *
-	 * Becasue a common column type in schema/query xml is used for colum_type,
-	 * it should be replaced properly for each DBMS
-	 * @var array
-	 */
-	var $column_type = array(
-		'bignumber' => 'bigint',
-		'number' => 'bigint',
-		'varchar' => 'varchar',
-		'char' => 'char',
-		'text' => 'text',
-		'bigtext' => 'longtext',
-		'date' => 'varchar(14)',
-		'float' => 'float',
-	);
-
-	/**
-	 * Constructor
-	 * @return void
-	 */
-	function DBMysql()
-	{
+	function DBMysql() {
 		$this->_setDBInfo();
 		$this->_connect();
 	}
 
-	/**
-	 * Create an instance of this class
-	 * @return DBMysql return DBMysql object instance
-	 */
-	function create()
-	{
+	function create() {
 		return new DBMysql;
 	}
 
-	/**
-	 * DB Connect
-	 * this method is private
-	 * @param array $connection connection's value is db_hostname, db_port, db_database, db_userid, db_password
-	 * @return resource
-	 */
-	function __connect($connection)
-	{
-		// Ignore if no DB information exists
-		if(strpos($connection["db_hostname"], ':') === false && $connection["db_port"])
-		{
-			$connection["db_hostname"] .= ':' . $connection["db_port"];
-		}
-
-		// Attempt to connect
+	function __connect($connection) {
+		if(strpos($connection["db_hostname"], ':') === false && $connection["db_port"]) $connection["db_hostname"] .= ':' . $connection["db_port"];
 		$result = @mysql_connect($connection["db_hostname"], $connection["db_userid"], $connection["db_password"]);
-		if(!$result)
-		{
-			exit('XE cannot connect to DB.');
-		}
-
-		if(mysql_error())
-		{
+		if(!$result) exit('XE cannot connect to DB.');
+		if(mysql_error()) {
 			$this->setError(mysql_errno(), mysql_error());
 			return;
 		}
-		// Error appears if the version is lower than 4.1
-		if(version_compare(mysql_get_server_info($result), '4.1', '<'))
-		{
+		if(version_compare(mysql_get_server_info($result), '4.1', '<')) {
 			$this->setError(-1, 'XE cannot be installed under the version of mysql 4.1. Current mysql version is ' . mysql_get_server_info());
 			return;
 		}
-		// select db
 		@mysql_select_db($connection["db_database"], $result);
-		if(mysql_error())
-		{
+		if(mysql_error()) {
 			$this->setError(mysql_errno(), mysql_error());
 			return;
 		}
-
 		return $result;
 	}
 
-	/**
-	 * If have a task after connection, add a taks in this method
-	 * this method is private
-	 * @param resource $connection
-	 * @return void
-	 */
-	function _afterConnect($connection)
-	{
-		// Set utf8 if a database is MySQL
+	function _afterConnect($connection) 	{
 		$this->_query("set names 'utf8'", $connection);
 	}
 
-	/**
-	 * DB disconnection
-	 * this method is private
-	 * @param resource $connection
-	 * @return void
-	 */
-	function _close($connection)
-	{
+	function _close($connection) {
 		@mysql_close($connection);
 	}
 
-	/**
-	 * Handles quatation of the string variables from the query
-	 * @param string $string
-	 * @return string
-	 */
-	function addQuotes($string)
-	{
-		if(version_compare(PHP_VERSION, "5.4.0", "<") && get_magic_quotes_gpc())
-		{
-			$string = stripslashes(str_replace("\\", "\\\\", $string));
-		}
-		if(!is_numeric($string))
-		{
-			$string = @mysql_real_escape_string($string);
-		}
+	function addQuotes($string) {
+		if(version_compare(PHP_VERSION, "5.4.0", "<") && get_magic_quotes_gpc()) $string = stripslashes(str_replace("\\", "\\\\", $string));
+		if(!is_numeric($string)) $string = @mysql_real_escape_string($string);
 		return $string;
 	}
 
-	/**
-	 * DB transaction start
-	 * this method is private
-	 * @return boolean
-	 */
-	function _begin($transactionLevel = 0)
-	{
+	function _begin($transactionLevel = 0) {
 		return true;
 	}
 
-	/**
-	 * DB transaction rollback
-	 * this method is private
-	 * @return boolean
-	 */
-	function _rollback($transactionLevel = 0)
-	{
+	function _rollback($transactionLevel = 0) {
 		return true;
 	}
 
-	/**
-	 * DB transaction commit
-	 * this method is private
-	 * @return boolean
-	 */
-	function _commit()
-	{
+	function _commit() {
 		return true;
 	}
 
-	/**
-	 * Execute the query
-	 * this method is private
-	 * @param string $query
-	 * @param resource $connection
-	 * @return resource
-	 */
-	function __query($query, $connection)
-	{
-		if(!$connection)
-		{
-			exit('XE cannot handle DB connection.');
-		}
-		// Run the query statement
+	function __query($query, $connection) {
+		if(!$connection) exit('XE cannot handle DB connection.');
 		$result = mysql_query($query, $connection);
-		// Error Check
-		if(mysql_error($connection))
-		{
-			$this->setError(mysql_errno($connection), mysql_error($connection));
-		}
-		// Return result
+		if(mysql_error($connection)) $this->setError(mysql_errno($connection), mysql_error($connection));
 		return $result;
 	}
 
-	/**
-	 * Fetch the result
-	 * @param resource $result
-	 * @param int|NULL $arrayIndexEndValue
-	 * @return array
-	 */
-	function _fetch($result, $arrayIndexEndValue = NULL)
-	{
+	function _fetch($result, $arrayIndexEndValue = NULL) {
 		$output = array();
-		if(!$this->isConnected() || $this->isError() || !$result)
-		{
-			return $output;
+		if(!$this->isConnected() || $this->isError() || !$result) return $output;
+		while($tmp = $this->db_fetch_object($result)) {
+			if($arrayIndexEndValue) $output[$arrayIndexEndValue--] = $tmp;
+			else $output[] = $tmp;
 		}
-		while($tmp = $this->db_fetch_object($result))
-		{
-			if($arrayIndexEndValue)
-			{
-				$output[$arrayIndexEndValue--] = $tmp;
-			}
-			else
-			{
-				$output[] = $tmp;
-			}
-		}
-		if(count($output) == 1)
-		{
-			if(isset($arrayIndexEndValue))
-			{
-				return $output;
-			}
-			else
-			{
-				return $output[0];
-			}
+		if(count($output) == 1) {
+			if(isset($arrayIndexEndValue)) return $output;
+			else return $output[0];
 		}
 		$this->db_free_result($result);
 		return $output;
 	}
 
-	/**
-	 * Return the sequence value incremented by 1
-	 * Auto_increment column only used in the sequence table
-	 * @return int
-	 */
-	function getNextSequence()
-	{
+	function getNextSequence() {
 		$query = sprintf("insert into `%ssequence` (seq) values ('0')", $this->prefix);
 		$this->_query($query);
 		$sequence = $this->db_insert_id();
-		if($sequence % 10000 == 0)
-		{
+		if($sequence % 10000 == 0) {
 			$query = sprintf("delete from  `%ssequence` where seq < %d", $this->prefix, $sequence);
 			$this->_query($query);
 		}
-
 		return $sequence;
 	}
 
-	/**
-	 * Function to obtain mysql old password(mysql only)
-	 * @param string $password input password
-	 * @param string $saved_password saved password in DBMS
-	 * @return boolean
-	 */
-	function isValidOldPassword($password, $saved_password)
-	{
+	function isValidOldPassword($password, $saved_password) {
 		$query = sprintf("select password('%s') as password, old_password('%s') as old_password", $this->addQuotes($password), $this->addQuotes($password));
 		$result = $this->_query($query);
 		$tmp = $this->_fetch($result);
-		if($tmp->password === $saved_password || $tmp->old_password === $saved_password)
-		{
-			return true;
-		}
+		if($tmp->password === $saved_password || $tmp->old_password === $saved_password) return true;
 		return false;
 	}
 
-	/**
-	 * Check a table exists status
-	 * @param string $target_name
-	 * @return boolean
-	 */
-	function isTableExists($target_name)
-	{
+	function isTableExists($target_name) {
 		$query = sprintf("show tables like '%s%s'", $this->prefix, $this->addQuotes($target_name));
 		$result = $this->_query($query);
 		$tmp = $this->_fetch($result);
-		if(!$tmp)
-		{
-			return false;
-		}
+		if(!$tmp) return false;
 		return true;
 	}
 
-	/**
-	 * Add a column to the table
-	 * @param string $table_name table name
-	 * @param string $column_name column name
-	 * @param string $type column type, default value is 'number'
-	 * @param int $size column size
-	 * @param string|int $default default value
-	 * @param boolean $notnull not null status, default value is false
-	 * @return void
-	 */
-	function addColumn($table_name, $column_name, $type = 'number', $size = '', $default = null, $notnull = false)
-	{
+	function addColumn($table_name, $column_name, $type = 'number', $size = '', $default = null, $notnull = false) {
 		$type = $this->column_type[$type];
 		if(strtoupper($type) == 'INTEGER')
 		{
