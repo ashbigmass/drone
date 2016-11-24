@@ -17,7 +17,6 @@ define('__XE_RECOMMEND_PHP_VERSION__', '5.5.0');
 define('__ZBXE_VERSION__', __XE_VERSION__);
 define('_XE_PATH_', str_replace('config/config.inc.php', '', str_replace('\\', '/', __FILE__)));
 
-// Set can use other method instead cookie to store session id(for file upload)
 ini_set('session.use_only_cookies', 0);
 
 if(file_exists(_XE_PATH_ . 'config/package.inc.php')) require _XE_PATH_ . 'config/package.inc.php';
@@ -49,7 +48,6 @@ if((__DEBUG_OUTPUT__ == 2) && version_compare(PHP_VERSION, '6.0.0') === -1) requ
 
 if(version_compare(PHP_VERSION, '5.3.0') >= 0) date_default_timezone_set(@date_default_timezone_get());
 
-// Require a function-defined-file for simple use
 require(_XE_PATH_ . 'config/func.inc.php');
 
 if(__DEBUG__) define('__StartTime__', getMicroTime());
@@ -151,10 +149,7 @@ $GLOBALS['__xe_autoload_file_map'] = array_change_key_case(array(
 ), CASE_LOWER);
 
 function __xe_autoload($class_name) {
-	if(__DEBUG__) {
-		$time_at = getMicroTime();
-	}
-
+	if(__DEBUG__) $time_at = getMicroTime();
 	if(isset($GLOBALS['__xe_autoload_file_map'][strtolower($class_name)])) {
 		require _XE_PATH_ . $GLOBALS['__xe_autoload_file_map'][strtolower($class_name)];
 	} elseif(preg_match('/^([a-zA-Z0-9_]+?)(Admin)?(View|Controller|Model|Api|Wap|Mobile)?$/', $class_name, $matches)) {
@@ -163,17 +158,12 @@ function __xe_autoload($class_name) {
 		if(isset($matches[2]) && $matches[2]) $candidate_filename[] = 'admin';
 		$candidate_filename[] = (isset($matches[3]) && $matches[3]) ? strtolower($matches[3]) : 'class';
 		$candidate_filename[] = 'php';
-
 		$candidate_filename = implode('.', $candidate_filename);
-
 		if(file_exists(_XE_PATH_ . $candidate_filename)) {
 			require _XE_PATH_ . $candidate_filename;
 		}
 	}
-
-	if(__DEBUG__) {
-		$GLOBALS['__elapsed_class_load__'] += getMicroTime() - $time_at;
-	}
+	if(__DEBUG__) $GLOBALS['__elapsed_class_load__'] += getMicroTime() - $time_at;
 }
 
 spl_autoload_register('__xe_autoload');
