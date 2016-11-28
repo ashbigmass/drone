@@ -542,219 +542,185 @@ int RTCM3Parser(struct RTCM3ParserData *handle) {
 						gnss->measdata[num][ce] = l1range*0.02;
 						gnss->measdata[num][le] = l1range*0.02+i*0.0005;
 					}
-GETBITS(i, 7)
-lastlockl1[sv] = i;
-if(handle->lastlockl1[sv] > i)
-gnss->dataflags[num] |= GNSSDF_LOCKLOSSL1;
-if(type == 1010 || type == 1012)
-{
-GETBITS(amb,7)
-if(amb && (gnss->dataflags[num] & c))
-{
-gnss->measdata[num][ce] += amb*599584.916;
-gnss->measdata[num][le] += amb*599584.916;
-++wasamb;
-}
-GETBITS(i, 8)
-if(i)
-{
-gnss->dataflags[num] |= s;
-gnss->measdata[num][se] = i*0.25;
-i /= 4*4;
-if(i > 9) i = 9;
-else if(i < 1) i = 1;
-gnss->snrL1[num] = i;
-}
-}
-gnss->measdata[num][le] /= GLO_WAVELENGTH_L1(freq-7);
-if(type == 1011 || type == 1012)
-{
-/* L2 */
-GETBITS(code,2)
-if(code)
-{
-c = GNSSDF_P2DATA;  ce = GNSSENTRY_P2DATA;
-l = GNSSDF_L2PDATA; le = GNSSENTRY_L2PDATA;
-s = GNSSDF_S2PDATA; se = GNSSENTRY_S2PDATA;
-}
-else
-{
-c = GNSSDF_C2DATA;  ce = GNSSENTRY_C2DATA;
-l = GNSSDF_L2CDATA; le = GNSSENTRY_L2CDATA;
-s = GNSSDF_S2CDATA; se = GNSSENTRY_S2CDATA;
-}
-GETBITSSIGN(i,14)
-if((i&((1<<14)-1)) != 0x2000)
-{
-gnss->dataflags[num] |= c;
-gnss->measdata[num][ce] = l1range*0.02+i*0.02
-+amb*599584.916;
-}
-GETBITSSIGN(i,20)
-if((i&((1<<20)-1)) != 0x80000)
-{
-gnss->dataflags[num] |= l;
-gnss->measdata[num][le] = l1range*0.02+i*0.0005
-+amb*599584.916;
-}
-GETBITS(i,7)
-lastlockl2[sv] = i;
-if(handle->lastlockl2[sv] > i)
-gnss->dataflags[num] |= GNSSDF_LOCKLOSSL2;
-if(type == 1012)
-{
-GETBITS(i, 8)
-if(i)
-{
-gnss->dataflags[num] |= s;
-gnss->measdata[num][se] = i*0.25;
-i /= 4*4;
-if(i > 9) i = 9;
-else if(i < 1) i = 1;
-gnss->snrL2[num] = i;
-}
-}
-gnss->measdata[num][le] /= GLO_WAVELENGTH_L2(freq-7);
-}
-if(!sv || sv > 24) /* illegal, remove it again */
---gnss->numsats;
-}
-for(i = 0; i < 64; ++i)
-{
-handle->lastlockl1[i] = lastlockl1[i];
-handle->lastlockl2[i] = lastlockl2[i];
-}
-if(!syncf && !old)
-{
-handle->Data = *gnss;
-memset(gnss, 0, sizeof(*gnss));
-}
-if(!syncf || old)
-{
-if(wasamb) /* not RINEX compatible without */
-ret = 1;
-else
-ret = 2;
-}
-#ifdef NO_RTCM3_MAIN
-else
-ret = type;
-#endif /* NO_RTCM3_MAIN */
-}
-break;
-}
-}
-return ret;
+					GETBITS(i, 7)
+					lastlockl1[sv] = i;
+					if(handle->lastlockl1[sv] > i) gnss->dataflags[num] |= GNSSDF_LOCKLOSSL1;
+					if(type == 1010 || type == 1012) {
+						GETBITS(amb,7)
+						if(amb && (gnss->dataflags[num] & c)) {
+							gnss->measdata[num][ce] += amb*599584.916;
+							gnss->measdata[num][le] += amb*599584.916;
+							++wasamb;
+						}
+						GETBITS(i, 8)
+						if(i) {
+							gnss->dataflags[num] |= s;
+							gnss->measdata[num][se] = i*0.25;
+							i /= 4*4;
+							if(i > 9) i = 9;
+							else if(i < 1) i = 1;
+							gnss->snrL1[num] = i;
+						}
+					}
+					gnss->measdata[num][le] /= GLO_WAVELENGTH_L1(freq-7);
+					if(type == 1011 || type == 1012) {
+						GETBITS(code,2)
+						if(code) {
+							c = GNSSDF_P2DATA;  ce = GNSSENTRY_P2DATA;
+							l = GNSSDF_L2PDATA; le = GNSSENTRY_L2PDATA;
+							s = GNSSDF_S2PDATA; se = GNSSENTRY_S2PDATA;
+						} else {
+							c = GNSSDF_C2DATA;  ce = GNSSENTRY_C2DATA;
+							l = GNSSDF_L2CDATA; le = GNSSENTRY_L2CDATA;
+							s = GNSSDF_S2CDATA; se = GNSSENTRY_S2CDATA;
+						}
+						GETBITSSIGN(i,14)
+						if((i&((1<<14)-1)) != 0x2000) {
+							gnss->dataflags[num] |= c;
+							gnss->measdata[num][ce] = l1range*0.02+i*0.02
+							+amb*599584.916;
+						}
+						GETBITSSIGN(i,20)
+						if((i&((1<<20)-1)) != 0x80000) {
+							gnss->dataflags[num] |= l;
+							gnss->measdata[num][le] = l1range*0.02+i*0.0005
+							+amb*599584.916;
+						}
+						GETBITS(i,7)
+						lastlockl2[sv] = i;
+						if(handle->lastlockl2[sv] > i) gnss->dataflags[num] |= GNSSDF_LOCKLOSSL2;
+						if(type == 1012) {
+							GETBITS(i, 8)
+							if(i) {
+								gnss->dataflags[num] |= s;
+								gnss->measdata[num][se] = i*0.25;
+								i /= 4*4;
+								if(i > 9) i = 9;
+								else if(i < 1) i = 1;
+								gnss->snrL2[num] = i;
+							}
+						}
+						gnss->measdata[num][le] /= GLO_WAVELENGTH_L2(freq-7);
+					}
+					if(!sv || sv > 24) --gnss->numsats;
+				}
+				for(i = 0; i < 64; ++i) {
+					handle->lastlockl1[i] = lastlockl1[i];
+					handle->lastlockl2[i] = lastlockl2[i];
+				}
+				if(!syncf && !old) {
+					handle->Data = *gnss;
+					memset(gnss, 0, sizeof(*gnss));
+				}
+				if(!syncf || old) {
+					if(wasamb) ret = 1;
+					else ret = 2;
+				}
+				#ifdef NO_RTCM3_MAIN
+				else ret = type;
+				#endif
+			}
+			break;
+		}
+	}
+	return ret;
 }
 
-struct Header
-{
-const char *version;
-const char *pgm;
-const char *marker;
-const char *markertype;
-const char *observer;
-const char *receiver;
-const char *antenna;
-const char *position;
-const char *antennaposition;
-const char *wavelength;
-const char *typesofobs; /* should not be modified outside */
-const char *typesofobsG; /* should not be modified outside */
-const char *typesofobsR; /* should not be modified outside */
-const char *typesofobsS; /* should not be modified outside */
-const char *timeoffirstobs; /* should not be modified outside */
+struct Header {
+	const char *version;
+	const char *pgm;
+	const char *marker;
+	const char *markertype;
+	const char *observer;
+	const char *receiver;
+	const char *antenna;
+	const char *position;
+	const char *antennaposition;
+	const char *wavelength;
+	const char *typesofobs;
+	const char *typesofobsG;
+	const char *typesofobsR;
+	const char *typesofobsS;
+	const char *timeoffirstobs;
 };
 
 #define MAXHEADERLINES 50
 #define MAXHEADERBUFFERSIZE 4096
-struct HeaderData
-{
-union
-{
-struct Header named;
-const char *unnamed[MAXHEADERLINES];
-} data;
-int  numheaders;
+struct HeaderData {
+	union {
+		struct Header named;
+		const char *unnamed[MAXHEADERLINES];
+	} data;
+	int  numheaders;
 };
 
 struct converttimeinfo {
-int second;    /* seconds of GPS time [0..59] */
-int minute;    /* minutes of GPS time [0..59] */
-int hour;      /* hour of GPS time [0..24] */
-int day;       /* day of GPS time [1..28..30(31)*/
-int month;     /* month of GPS time [1..12]*/
-int year;      /* year of GPS time [1980..] */
+	int second;
+	int minute;
+	int hour;
+	int day;
+	int month;
+	int year;
 };
 
-void converttime(struct converttimeinfo *c, int week, int tow)
-{
-int i, k, doy, j; /* temporary variables */
-j = week*(7*24*60*60) + tow + 5*24*60*60;
-for(i = 1980; j >= (k = (365+longyear(i,0))*24*60*60); ++i)
-j -= k;
-c->year = i;
-doy = 1+ (j / (24*60*60));
-j %= (24*60*60);
-c->hour = j / (60*60);
-j %= (60*60);
-c->minute = j / 60;
-c->second = j % 60;
-j = 0;
-for(i = 1; j + (k = months[i] + longyear(c->year,i)) < doy; ++i)
-j += k;
-c->month = i;
-c->day = doy - j;
+void converttime(struct converttimeinfo *c, int week, int tow) {
+	int i, k, doy, j;
+	j = week*(7*24*60*60) + tow + 5*24*60*60;
+	for(i = 1980; j >= (k = (365+longyear(i,0))*24*60*60); ++i) j -= k;
+	c->year = i;
+	doy = 1+ (j / (24*60*60));
+	j %= (24*60*60);
+	c->hour = j / (60*60);
+	j %= (60*60);
+	c->minute = j / 60;
+	c->second = j % 60;
+	j = 0;
+	for(i = 1; j + (k = months[i] + longyear(c->year,i)) < doy; ++i) j += k;
+	c->month = i;
+	c->day = doy - j;
 }
 
 #ifndef NO_RTCM3_MAIN
-void RTCM3Error(const char *fmt, ...)
-{
-va_list v;
-va_start(v, fmt);
-vfprintf(stderr, fmt, v);
-va_end(v);
+void RTCM3Error(const char *fmt, ...) {
+	va_list v;
+	va_start(v, fmt);
+	vfprintf(stderr, fmt, v);
+	va_end(v);
 }
 #endif
 
-void RTCM3Text(const char *fmt, ...)
-{
-va_list v;
-va_start(v, fmt);
-vprintf(fmt, v);
-va_end(v);
+void RTCM3Text(const char *fmt, ...) {
+	va_list v;
+	va_start(v, fmt);
+	vprintf(fmt, v);
+	va_end(v);
 }
 
-static int HandleRunBy(char *buffer, int buffersize, const char **u,
-int rinex3)
-{
-const char *user;
-time_t t;
-struct tm * t2;
+static int HandleRunBy(char *buffer, int buffersize, const char **u, int rinex3) {
+	const char *user;
+	time_t t;
+	struct tm * t2;
 
-#ifdef NO_RTCM3_MAIN
-if(revisionstr[0] == '$')
-{
-char *a;
-int i=0;
-for(a = revisionstr+11; *a && *a != ' '; ++a)
-revisionstr[i++] = *a;
-revisionstr[i] = 0;
-}
-#endif
+	#ifdef NO_RTCM3_MAIN
+	if(revisionstr[0] == '$') {
+		char *a;
+		int i=0;
+		for(a = revisionstr+11; *a && *a != ' '; ++a) revisionstr[i++] = *a;
+		revisionstr[i] = 0;
+	}
+	#endif
 
-user= getenv("USER");
-if(!user) user = "";
-t = time(&t);
-t2 = gmtime(&t);
-if(u) *u = user;
-return 1+snprintf(buffer, buffersize,
-rinex3 ?
-"RTCM3TORINEX %-7.7s%-20.20s%04d%02d%02d %02d%02d%02d UTC "
-"PGM / RUN BY / DATE" :
-"RTCM3TORINEX %-7.7s%-20.20s%04d-%02d-%02d %02d:%02d    "
-"PGM / RUN BY / DATE", revisionstr, user, 1900+t2->tm_year,
-t2->tm_mon+1, t2->tm_mday, t2->tm_hour, t2->tm_min, t2->tm_sec);
+	user= getenv("USER");
+	if(!user) user = "";
+	t = time(&t);
+	t2 = gmtime(&t);
+	if(u) *u = user;
+	return 1+snprintf(buffer, buffersize, rinex3 ?
+		"RTCM3TORINEX %-7.7s%-20.20s%04d%02d%02d %02d%02d%02d UTC "
+		"PGM / RUN BY / DATE" :
+		"RTCM3TORINEX %-7.7s%-20.20s%04d-%02d-%02d %02d:%02d    "
+		"PGM / RUN BY / DATE", revisionstr, user, 1900+t2->tm_year,
+		t2->tm_mon+1, t2->tm_mday, t2->tm_hour, t2->tm_min, t2->tm_sec);
 }
 
 #ifdef NO_RTCM3_MAIN
@@ -763,143 +729,136 @@ t2->tm_mon+1, t2->tm_mday, t2->tm_hour, t2->tm_min, t2->tm_sec);
 #define NUMSTARTSKIP 3
 #endif
 
-void HandleHeader(struct RTCM3ParserData *Parser)
-{
-#ifdef NO_RTCM3_MAIN
-int i;
-if(Parser->rinex3)
-{
-#define CHECKFLAGSNEW(a, b, c) \
-{ \
-Parser->dataflag##a[Parser->numdatatypes##a] = GNSSDF_##b##DATA; \
-Parser->datapos##a[Parser->numdatatypes##a] = GNSSENTRY_##b##DATA; \
-++Parser->numdatatypes##a; \
-}
+void HandleHeader(struct RTCM3ParserData *Parser) {
+	#ifdef NO_RTCM3_MAIN
+	int i;
+	if(Parser->rinex3) {
+		#define CHECKFLAGSNEW(a, b, c) \
+		{ \
+			Parser->dataflag##a[Parser->numdatatypes##a] = GNSSDF_##b##DATA; \
+			Parser->datapos##a[Parser->numdatatypes##a] = GNSSENTRY_##b##DATA; \
+			++Parser->numdatatypes##a; \
+		}
 
-CHECKFLAGSNEW(GPS, C1,  C1C)
-CHECKFLAGSNEW(GPS, L1C, L1C)
-CHECKFLAGSNEW(GPS, D1C, D1C)
-CHECKFLAGSNEW(GPS, S1C, S1C)
-CHECKFLAGSNEW(GPS, P1,  C1P)
-CHECKFLAGSNEW(GPS, L1P, L1P)
-CHECKFLAGSNEW(GPS, D1P, D1P)
-CHECKFLAGSNEW(GPS, S1P, S1P)
-CHECKFLAGSNEW(GPS, P2,  C2P)
-CHECKFLAGSNEW(GPS, L2P, L2P)
-CHECKFLAGSNEW(GPS, D2P, D2P)
-CHECKFLAGSNEW(GPS, S2P, S2P)
-CHECKFLAGSNEW(GPS, C2,  C2X)
-CHECKFLAGSNEW(GPS, L2C, L2X)
-CHECKFLAGSNEW(GPS, D2C, D2X)
-CHECKFLAGSNEW(GPS, S2C, S2X)
-CHECKFLAGSNEW(GLO, C1,  C1C)
-CHECKFLAGSNEW(GLO, L1C, L1C)
-CHECKFLAGSNEW(GLO, D1C, D1C)
-CHECKFLAGSNEW(GLO, S1C, S1C)
-CHECKFLAGSNEW(GLO, P1,  C1P)
-CHECKFLAGSNEW(GLO, L1P, L1P)
-CHECKFLAGSNEW(GLO, D1P, D1P)
-CHECKFLAGSNEW(GLO, S1P, S1P)
-CHECKFLAGSNEW(GLO, P2,  C2P)
-CHECKFLAGSNEW(GLO, L2P, L2P)
-CHECKFLAGSNEW(GLO, D2P, D2P)
-CHECKFLAGSNEW(GLO, S2P, S2P)
-CHECKFLAGSNEW(GLO, C2,  C2C)
-CHECKFLAGSNEW(GLO, L2C, L2C)
-CHECKFLAGSNEW(GLO, D2C, D2C)
-CHECKFLAGSNEW(GLO, S2C, S2C)
-}
-else
-{
-#define CHECKFLAGS(a, b) \
-{ \
-if(data[RINEXENTRY_##b##DATA]) \
-{ \
-Parser->dataflagGPS[data[RINEXENTRY_##b##DATA]-1] = GNSSDF_##a##DATA; \
-Parser->dataposGPS[data[RINEXENTRY_##b##DATA]-1] = GNSSENTRY_##a##DATA; \
-} \
-else \
-{ \
-Parser->dataflag[Parser->numdatatypesGPS] = GNSSDF_##a##DATA; \
-Parser->datapos[Parser->numdatatypesGPS] = GNSSENTRY_##a##DATA; \
-data[RINEXENTRY_##b##DATA] = ++Parser->numdatatypesGPS; \
-} \
-}
+		CHECKFLAGSNEW(GPS, C1,  C1C)
+		CHECKFLAGSNEW(GPS, L1C, L1C)
+		CHECKFLAGSNEW(GPS, D1C, D1C)
+		CHECKFLAGSNEW(GPS, S1C, S1C)
+		CHECKFLAGSNEW(GPS, P1,  C1P)
+		CHECKFLAGSNEW(GPS, L1P, L1P)
+		CHECKFLAGSNEW(GPS, D1P, D1P)
+		CHECKFLAGSNEW(GPS, S1P, S1P)
+		CHECKFLAGSNEW(GPS, P2,  C2P)
+		CHECKFLAGSNEW(GPS, L2P, L2P)
+		CHECKFLAGSNEW(GPS, D2P, D2P)
+		CHECKFLAGSNEW(GPS, S2P, S2P)
+		CHECKFLAGSNEW(GPS, C2,  C2X)
+		CHECKFLAGSNEW(GPS, L2C, L2X)
+		CHECKFLAGSNEW(GPS, D2C, D2X)
+		CHECKFLAGSNEW(GPS, S2C, S2X)
+		CHECKFLAGSNEW(GLO, C1,  C1C)
+		CHECKFLAGSNEW(GLO, L1C, L1C)
+		CHECKFLAGSNEW(GLO, D1C, D1C)
+		CHECKFLAGSNEW(GLO, S1C, S1C)
+		CHECKFLAGSNEW(GLO, P1,  C1P)
+		CHECKFLAGSNEW(GLO, L1P, L1P)
+		CHECKFLAGSNEW(GLO, D1P, D1P)
+		CHECKFLAGSNEW(GLO, S1P, S1P)
+		CHECKFLAGSNEW(GLO, P2,  C2P)
+		CHECKFLAGSNEW(GLO, L2P, L2P)
+		CHECKFLAGSNEW(GLO, D2P, D2P)
+		CHECKFLAGSNEW(GLO, S2P, S2P)
+		CHECKFLAGSNEW(GLO, C2,  C2C)
+		CHECKFLAGSNEW(GLO, L2C, L2C)
+		CHECKFLAGSNEW(GLO, D2C, D2C)
+		CHECKFLAGSNEW(GLO, S2C, S2C)
+	} else {
+		#define CHECKFLAGS(a, b) \
+		{ \
+			if(data[RINEXENTRY_##b##DATA]) \
+			{ \
+				Parser->dataflagGPS[data[RINEXENTRY_##b##DATA]-1] = GNSSDF_##a##DATA; \
+				Parser->dataposGPS[data[RINEXENTRY_##b##DATA]-1] = GNSSENTRY_##a##DATA; \
+			} \
+			else \
+			{ \
+				Parser->dataflag[Parser->numdatatypesGPS] = GNSSDF_##a##DATA; \
+				Parser->datapos[Parser->numdatatypesGPS] = GNSSENTRY_##a##DATA; \
+				data[RINEXENTRY_##b##DATA] = ++Parser->numdatatypesGPS; \
+			} \
+		}
 
-int data[RINEXENTRY_NUMBER];
-for(i = 0; i < RINEXENTRY_NUMBER; ++i) data[i] = 0;
+		int data[RINEXENTRY_NUMBER];
+		for(i = 0; i < RINEXENTRY_NUMBER; ++i) data[i] = 0;
 
-CHECKFLAGS(C1,C1)
-CHECKFLAGS(C2,C2)
-CHECKFLAGS(P1,P1)
-CHECKFLAGS(P2,P2)
-CHECKFLAGS(L1C,L1)
-CHECKFLAGS(L1P,L1)
-CHECKFLAGS(L2C,L2)
-CHECKFLAGS(L2P,L2)
-CHECKFLAGS(D1C,D1)
-CHECKFLAGS(D1P,D1)
-CHECKFLAGS(D2C,D2)
-CHECKFLAGS(D2P,D2)
-CHECKFLAGS(S1C,S1)
-CHECKFLAGS(S1P,S1)
-CHECKFLAGS(S2C,S2)
-CHECKFLAGS(S2P,S2)
-}
-#else /* NO_RTCM3_MAIN */
-struct HeaderData hdata;
-char thebuffer[MAXHEADERBUFFERSIZE];
-char *buffer = thebuffer;
-size_t buffersize = sizeof(thebuffer);
-int i;
+		CHECKFLAGS(C1,C1)
+		CHECKFLAGS(C2,C2)
+		CHECKFLAGS(P1,P1)
+		CHECKFLAGS(P2,P2)
+		CHECKFLAGS(L1C,L1)
+		CHECKFLAGS(L1P,L1)
+		CHECKFLAGS(L2C,L2)
+		CHECKFLAGS(L2P,L2)
+		CHECKFLAGS(D1C,D1)
+		CHECKFLAGS(D1P,D1)
+		CHECKFLAGS(D2C,D2)
+		CHECKFLAGS(D2P,D2)
+		CHECKFLAGS(S1C,S1)
+		CHECKFLAGS(S1P,S1)
+		CHECKFLAGS(S2C,S2)
+		CHECKFLAGS(S2P,S2)
+	}
+	#else /* NO_RTCM3_MAIN */
+	struct HeaderData hdata;
+	char thebuffer[MAXHEADERBUFFERSIZE];
+	char *buffer = thebuffer;
+	size_t buffersize = sizeof(thebuffer);
+	int i;
+	memset(&hdata, 0, sizeof(hdata));
+	hdata.data.named.version = buffer;
+	i = 1+snprintf(buffer, buffersize, 	"%9.2f           OBSERVATION DATA    M (Mixed)"
+		"           RINEX VERSION / TYPE", Parser->rinex3 ? 3.0 : 2.11);
+	buffer += i; buffersize -= i;
 
-memset(&hdata, 0, sizeof(hdata));
+	{
+		const char *str;
+		hdata.data.named.pgm = buffer;
+		i = HandleRunBy(buffer, buffersize, &str, Parser->rinex3);
+		buffer += i; buffersize -= i;
+		hdata.data.named.observer = buffer;
+		i = 1+snprintf(buffer, buffersize,
+			"%-20.20s                                        "
+			"OBSERVER / AGENCY", str);
+		buffer += i; buffersize -= i;
+	}
 
-hdata.data.named.version = buffer;
-i = 1+snprintf(buffer, buffersize,
-"%9.2f           OBSERVATION DATA    M (Mixed)"
-"           RINEX VERSION / TYPE", Parser->rinex3 ? 3.0 : 2.11);
-buffer += i; buffersize -= i;
+	hdata.data.named.marker =
+	"RTCM3TORINEX                                                "
+	"MARKER NAME";
 
-{
-const char *str;
-hdata.data.named.pgm = buffer;
-i = HandleRunBy(buffer, buffersize, &str, Parser->rinex3);
-buffer += i; buffersize -= i;
-hdata.data.named.observer = buffer;
-i = 1+snprintf(buffer, buffersize,
-"%-20.20s                                        "
-"OBSERVER / AGENCY", str);
-buffer += i; buffersize -= i;
-}
+	hdata.data.named.markertype =  !Parser->rinex3 ? 0 :
+	"GEODETIC                                                    "
+	"MARKER TYPE";
 
-hdata.data.named.marker =
-"RTCM3TORINEX                                                "
-"MARKER NAME";
+	hdata.data.named.receiver =
+	"                                                            "
+	"REC # / TYPE / VERS";
 
-hdata.data.named.markertype =  !Parser->rinex3 ? 0 :
-"GEODETIC                                                    "
-"MARKER TYPE";
+	hdata.data.named.antenna =
+	"                                                            "
+	"ANT # / TYPE";
 
-hdata.data.named.receiver =
-"                                                            "
-"REC # / TYPE / VERS";
+	hdata.data.named.position =
+	"         .0000         .0000         .0000                  "
+	"APPROX POSITION XYZ";
 
-hdata.data.named.antenna =
-"                                                            "
-"ANT # / TYPE";
+	hdata.data.named.antennaposition =
+	"         .0000         .0000         .0000                  "
+	"ANTENNA: DELTA H/E/N";
 
-hdata.data.named.position =
-"         .0000         .0000         .0000                  "
-"APPROX POSITION XYZ";
-
-hdata.data.named.antennaposition =
-"         .0000         .0000         .0000                  "
-"ANTENNA: DELTA H/E/N";
-
-hdata.data.named.wavelength = Parser->rinex3 ? 0 :
-"     1     1                                                "
-"WAVELENGTH FACT L1/2";
+	hdata.data.named.wavelength = Parser->rinex3 ? 0 :
+	"     1     1                                                "
+	"WAVELENGTH FACT L1/2";
 
 if(Parser->rinex3)
 {
