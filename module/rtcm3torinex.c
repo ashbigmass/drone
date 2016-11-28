@@ -387,213 +387,161 @@ int RTCM3Parser(struct RTCM3ParserData *handle) {
 					SKIPBITS(4) /* smind, smint */
 
 					while(numsats--) {
-int sv, code, l1range, c,l,s,ce,le,se,amb=0;
-int fullsat, num;
+						int sv, code, l1range, c,l,s,ce,le,se,amb=0;
+						int fullsat, num;
 
-GETBITS(sv, 6)
-fullsat = sv < 40 ? sv : sv+80;
-for(num = 0; num < gnss->numsats
-&& fullsat != gnss->satellites[num]; ++num)
-;
+						GETBITS(sv, 6)
+						fullsat = sv < 40 ? sv : sv+80;
+						for(num = 0; num < gnss->numsats && fullsat != gnss->satellites[num]; ++num) ;
 
-if(num == gnss->numsats)
-gnss->satellites[gnss->numsats++] = fullsat;
+						if(num == gnss->numsats) gnss->satellites[gnss->numsats++] = fullsat;
+						GETBITS(code, 1);
+						if(code) {
+							c = GNSSDF_P1DATA;  ce = GNSSENTRY_P1DATA;
+							l = GNSSDF_L1PDATA; le = GNSSENTRY_L1PDATA;
+							s = GNSSDF_S1PDATA; se = GNSSENTRY_S1PDATA;
+						} else {
+							c = GNSSDF_C1DATA;  ce = GNSSENTRY_C1DATA;
+							l = GNSSDF_L1CDATA; le = GNSSENTRY_L1CDATA;
+							s = GNSSDF_S1CDATA; se = GNSSENTRY_S1CDATA;
+						}
+						GETBITS(l1range, 24);
+						GETBITSSIGN(i, 20);
+						if((i&((1<<20)-1)) != 0x80000) {
+							gnss->dataflags[num] |= (c|l);
+							gnss->measdata[num][ce] = l1range*0.02;
+							gnss->measdata[num][le] = l1range*0.02+i*0.0005;
+						}
+						GETBITS(i, 7);
+						lastlockl1[sv] = i;
+						if(handle->lastlockl1[sv] > i) gnss->dataflags[num] |= GNSSDF_LOCKLOSSL1;
+						if(type == 1002 || type == 1004) {
+							GETBITS(amb,8);
+							if(amb && (gnss->dataflags[num] & c)) {
+								gnss->measdata[num][ce] += amb*299792.458;
+								gnss->measdata[num][le] += amb*299792.458;
+								++wasamb;
+							}
+							GETBITS(i, 8);
+							if(i) {
+								gnss->dataflags[num] |= s;
+								gnss->measdata[num][se] = i*0.25;
+								i /= 4*4;
+								if(i > 9) i = 9;
+								else if(i < 1) i = 1;
+								gnss->snrL1[num] = i;
+							}
+						}
+						gnss->measdata[num][le] /= GPS_WAVELENGTH_L1;
+						if(type == 1003 || type == 1004) {
+							GETBITS(code,2);
+							if(code) {
+								c = GNSSDF_P2DATA;  ce = GNSSENTRY_P2DATA;
+								l = GNSSDF_L2PDATA; le = GNSSENTRY_L2PDATA;
+								s = GNSSDF_S2PDATA; se = GNSSENTRY_S2PDATA;
+							} else {
+								c = GNSSDF_C2DATA;  ce = GNSSENTRY_C2DATA;
+								l = GNSSDF_L2CDATA; le = GNSSENTRY_L2CDATA;
+								s = GNSSDF_S2CDATA; se = GNSSENTRY_S2CDATA;
+							}
+							GETBITSSIGN(i,14);
+							if((i&((1<<14)-1)) != 0x2000) {
+								gnss->dataflags[num] |= c;
+								gnss->measdata[num][ce] = l1range*0.02+i*0.02
+								+amb*299792.458;
+							}
+							GETBITSSIGN(i,20);
+							if((i&((1<<20)-1)) != 0x80000) {
+								gnss->dataflags[num] |= l;
+								gnss->measdata[num][le] = l1range*0.02+i*0.0005
+								+amb*299792.458;
+							}
+							GETBITS(i,7);
+							lastlockl2[sv] = i;
+							if(handle->lastlockl2[sv] > i) gnss->dataflags[num] |= GNSSDF_LOCKLOSSL2;
+							if(type == 1004) {
+								GETBITS(i, 8);
+								if(i) {
+									gnss->dataflags[num] |= s;
+									gnss->measdata[num][se] = i*0.25;
+									i /= 4*4;
+									if(i > 9) i = 9;
+									else if(i < 1) i = 1;
+									gnss->snrL2[num] = i;
+								}
+							}
+							gnss->measdata[num][le] /= GPS_WAVELENGTH_L2;
+						}
+					}
+					for(i = 0; i < 64; ++i) {
+						handle->lastlockl1[i] = lastlockl1[i];
+						handle->lastlockl2[i] = lastlockl2[i];
+					}
+					if(!syncf && !old) {
+						handle->Data = *gnss;
+						memset(gnss, 0, sizeof(*gnss));
+					}
+					if(!syncf || old) {
+						if(wasamb) ret = 1;
+						else ret = 2;
+					}
+					#ifdef NO_RTCM3_MAIN
+					else ret = type;
+					#endif
+				}
+			break;
+			case 1009: case 1010: case 1011: case 1012: {
+				int lastlockl1[64];
+				int lastlockl2[64];
+				struct gnssdata *gnss;
+				int i, numsats;
+				int wasamb=0;
 
-/* L1 */
-GETBITS(code, 1);
-if(code)
-{
-c = GNSSDF_P1DATA;  ce = GNSSENTRY_P1DATA;
-l = GNSSDF_L1PDATA; le = GNSSENTRY_L1PDATA;
-s = GNSSDF_S1PDATA; se = GNSSENTRY_S1PDATA;
-}
-else
-{
-c = GNSSDF_C1DATA;  ce = GNSSENTRY_C1DATA;
-l = GNSSDF_L1CDATA; le = GNSSENTRY_L1CDATA;
-s = GNSSDF_S1CDATA; se = GNSSENTRY_S1CDATA;
-}
-GETBITS(l1range, 24);
-GETBITSSIGN(i, 20);
-if((i&((1<<20)-1)) != 0x80000)
-{
-gnss->dataflags[num] |= (c|l);
-gnss->measdata[num][ce] = l1range*0.02;
-gnss->measdata[num][le] = l1range*0.02+i*0.0005;
-}
-GETBITS(i, 7);
-lastlockl1[sv] = i;
-if(handle->lastlockl1[sv] > i)
-gnss->dataflags[num] |= GNSSDF_LOCKLOSSL1;
-if(type == 1002 || type == 1004)
-{
-GETBITS(amb,8);
-if(amb && (gnss->dataflags[num] & c))
-{
-gnss->measdata[num][ce] += amb*299792.458;
-gnss->measdata[num][le] += amb*299792.458;
-++wasamb;
-}
-GETBITS(i, 8);
-if(i)
-{
-gnss->dataflags[num] |= s;
-gnss->measdata[num][se] = i*0.25;
-i /= 4*4;
-if(i > 9) i = 9;
-else if(i < 1) i = 1;
-gnss->snrL1[num] = i;
-}
-}
-gnss->measdata[num][le] /= GPS_WAVELENGTH_L1;
-if(type == 1003 || type == 1004)
-{
-/* L2 */
-GETBITS(code,2);
-if(code)
-{
-c = GNSSDF_P2DATA;  ce = GNSSENTRY_P2DATA;
-l = GNSSDF_L2PDATA; le = GNSSENTRY_L2PDATA;
-s = GNSSDF_S2PDATA; se = GNSSENTRY_S2PDATA;
-}
-else
-{
-c = GNSSDF_C2DATA;  ce = GNSSENTRY_C2DATA;
-l = GNSSDF_L2CDATA; le = GNSSENTRY_L2CDATA;
-s = GNSSDF_S2CDATA; se = GNSSENTRY_S2CDATA;
-}
-GETBITSSIGN(i,14);
-if((i&((1<<14)-1)) != 0x2000)
-{
-gnss->dataflags[num] |= c;
-gnss->measdata[num][ce] = l1range*0.02+i*0.02
-+amb*299792.458;
-}
-GETBITSSIGN(i,20);
-if((i&((1<<20)-1)) != 0x80000)
-{
-gnss->dataflags[num] |= l;
-gnss->measdata[num][le] = l1range*0.02+i*0.0005
-+amb*299792.458;
-}
-GETBITS(i,7);
-lastlockl2[sv] = i;
-if(handle->lastlockl2[sv] > i)
-gnss->dataflags[num] |= GNSSDF_LOCKLOSSL2;
-if(type == 1004)
-{
-GETBITS(i, 8);
-if(i)
-{
-gnss->dataflags[num] |= s;
-gnss->measdata[num][se] = i*0.25;
-i /= 4*4;
-if(i > 9) i = 9;
-else if(i < 1) i = 1;
-gnss->snrL2[num] = i;
-}
-}
-gnss->measdata[num][le] /= GPS_WAVELENGTH_L2;
-}
-}
-for(i = 0; i < 64; ++i)
-{
-handle->lastlockl1[i] = lastlockl1[i];
-handle->lastlockl2[i] = lastlockl2[i];
-}
-if(!syncf && !old)
-{
-handle->Data = *gnss;
-memset(gnss, 0, sizeof(*gnss));
-}
-if(!syncf || old)
-{
-if(wasamb) /* not RINEX compatible without */
-ret = 1;
-else
-ret = 2;
-}
-#ifdef NO_RTCM3_MAIN
-else
-ret = type;
-#endif /* NO_RTCM3_MAIN */
-}
-break;
-case 1009: case 1010: case 1011: case 1012:
-{
-int lastlockl1[64];
-int lastlockl2[64];
-struct gnssdata *gnss;
-int i, numsats;
-int wasamb=0;
+				for(i = 0; i < 64; ++i) lastlockl1[i] = lastlockl2[i] = 0;
+				gnss = &handle->DataNew;
+				SKIPBITS(12) /* id */;
+				GETBITS(i,27) /* tk */
+				updatetime(&handle->GPSWeek, &handle->GPSTOW, i, 0);
+				i = handle->GPSTOW*1000;
+				if(gnss->week && (gnss->timeofweek != i || gnss->week != handle->GPSWeek)) {
+					handle->Data = *gnss;
+					memset(gnss, 0, sizeof(*gnss));
+					old = 1;
+				}
 
-for(i = 0; i < 64; ++i)
-lastlockl1[i] = lastlockl2[i] = 0;
+				gnss->timeofweek = i;
+				gnss->week = handle->GPSWeek;
+				GETBITS(syncf,1) /* sync */
+				GETBITS(numsats,5)
+				SKIPBITS(4) /* smind, smint */
 
-gnss = &handle->DataNew;
+				while(numsats--) {
+					int sv, code, l1range, c,l,s,ce,le,se,amb=0;
+					int freq;
+					int fullsat, num;
 
-SKIPBITS(12) /* id */;
-GETBITS(i,27) /* tk */
-
-updatetime(&handle->GPSWeek, &handle->GPSTOW, i, 0);
-i = handle->GPSTOW*1000;
-if(gnss->week && (gnss->timeofweek != i || gnss->week
-!= handle->GPSWeek))
-{
-handle->Data = *gnss;
-memset(gnss, 0, sizeof(*gnss));
-old = 1;
-}
-
-gnss->timeofweek = i;
-gnss->week = handle->GPSWeek;
-
-GETBITS(syncf,1) /* sync */
-GETBITS(numsats,5)
-
-SKIPBITS(4) /* smind, smint */
-
-while(numsats--)
-{
-int sv, code, l1range, c,l,s,ce,le,se,amb=0;
-int freq;
-int fullsat, num;
-
-GETBITS(sv, 6)
-fullsat = sv-1 + PRN_GLONASS_START;
-for(num = 0; num < gnss->numsats
-&& fullsat != gnss->satellites[num]; ++num)
-;
-
-if(num == gnss->numsats)
-gnss->satellites[gnss->numsats++] = fullsat;
-
-/* L1 */
-GETBITS(code, 1)
-GETBITS(freq, 5)
-if(code)
-{
-c = GNSSDF_P1DATA;  ce = GNSSENTRY_P1DATA;
-l = GNSSDF_L1PDATA; le = GNSSENTRY_L1PDATA;
-s = GNSSDF_S1PDATA; se = GNSSENTRY_S1PDATA;
-}
-else
-{
-c = GNSSDF_C1DATA;  ce = GNSSENTRY_C1DATA;
-l = GNSSDF_L1CDATA; le = GNSSENTRY_L1CDATA;
-s = GNSSDF_S1CDATA; se = GNSSENTRY_S1CDATA;
-}
-GETBITS(l1range, 25)
-GETBITSSIGN(i, 20)
-if((i&((1<<20)-1)) != 0x80000)
-{
-/* Handle this like GPS. Actually for GLONASS L1 range is always
-valid. To be on the save side, we handle it as invalid like we
-do for GPS and also remove range in case of 0x80000. */
-gnss->dataflags[num] |= (c|l);
-gnss->measdata[num][ce] = l1range*0.02;
-gnss->measdata[num][le] = l1range*0.02+i*0.0005;
-}
+					GETBITS(sv, 6)
+					fullsat = sv-1 + PRN_GLONASS_START;
+					for(num = 0; num < gnss->numsats && fullsat != gnss->satellites[num]; ++num) ;
+					if(num == gnss->numsats) gnss->satellites[gnss->numsats++] = fullsat;
+					GETBITS(code, 1)
+					GETBITS(freq, 5)
+					if(code) {
+						c = GNSSDF_P1DATA;  ce = GNSSENTRY_P1DATA;
+						l = GNSSDF_L1PDATA; le = GNSSENTRY_L1PDATA;
+						s = GNSSDF_S1PDATA; se = GNSSENTRY_S1PDATA;
+					} else {
+						c = GNSSDF_C1DATA;  ce = GNSSENTRY_C1DATA;
+						l = GNSSDF_L1CDATA; le = GNSSENTRY_L1CDATA;
+						s = GNSSDF_S1CDATA; se = GNSSENTRY_S1CDATA;
+					}
+					GETBITS(l1range, 25)
+					GETBITSSIGN(i, 20)
+					if((i&((1<<20)-1)) != 0x80000) {
+						gnss->dataflags[num] |= (c|l);
+						gnss->measdata[num][ce] = l1range*0.02;
+						gnss->measdata[num][le] = l1range*0.02+i*0.0005;
+					}
 GETBITS(i, 7)
 lastlockl1[sv] = i;
 if(handle->lastlockl1[sv] > i)
