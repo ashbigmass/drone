@@ -528,20 +528,16 @@ int RTCM3Parser(struct RTCM3ParserData *handle) {
 					}
 					gnss->measdata[num][le] /= GLO_WAVELENGTH_L1(freq-7);
 					if(type == 1011 || type == 1012) {
-/* L2 */
-GETBITS(code,2)
-if(code)
-{
-c = GNSSDF_P2DATA;  ce = GNSSENTRY_P2DATA;
-l = GNSSDF_L2PDATA; le = GNSSENTRY_L2PDATA;
-s = GNSSDF_S2PDATA; se = GNSSENTRY_S2PDATA;
-}
-else
-{
-c = GNSSDF_C2DATA;  ce = GNSSENTRY_C2DATA;
-l = GNSSDF_L2CDATA; le = GNSSENTRY_L2CDATA;
-s = GNSSDF_S2CDATA; se = GNSSENTRY_S2CDATA;
-}
+						GETBITS(code,2);
+						if(code) {
+							c = GNSSDF_P2DATA;  ce = GNSSENTRY_P2DATA;
+							l = GNSSDF_L2PDATA; le = GNSSENTRY_L2PDATA;
+							s = GNSSDF_S2PDATA; se = GNSSENTRY_S2PDATA;
+						} else {
+							c = GNSSDF_C2DATA;  ce = GNSSENTRY_C2DATA;
+							l = GNSSDF_L2CDATA; le = GNSSENTRY_L2CDATA;
+							s = GNSSDF_S2CDATA; se = GNSSENTRY_S2CDATA;
+						}
 GETBITSSIGN(i,14)
 if((i&((1<<14)-1)) != 0x2000)
 {
