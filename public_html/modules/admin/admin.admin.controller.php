@@ -262,5 +262,4 @@ class adminAdminController extends admin {
 			return;
 		}
 	}
-
 }
