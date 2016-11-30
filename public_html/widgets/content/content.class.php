@@ -42,7 +42,6 @@ class content extends WidgetHandler {
 						$module_srls[] = $val->module_srl;
 					}
 				}
-
 				$args->modules_info = $oModuleModel->getMidList($obj);
 			} else {
 				$obj->module_srls = $args->module_srls;
@@ -64,7 +63,6 @@ class content extends WidgetHandler {
 			if(!count($args->modules_info)) return Context::get('msg_not_founded');
 			$args->module_srl = implode(',',$module_srls);
 		}
-
 		if($args->tab_type == 'none' || $args->tab_type == '') {
 			switch($args->content_type) {
 				case 'comment': $content_items = $this->_getCommentItems($args); break;
@@ -75,38 +73,36 @@ class content extends WidgetHandler {
 			}
 		} else {
 			$content_items = array();
-
 			switch($args->content_type) {
 				case 'comment':
 					foreach($args->mid_lists as $module_srl => $mid) {
 						$args->module_srl = $module_srl;
 						$content_items[$module_srl] = $this->_getCommentItems($args);
 					}
-					break;
+				break;
 				case 'image':
 					foreach($args->mid_lists as $module_srl => $mid) {
 						$args->module_srl = $module_srl;
 						$content_items[$module_srl] = $this->_getImageItems($args);
 					}
-					break;
+				break;
 				case 'rss':
 					$content_items = $this->getRssItems($args);
-					break;
+				break;
 				case 'trackback':
 					foreach($args->mid_lists as $module_srl => $mid) {
 						$args->module_srl = $module_srl;
 						$content_items[$module_srl] = $this->_getTrackbackItems($args);
 					}
-					break;
+				break;
 				default:
 					foreach($args->mid_lists as $module_srl => $mid) {
 						$args->module_srl = $module_srl;
 						$content_items[$module_srl] = $this->_getDocumentItems($args);
 					}
-					break;
+				break;
 			}
 		}
-
 		$output = $this->_compile($args,$content_items);
 		return $output;
 	}
@@ -118,21 +114,16 @@ class content extends WidgetHandler {
 		$obj->list_count = $args->list_count * $args->page_count;
 		$oCommentModel = getModel('comment');
 		$output = $oCommentModel->getNewestCommentList($obj);
-
 		$content_items = array();
-
 		if(!count($output)) return;
-
 		foreach($output as $key => $oComment) {
 			$attribute = $oComment->getObjectVars();
 			$title = $oComment->getSummary($args->content_cut_size);
 			$thumbnail = $oComment->getThumbnail($args->thumbnail_width,$args->thumbnail_height,$args->thumbnail_type);
 			$url = sprintf("%s#comment_%s",getUrl('','document_srl',$oComment->get('document_srl')),$oComment->get('comment_srl'));
-
 			$attribute->mid = $args->mid_lists[$attribute->module_srl];
 			$browser_title = $args->module_srls_info[$attribute->module_srl]->browser_title;
 			$domain = $args->module_srls_info[$attribute->module_srl]->domain;
-
 			$content_item = new contentItem($browser_title);
 			$content_item->adds($attribute);
 			$content_item->setTitle($title);
@@ -151,7 +142,6 @@ class content extends WidgetHandler {
 		$obj->module_srl = $args->module_srl;
 		$output = executeQueryArray('widgets.content.getCategories',$obj);
 		if($output->toBool() && $output->data) foreach($output->data as $key => $val) $category_lists[$val->module_srl][$val->category_srl] = $val;
-
 		$obj->module_srl = $args->module_srl;
 		$obj->category_srl = $args->category_srl;
 		$obj->sort_index = $args->order_target;
@@ -171,14 +161,12 @@ class content extends WidgetHandler {
 				$document_srls[] = $oDocument->document_srl;
 			}
 			$oDocumentModel->setToAllDocumentExtraVars();
-
 			for($i=0,$c=count($document_srls);$i<$c;$i++) {
 				$oDocument = $GLOBALS['XE_DOCUMENT_LIST'][$document_srls[$i]];
 				$document_srl = $oDocument->document_srl;
 				$module_srl = $oDocument->get('module_srl');
 				$category_srl = $oDocument->get('category_srl');
 				$thumbnail = $oDocument->getThumbnail($args->thumbnail_width,$args->thumbnail_height,$args->thumbnail_type);
-
 				$content_item = new contentItem( $args->module_srls_info[$module_srl]->browser_title );
 				$content_item->adds($oDocument->getObjectVars());
 				$content_item->add('original_content', $oDocument->get('content'));
@@ -193,19 +181,15 @@ class content extends WidgetHandler {
 				if($first_thumbnail_idx==-1 && $thumbnail) $first_thumbnail_idx = $i;
 				$content_items[] = $content_item;
 			}
-
 			$content_items[0]->setFirstThumbnailIdx($first_thumbnail_idx);
 		}
-
 		$oSecurity = new Security($content_items);
 		$oSecurity->encodeHTML('..variables.content', '..variables.user_name', '..variables.nick_name');
-
 		return $content_items;
 	}
 
 	function _getImageItems($args) {
 		$oDocumentModel = getModel('document');
-
 		$obj->module_srls = $obj->module_srl = $args->module_srl;
 		$obj->direct_download = 'Y';
 		$obj->isvalid = 'Y';
@@ -239,14 +223,12 @@ class content extends WidgetHandler {
 			$content_item->add('mid', $args->mid_lists[$attribute->module_srl]);
 			$content_items[] = $content_item;
 		}
-
 		return $content_items;
 	}
 
 	function getRssItems($args) {
 		$content_items = array();
 		$args->mid_lists = array();
-
 		foreach($args->rss_urls as $key => $rss) {
 			$args->rss_url = $rss;
 			$content_item = $this->_getRssItems($args);
@@ -280,7 +262,6 @@ class content extends WidgetHandler {
 				}
 				if($args->order_type =='asc') ksort($items);
 				else krsort($items);
-
 				$content_items[$key] = array_values($items);
 			}
 		}
@@ -436,15 +417,10 @@ class content extends WidgetHandler {
 
 	function _getRssThumbnail($content) {
 		@preg_match('@<img[^>]+src\s*=\s*(?:"(.+)"|\'(.+)\'|([^\s>(?:/>)]+))@', $content, $matches);
-		if($matches[1]) {
-			return $matches[1];
-		} elseif($matches[2]) {
-			return $matches[2];
-		} elseif($matches[3]) {
-			return $matches[3];
-		} else {
-			return NULL;
-		}
+		if($matches[1]) return $matches[1];
+		elseif($matches[2]) return $matches[2];
+		elseif($matches[3]) return $matches[3];
+		else return NULL;
 	}
 
 	function _getTrackbackItems($args) {
@@ -469,8 +445,8 @@ class content extends WidgetHandler {
 			$content_item->setTitle($item->title);
 			$content_item->setCategory($category);
 			$content_item->setNickName($item->blog_name);
-			$content_item->setContent($item->excerpt);  ///<<
-			$content_item->setDomain($domain);  ///<<
+			$content_item->setContent($item->excerpt);
+			$content_item->setDomain($domain);
 			$content_item->setLink($url);
 			$content_item->add('mid', $args->mid_lists[$item->module_srl]);
 			$content_item->setRegdate($item->regdate);
@@ -481,7 +457,6 @@ class content extends WidgetHandler {
 
 	function _compile($args,$content_items) {
 		$oTemplate = &TemplateHandler::getInstance();
-		// Set variables for widget
 		$widget_info = new stdClass();
 		$widget_info->modules_info = $args->modules_info;
 		$widget_info->option_view_arr = $args->option_view_arr;
