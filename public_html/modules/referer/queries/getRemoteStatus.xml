@@ -1,0 +1,11 @@
+<query id="getRemoteStatus" action="select">
+	<tables>
+		<table name="referer_remote_statistics" />
+	</tables>
+	<columns>
+		<column name="count(*)" alias="count"/>
+	</columns>
+	<conditions>
+		<condition operation="equal" column="remote" var="remote" notnull="notnull" />
+	</conditions>
+</query>

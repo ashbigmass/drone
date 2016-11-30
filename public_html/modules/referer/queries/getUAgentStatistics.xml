@@ -1,0 +1,9 @@
+<query id="getUAgentStatistics" action="select">
+	<tables>
+		<table name="referer_uagent_statistics" />
+	</tables>
+	<columns>
+		<column name="uagent" />
+		<column name="count" alias="cnt" />
+	</columns>
+</query>

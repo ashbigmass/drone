@@ -1,0 +1,48 @@
+<include target="header.html" />
+<div class="table even">
+	<table cellspacing="0" class="rowTable">
+		<colgroup>
+			<col style="width:50px" />
+			<col style="max-width:865px" />
+			<col style="width:60px" />
+			<col style="width:50px" />
+		</colgroup>
+		<caption>All ({number_format($total_count)}) / Page ({number_format($page)}/{number_format($total_page)})</caption>
+		<thead>
+			<tr>
+				<th>{$lang->ranking}</th>
+				<th>{$lang->remote}</th>
+				<th>{$lang->readed_count}</th>
+				<th>{$lang->cmd_delete}</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr cond="!$referer_status"><td colspan="4" style="text-align:center">{$lang->msg_no_result}</td></tr>
+			<!--@foreach($referer_status as $no => $val)-->
+			<tr class="row{$cycle_idx}">
+				<td class="number">{$rank}</td>
+				<td class="wide"><div style="text-overflow:ellipsis;overflow:hidden;word-wrap:break-word;max-width:865px">
+					<span id="{$no}" class="flag mobile-portrait-hidden" ip="{$val->remote}"></span><a href="{getUrl('act', 'dispRefererAdminIndex', 'remote', $val->remote)}" title="{$lang->view_selected_remote}">{$val->remote}</a>
+					<a href="http://myip.ms/info/whois/{$val->remote}" title="{$lang->IP_Tracing}" target="_blank">&nbsp;</a>
+				</div></td>
+				<td class="number">{$val->cnt}</td>
+				<td class="center"><a href="{getUrl('act', 'dispRefererAdminDeleteRemoteStat', 'remote', $val->remote)}" title="{$lang->cmd_delete}" class="buttonSet buttonDelete">{$lang->cmd_delete}</a></td>
+			</tr>
+			<!--{$rank += 1} -->
+			<!--@end-->
+		</tbody>
+	</table>
+	<form action="./" method="post" class="search center x_input-append" no-error-return-url="true">
+		<input type="hidden" name="module" value="{$module}" />
+		<input type="search" name="search_keyword" value="{htmlspecialchars($search_keyword, ENT_COMPAT | ENT_HTML401, 'UTF-8', false)}" style="width:140px">
+		<button class="x_btn x_btn-inverse" type="submit">{$lang->cmd_search}</button>
+		<a class="x_btn" href="{getUrl('', 'module', $module, 'act', $act, 'page', $page)}">{$lang->cmd_cancel}</a>
+	</form>
+</div>
+<include target="footer.html" />
+<include target="geoip_auto.html" cond="($refererConfig->GeoIPSite == 'auto' || $refererConfig->GeoIPSite == '')" />
+<include target="geoip_ipapi.html" cond="($refererConfig->GeoIPSite == 'ipapi')" />
+<include target="geoip_smartip.html" cond="($refererConfig->GeoIPSite == 'smartip')" />
+<include target="geoip_nekudo.html" cond="($refererConfig->GeoIPSite == 'nekudo')" />
+<include target="geoip_cdnservice.html" cond="($refererConfig->GeoIPSite == 'cdnservice')" />
+<include target="geoip_petabyet.html" cond="($refererConfig->GeoIPSite == 'petabyet')" />

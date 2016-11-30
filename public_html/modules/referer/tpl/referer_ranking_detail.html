@@ -1,0 +1,46 @@
+<include target="header.html" />
+<div class="table even">
+	<table cellspacing="0" class="rowTable">
+		<caption>
+			All ({number_format($total_count)}) / Page ({number_format($page)}/{number_format($total_page)}) &nbsp; &nbsp; &nbsp;
+			<span cond="$host" class="btn">URL: <a href="http://{$host}" target="_blank">{$host}</a></span><span id="URL" class="flag mobile-portrait-hidden" domain="{$host}"></span>
+		</caption>
+		<colgroup>
+			<col style="width:50px" />
+			<col style="max-width:905px" />
+			<col style="width:70px" />
+		</colgroup>
+		<thead>
+			<tr>
+				<th>{$lang->ranking}</th>
+				<th>URL</th>
+				<th>{$lang->readed_count}</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr cond="!$referer_status"><td colspan="3" style="text-align:center">{$lang->msg_no_result}</td></tr>
+			<!--@foreach($referer_status as $no => $val)-->
+			<tr class="row{$cycle_idx}">
+				<td class="number">{$rank}</td>
+				<td class="wide"><div style="text-overflow:ellipsis;overflow:hidden;word-wrap:break-word;max-width:905px"><a href="{$val->url}" target="_blank">{urldecode($val->url)}</a></div></td>
+				<td class="number">{$val->cnt}</td>
+			</tr>
+		<!--{$rank += 1} -->
+			<!--@end-->
+		</tbody>
+	</table>
+	<div class="btnArea"><span class="btn"><a href="{getUrl('act', 'dispRefererAdminRanking', 'host', '')}">{$lang->cmd_view_all}</a></span></div>
+	<form action="./" method="post" class="search center x_input-append" no-error-return-url="true">
+		<input type="hidden" name="module" value="{$module}" />
+		<input type="search" name="search_keyword" value="{htmlspecialchars($search_keyword, ENT_COMPAT | ENT_HTML401, 'UTF-8', false)}" style="width:140px">
+		<button class="x_btn x_btn-inverse" type="submit">{$lang->cmd_search}</button>
+		<a class="x_btn" href="{getUrl('', 'module', $module, 'act', $act, 'page', $page)}">{$lang->cmd_cancel}</a>
+	</form>
+</div>
+<include target="footer.html" />
+<include target="geoip_auto.html" cond="($refererConfig->GeoIPSite == 'auto' || $refererConfig->GeoIPSite == '')" />
+<include target="geoip_ipapi.html" cond="($refererConfig->GeoIPSite == 'ipapi')" />
+<include target="geoip_smartip.html" cond="($refererConfig->GeoIPSite == 'smartip')" />
+<include target="geoip_nekudo.html" cond="($refererConfig->GeoIPSite == 'nekudo')" />
+<include target="geoip_cdnservice.html" cond="($refererConfig->GeoIPSite == 'cdnservice')" />
+<include target="geoip_petabyet.html" cond="($refererConfig->GeoIPSite == 'petabyet')" />

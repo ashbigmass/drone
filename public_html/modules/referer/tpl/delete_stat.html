@@ -1,0 +1,26 @@
+<!--%import("filter/delete_stat.xml")-->
+<!--%import("js/referer_admin.js")-->
+{@$oRefererClass = &getClass('referer')}
+<include target="header.html" />
+<h2 class="h2">{$lang->delete_ranking}: <!--@if($host!="")-->{$host}<!--@elseif($remote!="")-->{$remote}<!--@elseif($country!="")-->{$country}<!--@elseif($member_srl!="")-->{$oRefererClass->getUserStringFromMemberSrl($member_srl)}<!--@elseif($called_from!="")-->{$url}<!--@else-->{$uagent}<!--@endif--></h2>
+<form action="./" method="post" onsubmit="return procFilter(this, delete_stat)">
+	<input type="hidden" name="host" value="{$host}" />
+	<input type="hidden" name="remote" value="{$remote}" />
+	<input type="hidden" name="uagent" value="{$uagent}" />
+	<input type="hidden" name="module" value="{$module}" />
+    <input type="hidden" name="page" value="{$page}" />
+    <input type="hidden" name="country_code" value="{$country_code}" />
+    <input type="hidden" name="member_srl" value="{$member_srl}" />
+    <input type="hidden" name="called_from" value="{$called_from}" />
+    <input type="hidden" name="ref_mid" value="{$ref_mid}" />
+    <input type="hidden" name="ref_document_srl" value="{$ref_document_srl}" />
+	<input type="hidden" name="xe_validator_id" value="modules/referer/tpl/1" />
+	<div class="message info">
+		<p>{$lang->confirm_delete}</p>
+	</div>
+	<div class="x_pull-right x_btn-group">
+		<a href="javascript:history.back();" class="x_btn modalAnchor">{$lang->cmd_back}</a>
+		<input type="submit" value="{$lang->cmd_delete}" class="x_btn modalAnchor x_btn-primary" />
+	</div>
+</form>
+

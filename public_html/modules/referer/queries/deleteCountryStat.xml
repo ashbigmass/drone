@@ -1,0 +1,8 @@
+<query id="deleteCountryStat" action="delete">
+	<tables>
+		<table name="referer_country_statistics" />
+	</tables>
+	<conditions>
+		<condition operation="equal" column="country_code" var="country_code" notnull="notnull" />
+	</conditions>
+</query>

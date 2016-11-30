@@ -1,0 +1,6 @@
+<table name="referer_page_statistics">
+    <column name="idx" type="number" size="11" notnull="notnull" primary_key="primary_key" auto_increment="auto_increment" />
+    <column name="ref_mid" type="varchar" size="40" unique="unique_page" />
+    <column name="ref_document_srl" type="number" size="11" unique="unique_page" />
+    <column name="count" type="number" size="11" default="0" index="idx_page_count" />
+</table>

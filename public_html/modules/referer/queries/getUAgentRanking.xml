@@ -1,0 +1,18 @@
+<query id="getUAgentRanking" action="select">
+	<tables>
+		<table name="referer_uagent_statistics" />
+	</tables>
+	<columns>
+		<column name="uagent" />
+		<column name="count" alias="cnt" />
+	</columns>
+	<conditions>
+		<condition operation="like" column="uagent" var="search_keyword" />
+	</conditions>
+	<navigation>
+		<index var="sort_index" default="cnt" order="desc" />
+		<list_count var="list_count" default="20" />
+		<page_count var="page_count" default="10" />
+		<page var="page" default="1" />
+	</navigation>
+</query>

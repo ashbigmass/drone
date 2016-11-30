@@ -1,0 +1,9 @@
+<query id="insertUserStatistics" action="insert">
+	<tables>
+		<table name="referer_user_statistics" />
+	</tables>
+	<columns>
+		<column name="member_srl" var="member_srl" />
+		<column name="count" var="count" default="1" />
+	</columns>
+</query>

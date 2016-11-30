@@ -1,0 +1,15 @@
+<table name="referer_log">
+    <column name="idx" type="number" size="11" notnull="notnull" primary_key="primary_key" auto_increment="auto_increment" />
+    <column name="host" type="varchar" size="64" /> 
+    <column name="remote" type="varchar" size="40" notnull="notnull" unique="unique_referer_log" /> 
+    <column name="url" type="varchar" size="250" /> 
+    <column name="uagent" type="varchar" size="250" notnull="notnull" unique="unique_referer_log" /> 
+    <column name="member_srl" type="number" size="11" notnull="notnull" />
+    <column name="request_uri" type="varchar" size="250" /> 
+    <column name="ref_mid" type="varchar" size="40" />
+    <column name="ref_document_srl" type="number" size="11" />
+    <column name="country_code" type="char" size="2" />
+    <column name="count" type="number" size="11" default="0" />
+    <column name="regdate" type="date" notnull="notnull" unique="unique_referer_log" />
+    <column name="regdate_last" type="date" />
+</table>

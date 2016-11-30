@@ -1,0 +1,20 @@
+<query id="getCountryRanking" action="select">
+	<tables>
+		<table name="referer_country_statistics" />
+	</tables>
+	<columns>
+		<column name="country_code" />
+		<column name="country" />
+		<column name="count" alias="cnt" />
+	</columns>
+	<conditions>
+		<condition operation="equal" column="country_code" var="search_keyword" />
+		<condition operation="like" column="country" var="search_keyword" pipe="or" />
+	</conditions>
+	<navigation>
+		<index var="sort_index" default="cnt" order="desc" />
+		<list_count var="list_count" default="20" />
+		<page_count var="page_count" default="10" />
+		<page var="page" default="1" />
+	</navigation>
+</query>

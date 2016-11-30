@@ -1,0 +1,28 @@
+<query id="getRefererLogList" action="select">
+	<tables>
+		<table name="referer_log" />
+	</tables>
+	<columns>
+		<column name="*" />
+	</columns>
+	<conditions>
+		<condition operation="like" column="url" var="search_referer" />
+		<condition operation="like" column="remote" var="search_remote" pipe="or" />
+		<condition operation="like" column="uagent" var="search_uagent" pipe="or" />
+		<condition operation="equal" column="member_srl" var="search_member_srl" pipe="or" />
+		<condition operation="like" column="request_uri" var="search_request_uri" pipe="or" />
+		<condition operation="equal" column="country_code" var="search_country_code" pipe="or" />
+		<condition operation="like" column="regdate" var="search_date" pipe="or" />
+		<condition operation="like" column="regdate_last" var="search_date" pipe="or" />
+		<condition operation="less" column="regdate" var="search_date_less" pipe="or" />
+		<condition operation="less" column="regdate_last" var="search_date_less" pipe="or" />
+		<condition operation="more" column="regdate" var="search_date_more" pipe="or" />
+		<condition operation="more" column="regdate_last" var="search_date_more" pipe="or" />
+	</conditions>
+	<navigation>
+		<index var="sort_index" default="regdate" order="desc" />
+		<list_count var="list_count" default="20" />
+		<page_count var="page_count" default="10" />
+		<page var="page" default="1" />
+	</navigation>
+</query>

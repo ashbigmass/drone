@@ -1,0 +1,8 @@
+<query id="deleteUAgentStat" action="delete">
+	<tables>
+		<table name="referer_uagent_statistics" />
+	</tables>
+	<conditions>
+		<condition operation="equal" column="uagent" var="uagent" notnull="notnull" />
+	</conditions>
+</query>

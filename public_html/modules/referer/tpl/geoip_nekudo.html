@@ -1,0 +1,42 @@
+<div id="loading"></div>
+<script type="text/javascript">// <![CDATA[
+jQuery(function($){
+	var oFlagIP = new Object();
+
+	var opts = {
+		left:$('.table').position().left+$('.table').width()/2+'px',
+		top:$('.table').offset().top+'px'
+	}
+	var target = document.getElementById('loading');
+	var spinner = new Spinner(opts);
+	var done = 0;
+	var totalIP = 0;
+
+	$('.flag').each(function() {
+		if (typeof $(this).attr('ip') != 'undefined') {
+			if(oFlagIP[$(this).attr('ip')] === undefined) {
+				oFlagIP[$(this).attr('ip')] = [];
+				++totalIP;
+			}
+			oFlagIP[$(this).attr('ip')].push($(this).attr('id'));
+		}
+	});
+	if(Object.keys(oFlagIP).length) {
+		spinner.spin(target);
+	
+		$.each(oFlagIP, function(ip, arrID) {
+			$.getJSON('https://geoip.nekudo.com/api/'+ip+'/en?callback=?', function(location) {
+				$.each(arrID, function(i, id) {
+					$('#'+id).addClass(location.country.code);
+					$('#'+id).attr('title', location.country.name + (location.city != false ? ' (' + location.city + ')' : ''));
+					$('#'+id).css('display', 'inline-block');
+				});
+			})
+			.always(function() {
+				if(++done >= totalIP) spinner.stop();
+			});
+		});
+	}
+});
+
+// ]]></script>

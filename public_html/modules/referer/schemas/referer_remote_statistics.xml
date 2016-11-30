@@ -1,0 +1,6 @@
+<table name="referer_remote_statistics">
+    <column name="idx" type="number" size="11" notnull="notnull" primary_key="primary_key" auto_increment="auto_increment" />
+    <column name="remote" type="varchar" size="40" notnull="notnull" unique="unique_remote" />
+    <column name="country_code" type="char" size="2" />
+    <column name="count" type="number" size="11" default="0" index="idx_remote_count" />
+</table>

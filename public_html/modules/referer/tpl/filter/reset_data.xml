@@ -1,0 +1,7 @@
+<filter name="reset_data" module="referer" act="procRefererAdminResetData">
+    <response callback_func="completeDeleteStat">
+        <tag name="error" />
+        <tag name="message" />
+        <tag name="page" />
+    </response>
+</filter>

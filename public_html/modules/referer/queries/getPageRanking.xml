@@ -1,0 +1,20 @@
+<query id="getPageRanking" action="select">
+	<tables>
+		<table name="referer_page_statistics" />
+	</tables>
+	<columns>
+		<column name="ref_mid" />
+		<column name="ref_document_srl" />
+		<column name="count" alias="cnt" />
+	</columns>
+	<conditions>
+		<condition operation="like" column="ref_mid" var="search_keyword" />
+		<condition operation="equal" column="ref_document_srl" var="search_keyword" pipe="or" />
+	</conditions>
+	<navigation>
+		<index var="sort_index" default="cnt" order="desc" />
+		<list_count var="list_count" default="20" />
+		<page_count var="page_count" default="10" />
+		<page var="page" default="1" />
+	</navigation>
+</query>

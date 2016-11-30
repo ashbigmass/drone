@@ -1,0 +1,64 @@
+<div id="loading"></div>
+<script type="text/javascript">// <![CDATA[
+jQuery(function($){
+	var oFlagIP = new Object();
+	var oFlagDomain = new Object();
+
+	var opts = {
+		left:$('.table').position().left+$('.table').width()/2+'px',
+		top:$('.table').offset().top+'px'
+	}
+	var target = document.getElementById('loading');
+	var spinner = new Spinner(opts);
+	var done = 0;
+	var totalIP = 0;
+	var totalDomain = 0;
+	var GeoIPSite = '{$refererConfig->GeoIPSite}';
+
+	$('.flag').each(function() {
+		if (typeof $(this).attr('ip') != 'undefined') {
+			if(oFlagIP[$(this).attr('ip')] === undefined) {
+				oFlagIP[$(this).attr('ip')] = [];
+				++totalIP;
+			}
+			oFlagIP[$(this).attr('ip')].push($(this).attr('id'));
+		}
+		else if (typeof $(this).attr('domain') != 'undefined') {
+			if(oFlagDomain[$(this).attr('domain')] === undefined) {
+				oFlagDomain[$(this).attr('domain')] = [];
+				++totalDomain;
+			}
+			oFlagDomain[$(this).attr('domain')].push($(this).attr('id'));
+		}
+	});
+	if(Object.keys(oFlagIP).length || Object.keys(oFlagDomain).length) {
+		spinner.spin(target);
+	
+		$.each(oFlagIP, function(ip, arrID) {
+			$.getJSON('http://smart-ip.net/geoip-json/'+ip+'?callback=?', function(location) {
+				$.each(arrID, function(i, id) {
+					$('#'+id).addClass(location.countryCode);
+					$('#'+id).attr('title', location.countryName + ' (' + location.city + ', ' + location.region + ')');
+					$('#'+id).css('display', 'inline-block');
+				});
+			})
+			.always(function() {
+				if(++done >= totalIP+totalDomain) spinner.stop();
+			});
+		});
+		$.each(oFlagDomain, function(ip, arrID) {
+			$.getJSON('http://smart-ip.net/geoip-json/'+ip+'?callback=?', function(location) {
+				$.each(arrID, function(i, id) {
+					$('#'+id).addClass(location.countryCode);
+					$('#'+id).attr('title', location.countryName + ' (' + location.city + ', ' + location.region + ')');
+					$('#'+id).css('display', 'inline-block');
+				});
+			})
+			.always(function() {
+				if(++done >= totalIP+totalDomain) spinner.stop();
+			});
+		});
+	}
+});
+
+// ]]></script>

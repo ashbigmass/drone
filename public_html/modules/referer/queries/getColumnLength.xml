@@ -1,0 +1,12 @@
+<query id="getColumnLength" action="select">
+	<tables>
+		<table name="information_schema.columns" />
+	</tables>
+	<columns>
+		<column name="character_maximum_length" alias="length" />
+	</columns>
+	<conditions>
+		<condition operation="equal" column="table_name" var="tab_name" />
+		<condition operation="equal" column="column_name" var="col_name" default="remote" pipe="and" />
+	</conditions>
+</query>

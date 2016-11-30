@@ -1,0 +1,21 @@
+﻿<load target="css/referer.css" />
+<load target="js/spin.min.js" />
+<div class="x_page-header">
+	<h1>{$lang->referer}</h1>
+</div>
+<p>{$lang->referer_info}</p>
+<div cond="$XE_VALIDATOR_MESSAGE" class="message {$XE_VALIDATOR_MESSAGE_TYPE}">
+	<p>{$XE_VALIDATOR_MESSAGE}</p>
+</div>
+
+<ul class="x_nav x_nav-tabs">
+    <li <!--@if($act=='dispRefererAdminIndex')-->class="x_active"<!--@end-->><a href="{getUrl('act','dispRefererAdminIndex','page','1','search_target','','search_keyword','','called_from','','ref_mid','','ref_document_srl','')}">{$lang->referer} {$lang->cmd_list}</a></li>
+    <li <!--@if($act=='dispRefererAdminRanking'||$act=='dispRefererAdminDeleteStat')-->class="x_active"<!--@end-->><a href="{getUrl('act','dispRefererAdminRanking','page','1','search_target','','search_keyword','','remote','','uagent','','country_code','','called_from','','ref_mid','','ref_document_srl','')}">{$lang->referer} {$lang->ranking}</a></li>
+    <li <!--@if($act=='dispRefererAdminRemoteRanking'||$act=='dispRefererAdminDeleteRemoteStat')-->class="x_active"<!--@end-->><a href="{getUrl('act','dispRefererAdminRemoteRanking','page','1','search_target','','search_keyword','','host','','remote','','uagent','','country_code','','called_from','','ref_mid','','ref_document_srl','')}">{$lang->remote} {$lang->ranking}</a></li>
+    <li <!--@if($act=='dispRefererAdminCountryRanking'||$act=='dispRefererAdminDeleteCountryStat')-->class="x_active"<!--@end-->><a href="{getUrl('act','dispRefererAdminCountryRanking','page','1','search_target','','search_keyword','','host','','remote','','uagent','','country_code','','called_from','','ref_mid','','ref_document_srl','')}">{$lang->country} {$lang->ranking}</a></li>
+    <li <!--@if($act=='dispRefererAdminUserRanking'||$act=='dispRefererAdminDeleteUserStat')-->class="x_active"<!--@end-->><a href="{getUrl('act','dispRefererAdminUserRanking','page','1','search_target','','search_keyword','','host','','remote','','uagent','','country_code','','called_from','','ref_mid','','ref_document_srl','')}">{$lang->user} {$lang->ranking}</a></li>
+    <li <!--@if($act=='dispRefererAdminPageRanking'||$act==dispRefererAdminDeletePageStat)-->class="x_active"<!--@end-->><a href="{getUrl('act','dispRefererAdminPageRanking','page','1','search_target','','search_keyword','','host','','remote','','uagent','','country_code','','called_from','','ref_mid','','ref_document_srl','')}">{$lang->visiting_page} {$lang->ranking}</a></li>
+    <li <!--@if($act=='dispRefererAdminUAgentRanking'||$act=='dispRefererAdminDeleteUAgentStat')-->class="x_active"<!--@end-->><a href="{getUrl('act','dispRefererAdminUAgentRanking','page','1','search_target','','search_keyword','','host','','remote','','uagent','','country_code','','called_from','','ref_mid','','ref_document_srl','')}">{$lang->uagent} {$lang->ranking}</a></li>
+    <li <!--@if($act=='dispRefererAdminUAgentStat')-->class="x_active"<!--@end-->><a href="{getUrl('act','dispRefererAdminUAgentStat','page','1','search_target','','search_keyword','','host','','remote','','uagent','','country_code','','called_from','','ref_mid','','ref_document_srl','')}">{$lang->statistics}</a></li>
+    <li <!--@if($act=='dispRefererAdminConfig')-->class="x_active"<!--@end-->><a href="{getUrl('act','dispRefererAdminConfig','page','','search_target','','search_keyword','','host','','remote','','uagent','','country_code','','called_from','','ref_mid','','ref_document_srl','')}">{$lang->cmd_setup}</a></li>
+</ul>

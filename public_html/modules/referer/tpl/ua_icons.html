@@ -1,0 +1,24 @@
+{@$isBot = $oRefererModel->isBot($val->uagent)}
+					<span class="ua_icon apple" title="iOS" cond="preg_match('/(iPhone|iPad|iPod)/i',$val->uagent)"></span>
+					<span class="ua_icon android" title="Android" cond="preg_match('/(Android)/i',$val->uagent)"></span>
+					<span class="ua_icon avant" title="Avant Browser" cond="preg_match('/(Avant)/i',$val->uagent)"></span>
+					<span class="ua_icon safari" title="Safari" cond="preg_match('/(Safari)/i',$val->uagent) && !preg_match('/(Chrome)/i',$val->uagent) && !preg_match('/(Android)/i',$val->uagent) && !preg_match('/Naver/i',$val->uagent) && !$isBot"></span>
+					<span class="ua_icon apple" title="Apple PubSub Framework" cond="preg_match('/(Apple-PubSub)/i',$val->uagent)"></span>
+					<span class="ua_icon chrome" title="Chrome" cond="preg_match('/(Chrome)/i',$val->uagent) && !preg_match('/(Edge)/i',$val->uagent) && !preg_match('/(OPR)/i',$val->uagent) && !preg_match('/Naver/i',$val->uagent) && !$isBot"></span>
+					<span class="ua_icon firefox" title="Firefox" cond="(preg_match('/(Firefox)/i',$val->uagent) || preg_match('/Minefield/i',$val->uagent)) && !preg_match('/(Opera)/i',$val->uagent) && !preg_match('/Naver/i',$val->uagent) && !$isBot"></span>
+					<span class="ua_icon netscape" title="Netscape Navigator" cond="preg_match('/Netscape/i',$val->uagent) || (preg_match('/Mozilla/i',$val->uagent) && preg_match('/Nav/i',$val->uagent)) && !preg_match('/Naver/i',$val->uagent)"></span>
+					<span class="ua_icon opera" title="Opera" cond="preg_match('/(Opera|OPR)/i',$val->uagent) && !$isBot"></span>
+					<span class="ua_icon ie" title="Internet Explorer" cond="preg_match('/(MSIE)/i',$val->uagent) && !$isBot"></span>
+					<span class="ua_icon ie" title="Internet Explorer 11" cond="preg_match('/(rv:11)/i',$val->uagent) && !$isBot"></span>
+					<span class="ua_icon edge" title="Microsoft Edge" cond="preg_match('/(Edge)/i',$val->uagent) && !$isBot"></span>
+					<span class="ua_icon socialxe" title="SocialXE" cond="strstr($val->uagent, 'SocialXE ClientBot') !== false"></span>
+					<span class="ua_icon facebook" title="Facebook" cond="preg_match('/(Facebook)/i',$val->uagent)"></span>
+					<span class="ua_icon google" title="Google" cond="preg_match('/(google)/i',$val->uagent)"></span>
+					<span class="ua_icon bing" title="Bing" cond="preg_match('/(bing|msnbot)/i',$val->uagent)"></span>
+					<span class="ua_icon daum" title="Daum" cond="preg_match('/(daumoa|daumapp)/i',$val->uagent)"></span>
+					<span class="ua_icon naver" title="Naver" cond="preg_match('/(Naver|yeti)/i',$val->uagent)"></span>
+					<span class="ua_icon zum" title="Zum" cond="preg_match('/(zumbot)/i',$val->uagent)"></span>
+					<span class="ua_icon rss" title="RSS Reader" cond="preg_match('/(feedfetcher|FeedDemon|NewsGatorOnline)/i',$val->uagent)"></span>
+					<span class="ua_icon bot" title="Bot" cond="$isBot"></span>
+					<span class="ua_icon others" title="Others" cond="!$isBot && !preg_match('/(Safari|Chrome|Firefox|Minefield|Opera|Netscape|MSIE|rv:11|Facebook|iPhone|Samsung|lgtel|mobile|google|bing|msn|Apple-PubSub|Avant|feedfetcher|FeedDemon|NewsGatorOnline|SocialXE)/i',$val->uagent) && !(preg_match('/Mozilla/i',$val->uagent) && preg_match('/Nav/i',$val->uagent))"></span>
+					<span class="ua_icon mobile" title="Mobile" cond="preg_match('/(iPhone|iPad|iPod|Samsung|lgtel|mobile|android)/i',$val->uagent)"></span>

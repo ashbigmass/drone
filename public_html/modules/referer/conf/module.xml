@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<module>
+    <grants />
+    <permissions />
+    <actions>
+        <action name="procRefererExecute" type="controller" standalone="true" />
+        <action name="dispRefererAdminIndex" type="view" standalone="true" admin_index="true" />
+        <action name="dispRefererAdminRanking" type="view" standalone="true" />
+        <action name="dispRefererAdminRemoteRanking" type="view" standalone="true" />
+        <action name="dispRefererAdminUserRanking" type="view" standalone="true" />
+        <action name="dispRefererAdminPageRanking" type="view" standalone="true" />
+        <action name="dispRefererAdminCountryRanking" type="view" standalone="true" />
+        <action name="dispRefererAdminUAgentRanking" type="view" standalone="true" />
+        <action name="dispRefererAdminUAgentStat" type="view" standalone="true" />
+        <action name="dispRefererAdminConfirmReset" type="view" standalone="true" />
+        <action name="dispRefererAdminDeleteStat" type="view" standalone="true" />
+        <action name="dispRefererAdminDeleteRemoteStat" type="view" standalone="true" />
+        <action name="dispRefererAdminDeleteUserStat" type="view" standalone="true" />
+        <action name="dispRefererAdminDeletePageStat" type="view" standalone="true" />
+        <action name="dispRefererAdminDeleteCountryStat" type="view" standalone="true" />
+        <action name="dispRefererAdminDeleteUAgentStat" type="view" standalone="true" />
+        <action name="dispRefererAdminResetData" type="view" standalone="true" />
+		<action name="dispRefererAdminConfig" type="view" standalone="true" />
+        <action name="procRefererAdminDeleteStat" type="controller" standalone="true" />
+        <action name="procRefererAdminResetData" type="controller" standalone="true" />
+ 		<action name="procRefererAdminInsertConfig" type="controller" ruleset="insertConfig" />
+   </actions>
+</module>

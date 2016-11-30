@@ -1,0 +1,9 @@
+<query id="insertUAgentStatistics" action="insert">
+	<tables>
+		<table name="referer_uagent_statistics" />
+	</tables>
+	<columns>
+		<column name="uagent" var="uagent" notnull="notnull" />
+		<column name="count" var="count" default="1" />
+	</columns>
+</query>

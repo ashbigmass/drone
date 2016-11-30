@@ -1,0 +1,11 @@
+<query id="getCountryStatus" action="select">
+	<tables>
+		<table name="referer_country_statistics" />
+	</tables>
+	<columns>
+		<column name="count(*)" alias="count"/>
+	</columns>
+	<conditions>
+		<condition operation="equal" column="country_code" var="country_code" />
+	</conditions>
+</query>

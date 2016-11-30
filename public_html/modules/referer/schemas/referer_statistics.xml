@@ -1,0 +1,5 @@
+<table name="referer_statistics">
+    <column name="idx" type="number" size="11" notnull="notnull" primary_key="primary_key" auto_increment="auto_increment" />
+    <column name="host" type="varchar" size="64" notnull="notnull" unique="unique_host" />
+    <column name="count" type="number" size="11" default="0" index="idx_host_count" />
+</table>

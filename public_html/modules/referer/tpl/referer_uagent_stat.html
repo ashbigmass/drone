@@ -1,0 +1,318 @@
+<include target="header.html" />
+<load target="js/Chart.min.js" />
+<load target="js/Chart.helper.js" />
+
+{@$totalOS=count($OSes)}
+{@$totalWin=count($Windows)}
+{@$totalMac=count($Macs)}
+{@$totaliOS=count($iOSes)}
+{@$totalAnd=count($Androids)}
+{@$totalBro=count($Browsers)}
+{@$totalIE=count($IEs)}
+{@$totalCountries=count($Countries)}
+{@$totalMids=count($Mids)}
+{@define('_TOTAL_COLORS_', 39)}
+
+<!--@if(!$Types['bot'] && !$Types['notbot'] && !$Types['desktop'] && !$Types['mobile'] && !$Types['unknown'])-->
+<h3 style="text-align:center">{$lang->msg_no_result}</h3>
+<!--@end-->
+<section class="chart-container table" cond="$Types['bot']>0">
+	<h3>{$lang->conn_bot}</h3>
+	<div class="labeled-chart-container half">
+		<div class="canvas-holder">
+			<canvas id="userbot-chart" width="250" height="125" />
+		</div>
+		<div class="chart-title">{$lang->ua_normal} : {$lang->ua_bot}</div>
+	</div>
+	<div class="labeled-chart-container half">
+		<div class="canvas-holder">
+			<canvas id="bot-chart" width="250" height="125" />
+		</div>
+		<div class="chart-title">{$lang->ua_bot_provider}</div>
+	</div>
+</section>
+
+<section class="chart-container table" cond="$Types['desktop']>0||$Types['mobile']>0||$Types['online']>0||$Types['unknown']>0">
+	<h3>{$lang->conn_pl}</h3>
+	<div class="labeled-chart-container half">
+		<div class="canvas-holder">
+			<canvas id="platform-chart" width="250" height="125" />
+		</div>
+		<div class="chart-title">{$lang->ua_desktop} : {$lang->ua_mobile} : {$lang->ua_online}</div>
+	</div>
+</section>
+
+<section class="chart-container table" cond="$totalOS>0">
+	<h3>{$lang->conn_os}</h3>
+	<div class="labeled-chart-container">
+		<div class="canvas-holder">
+			<canvas id="os-chart" width="250" height="125" />
+		</div>
+		<div class="chart-title">{$lang->ua_os}</div>
+	</div>
+	<div class="labeled-chart-container half" cond="$totalMac>0">
+		<div class="canvas-holder">
+			<canvas id="mac-chart" width="250" height="125" />
+		</div>
+		<div class="chart-title">Mac OS X Versions</div>
+	</div>
+	<div class="labeled-chart-container half" cond="$totalWin>0">
+		<div class="canvas-holder">
+			<canvas id="windows-chart" width="250" height="125" />
+		</div>
+		<div class="chart-title">MS Windows Versions</div>
+	</div>
+	<div class="labeled-chart-container half" cond="$totaliOS>0">
+		<div class="canvas-holder">
+			<canvas id="ios-chart" width="250" height="125" />
+		</div>
+		<div class="chart-title">iOS Versions</div>
+	</div>
+	<div class="labeled-chart-container half" cond="$totalAnd>0">
+		<div class="canvas-holder">
+			<canvas id="android-chart" width="250" height="125" />
+		</div>
+		<div class="chart-title">Android Versions</div>
+	</div>
+</section>
+
+<section class="chart-container table" cond="$totalBro>0">
+	<h3>{$lang->conn_br}</h3>
+	<div class="labeled-chart-container half">
+		<div class="canvas-holder">
+			<canvas id="browser-chart" width="250" height="125" />
+		</div>
+		<div class="chart-title">Browsers</div>
+	</div>
+	<div class="labeled-chart-container half" cond="$totalIE>0">
+		<div class="canvas-holder">
+			<canvas id="ie-chart" width="250" height="125" />
+		</div>
+		<div class="chart-title">Microsoft Browsers</div>
+	</div>
+</section>
+
+<section class="chart-container table half" cond="$totalCountries>0">
+	<h3>{$lang->conn_country}</h3>
+	<div class="labeled-chart-container">
+		<div class="canvas-holder">
+			<canvas id="country-chart" width="250" height="125" />
+		</div>
+		<div class="chart-title">{$lang->country}</div>
+	</div>
+</section>
+
+<section class="chart-container table half" cond="$totalMids>0">
+	<h3>{$lang->conn_mids}</h3>
+	<div class="labeled-chart-container">
+		<div class="canvas-holder">
+			<canvas id="mid-chart" width="250" height="125" />
+		</div>
+		<div class="chart-title">{$lang->mid}</div>
+	</div>
+</section>
+
+<div class="referer"><div class="x_help-block x_pull-right">Powered by <a href="http://www.chartjs.org/" target="_blank">Chart.js</a></div></div>
+
+<script>
+<!--@if($Types['bot'] > 0)-->
+	var userData = [
+<!--@if($Types['notbot'] > 0)-->
+		{ value: {$Types['notbot']}, color: SteelBlue,	highlight: Highlight(SteelBlue), label: "{$lang->ua_normal}" },
+<!--@end-->
+		{ value: {$Types['bot']},  color: IndianRed, highlight: Highlight(IndianRed), label: "{$lang->ua_bot}" }
+	];
+
+{@$no=0}
+{@$total=count($Bots)}
+	var botData = [
+<!--@foreach($Bots as $key=>$val)-->
+		{ value: {$val}, color: colors[{$no}],	highlight: Highlight(colors[{$no}]), label: "{$key}" }
+{@$no++}
+<!--@if($no < $total)-->
+,
+<!--@end-->
+<!--@end-->
+	];
+<!--@end-->
+
+<!--@if($Types['desktop'] > 0 || $Types['mobile'] > 0 || $Types['online'] > 0 || $Types['unknown'] > 0)-->
+	var platformData = [
+<!--@if($Types['desktop'] > 0)-->
+		{ value: {$Types['desktop']}, color: Green,	highlight: Highlight(Green), label: "{$lang->ua_desktop}" },
+<!--@end-->
+<!--@if($Types['mobile'] > 0)-->
+		{ value: {$Types['mobile']},  color: Orange, highlight: Highlight(Orange), label: "{$lang->ua_mobile}" },
+<!--@end-->
+<!--@if($Types['online'] > 0)-->
+		{ value: {$Types['online']},  color: PaleGreen, highlight: Highlight(PaleGreen), label: "{$lang->ua_online}" },
+<!--@end-->
+<!--@if($Types['unknown'] > 0)-->
+		{ value: {$Types['unknown']},  color: Pink, highlight: Highlight(Pink), label: "{$lang->ua_unknown}" }
+<!--@end-->
+	];
+<!--@end-->
+
+<!--@if($totalOS > 0)-->
+{@$no=0}
+	var osData = [
+<!--@foreach($OSes as $key=>$val)-->
+{@$color=$no%_TOTAL_COLORS_}
+		{ value: {$val}, color: colors[{$color}],	highlight: Highlight(colors[{$color}]), label: "{$key}" }
+{@$no++}
+<!--@if($no < $totalOS)-->
+,
+<!--@end-->
+<!--@end-->
+	];
+<!--@end-->
+
+<!--@if($totalWin > 0)-->
+{@$no=0}
+	var winData = [
+<!--@foreach($Windows as $key=>$val)-->
+{@$color=($no+7)%_TOTAL_COLORS_}
+		{ value: {$val}, color: colors[{$color}],	highlight: Highlight(colors[{$color}]), label: "{$key}" }
+{@$no++}
+<!--@if($no < $totalWin)-->
+,
+<!--@end-->
+<!--@end-->
+	];
+<!--@end-->
+
+<!--@if($totalMac > 0)-->
+{@$no=0}
+	var macData = [
+<!--@foreach($Macs as $key=>$val)-->
+{@$color=($no+7)%_TOTAL_COLORS_}		{ value: {$val}, color: colors[{$color}],	highlight: Highlight(colors[{$color}]), label: "{$key}" }
+{@$no++}
+<!--@if($no < $totalMac)-->
+,
+<!--@end-->
+<!--@end-->
+	];
+<!--@end-->
+
+<!--@if($totaliOS > 0)-->
+{@$no=0}
+	var iosData = [
+<!--@foreach($iOSes as $key=>$val)-->
+{@$color=($no+14)%_TOTAL_COLORS_}
+		{ value: {$val}, color: colors[{$color}],	highlight: Highlight(colors[{$color}]), label: "{$key}" }
+{@$no++}
+<!--@if($no < $totaliOS)-->
+,
+<!--@end-->
+<!--@end-->
+	];
+<!--@end-->
+
+<!--@if($totalAnd > 0)-->
+{@$no=0}
+	var andData = [
+<!--@foreach($Androids as $key=>$val)-->
+{@$color=($no+14)%_TOTAL_COLORS_}
+		{ value: {$val}, color: colors[{$color}],	highlight: Highlight(colors[{$color}]), label: "{$key}" }
+{@$no++}
+<!--@if($no < $totalAnd)-->
+,
+<!--@end-->
+<!--@end-->
+	];
+<!--@end-->
+
+<!--@if($totalBro > 0)-->
+{@$no=0}
+	var broData = [
+<!--@foreach($Browsers as $key=>$val)-->
+{@$color=(9-$no)%_TOTAL_COLORS_; while($color<0) $color+=_TOTAL_COLORS_}
+		{ value: {$val}, color: colors[{$color}],	highlight: Highlight(colors[{$color}]), label: "{$key}" }
+{@$no++}
+<!--@if($no < $totalBro)-->
+,
+<!--@end-->
+<!--@end-->
+	];
+<!--@end-->
+
+<!--@if($totalIE > 0)-->
+{@$no=0}
+	var ieData = [
+<!--@foreach($IEs as $key=>$val)-->
+{@$color=(9-$no)%_TOTAL_COLORS_; while($color<0) $color+=_TOTAL_COLORS_}
+		{ value: {$val}, color: colors[{$color}],	highlight: Highlight(colors[{$color}]), label: "{$key}" }
+{@$no++}
+<!--@if($no < $totalIE)-->
+,
+<!--@end-->
+<!--@end-->
+	];
+<!--@end-->
+
+<!--@if($totalCountries > 0)-->
+{@$no=0}
+	var countryData = [
+<!--@foreach($Countries as $key=>$val)-->
+{@$color=(6-$no)%_TOTAL_COLORS_; while($color<0) $color+=_TOTAL_COLORS_}
+		{ value: {$val}, color: colors[{$color}],	highlight: Highlight(colors[{$color}]), label: "{$key}" }
+{@$no++}
+<!--@if($no < $totalCountries)-->
+,
+<!--@end-->
+<!--@end-->
+	];
+<!--@end-->
+
+<!--@if($totalMids > 0)-->
+{@$no=0}
+	var midData = [
+<!--@foreach($Mids as $key=>$val)-->
+{@$color=($no+20)%_TOTAL_COLORS_}
+		{ value: {$val}, color: colors[{$color}],	highlight: Highlight(colors[{$color}]), label: "{$key}" }
+{@$no++}
+<!--@if($no < $totalMids)-->
+,
+<!--@end-->
+<!--@end-->
+	];
+<!--@end-->
+
+
+	window.onload = function(){
+<!--@if($Types['bot'] > 0)-->
+		showChart(window.userChart, "userbot-chart", userData);
+		showChart(window.botChart, "bot-chart", botData);
+<!--@end-->
+<!--@if($Types['desktop'] > 0 || $Types['mobile'] > 0 || $Types['online'] > 0 || $Types['unknown'] > 0)-->
+		showChart(window.platformChart, "platform-chart", platformData);
+<!--@end-->
+<!--@if($totalOS > 0)-->
+		showChart(window.osChart, "os-chart", osData);
+<!--@end-->
+<!--@if($totalWin > 0)-->
+		showChart(window.winChart, "windows-chart", winData);
+<!--@end-->
+<!--@if($totalMac > 0)-->
+		showChart(window.macChart, "mac-chart", macData);
+<!--@end-->
+<!--@if($totaliOS > 0)-->
+		showChart(window.iosChart, "ios-chart", iosData);
+<!--@end-->
+<!--@if($totalAnd > 0)-->
+		showChart(window.andChart, "android-chart", andData);
+<!--@end-->
+<!--@if($totalBro > 0)-->
+		showChart(window.broChart, "browser-chart", broData);
+<!--@end-->
+<!--@if($totalIE > 0)-->
+		showChart(window.ieChart, "ie-chart", ieData);
+<!--@end-->
+<!--@if($totalCountries > 0)-->
+		showChart(window.countryChart, "country-chart", countryData);
+<!--@end-->
+<!--@if($totalMids > 0)-->
+		showChart(window.midChart, "mid-chart", midData);
+<!--@end-->
+	};
+</script>

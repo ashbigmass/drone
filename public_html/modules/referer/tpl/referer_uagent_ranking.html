@@ -1,0 +1,43 @@
+<include target="header.html" />
+{@$oRefererModel = &getModel('referer')}
+<div class="table even">
+	<table cellspacing="0" class="rowTable">
+		<colgroup>
+			<col style="width:50px" />
+			<col style="max-width:865px" />
+			<col style="width:60px" />
+			<col style="width:50px" />
+		</colgroup>
+		<caption>All ({number_format($total_count)}) / Page ({number_format($page)}/{number_format($total_page)})</caption>
+		<thead>
+			<tr>
+				<th>{$lang->ranking}</th>
+				<th>{$lang->uagent}</th>
+				<th>{$lang->readed_count}</th>
+				<th>{$lang->cmd_delete}</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr cond="!$referer_status"><td colspan="4" style="text-align:center">{$lang->msg_no_result}</td></tr>
+			<!--@foreach($referer_status as $no => $val)-->
+			<tr class="row{$cycle_idx}">
+				<td class="number">{$rank}</td>
+				<td class="wide"><div style="text-overflow:ellipsis;overflow:hidden;word-wrap:break-word;max-width:865px">
+<include target="ua_icons.html" />
+					<a href="{getUrl('act', 'dispRefererAdminIndex', 'uagent', $val->uagent)}" title="{$lang->view_selected_uagent}">{$val->uagent}</a>
+				</div></td>
+				<td class="number">{$val->cnt}</td>
+				<td class="center"><a href="{getUrl('act', 'dispRefererAdminDeleteUAgentStat', 'uagent', $val->uagent)}" title="{$lang->cmd_delete}" class="buttonSet buttonDelete">{$lang->cmd_delete}</a></td>
+			</tr>
+		<!--{$rank += 1} -->
+			<!--@end-->
+		</tbody>
+	</table>
+	<form action="./" method="post" class="search center x_input-append" no-error-return-url="true">
+		<input type="hidden" name="module" value="{$module}" />
+		<input type="search" name="search_keyword" value="{htmlspecialchars($search_keyword, ENT_COMPAT | ENT_HTML401, 'UTF-8', false)}" style="width:140px">
+		<button class="x_btn x_btn-inverse" type="submit">{$lang->cmd_search}</button>
+		<a class="x_btn" href="{getUrl('', 'module', $module, 'act', $act, 'page', $page)}">{$lang->cmd_cancel}</a>
+	</form>
+</div>
+<include target="footer.html" />

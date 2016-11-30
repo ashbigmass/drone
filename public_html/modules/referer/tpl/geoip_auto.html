@@ -1,0 +1,253 @@
+<div id="loading"></div>
+<input id="GeoIPSite" type="hidden" value="auto"/>
+<input id="done" type="hidden" value="0"/>
+<script type="text/javascript">// <![CDATA[
+jQuery(function($){
+	var oFlagIP = new Object();
+	var oFlagDomain = new Object();
+
+	var opts = {
+		left:$('.table').position().left+$('.table').width()/2+'px',
+		top:$('.table').offset().top+'px'
+	}
+	var target = document.getElementById('loading');
+	var spinner = new Spinner(opts);
+	var spinner1 = new Spinner(opts);
+	var done = 0;
+	var totalIP = 0;
+	var totalDomain = 0;
+	var xhr1 = xhr2 = xhr3 = xhr4 = xhr5 = null;
+	var timer1 = null;
+	
+	$('.flag').each(function() {
+		if (typeof $(this).attr('ip') != 'undefined') {
+			if(oFlagIP[$(this).attr('ip')] === undefined) {
+				oFlagIP[$(this).attr('ip')] = [];
+				++totalIP;
+			}
+			oFlagIP[$(this).attr('ip')].push($(this).attr('id'));
+		}
+		else if (typeof $(this).attr('domain') != 'undefined') {
+			if(oFlagDomain[$(this).attr('domain')] === undefined) {
+				oFlagDomain[$(this).attr('domain')] = [];
+				++totalDomain;
+			}
+			oFlagDomain[$(this).attr('domain')].push($(this).attr('id'));
+		}
+	});
+
+	if(Object.keys(oFlagIP).length>0 || Object.keys(oFlagDomain).length>0) {
+		function getGeoIP() {
+			var sel = $("#GeoIPSite").val();
+
+			spinner.spin(target);
+			
+			if (sel == "ipapi") {
+				$.each(oFlagIP, function(ip, arrID) {
+					$.getJSON('http://ip-api.com/json/'+ip+'?callback=?', function(location) {
+						$.each(arrID, function(i, id) {
+							$('#'+id).addClass(location.countryCode);
+							$('#'+id).attr('title', location.country + ' (' + location.city + ', ' + location.regionName + ', ISP: ' + location.isp + ')');
+							$('#'+id).css('display', 'inline-block');
+						});
+					})
+					.always(function() {
+						if(++done >= totalIP+totalDomain) spinner.stop();
+					});
+				});
+				$.each(oFlagDomain, function(domain, arrID) {
+					$.getJSON('http://ip-api.com/json/'+domain+'?callback=?', function(location) {
+						$.each(arrID, function(i, id) {
+							$('#'+id).addClass(location.countryCode);
+							$('#'+id).attr('title', location.country + ' (' + location.city + ', ' + location.regionName + ', ISP: ' + location.isp + ')');
+							$('#'+id).css('display', 'inline-block');
+						});
+					})
+					.always(function() {
+						if(++done >= totalIP+totalDomain) spinner.stop();
+					});
+				});
+			}
+			else if (sel == "smartip") {
+				$.each(oFlagIP, function(ip, arrID) {
+					$.getJSON('http://smart-ip.net/geoip-json/'+ip+'?callback=?', function(location) {
+						$.each(arrID, function(i, id) {
+							$('#'+id).addClass(location.countryCode);
+							$('#'+id).attr('title', location.countryName + ' (' + location.city + ', ' + location.region + ')');
+							$('#'+id).css('display', 'inline-block');
+						});
+					})
+					.always(function() {
+						if(++done >= totalIP+totalDomain) spinner.stop();
+					});
+				});
+				$.each(oFlagDomain, function(domain, arrID) {
+					$.getJSON('http://smart-ip.net/geoip-json/'+domain+'?callback=?', function(location) {
+						$.each(arrID, function(i, id) {
+							$('#'+id).addClass(location.countryCode);
+							$('#'+id).attr('title', location.countryName + ' (' + location.city + ', ' + location.region + ')');
+							$('#'+id).css('display', 'inline-block');
+						});
+					})
+					.always(function() {
+						if(++done >= totalIP+totalDomain) spinner.stop();
+					});
+				});
+			}
+			else if (sel == "nekudo") {
+				$.each(oFlagIP, function(ip, arrID) {
+					$.getJSON('https://geoip.nekudo.com/api/'+ip+'/en', function(location) {
+						$.each(arrID, function(i, id) {
+							$('#'+id).addClass(location.country.code);
+							$('#'+id).attr('title', location.country.name + (location.city != false ? ' (' + location.city + ')' : ''));
+							$('#'+id).css('display', 'inline-block');
+						});
+					})
+					.always(function() {
+						if(++done >= totalIP) {
+							spinner.stop();
+							oFlagIP = new Object();
+						}
+					});
+				});
+
+			}
+			else if (sel == "cdnservice") {
+				$.each(oFlagIP, function(ip, arrID) {
+					$.getJSON('https://geoip.cdnservice.eu/api/'+ip+'/en', function(location) {
+						$.each(arrID, function(i, id) {
+							$('#'+id).addClass(location.country.code);
+							$('#'+id).attr('title', location.country.name + (location.city != false ? ' (' + location.city + ')' : ''));
+							$('#'+id).css('display', 'inline-block');
+						});
+					})
+					.always(function() {
+						if(++done >= totalIP) {
+							spinner.stop();
+							oFlagIP = new Object();
+						}
+					});
+				});
+
+			}
+			else if (sel == "petabyet") {
+				$.each(oFlagIP, function(ip, arrID) {
+					$.getJSON('http://api.petabyet.com/geoip/'+ip+'?callback=?', function(location) {
+						$.each(arrID, function(i, id) {
+							$('#'+id).addClass(location.country_code);
+							var a_info = '';
+							if(typeof location.city !== 'undefined') a_info = ' (' + location.city;
+							if(typeof location.region_name !== 'undefined') {
+								a_info = a_info == '' ? ' (' : a_info + ', ';
+								a_info += location.region_name;
+							}
+							if(typeof location.isp !== 'undefined') {
+								a_info = a_info == '' ? ' (' : a_info + ', ';
+								a_info += 'ISP: ' + location.isp;
+							}
+							if (a_info != '') a_info += ')';
+							$('#'+id).attr('title', location.country + a_info);
+							$('#'+id).css('display', 'inline-block');
+						});
+					})
+					.always(function() {
+						if(++done >= totalIP) {
+							spinner.stop();
+							oFlagIP = new Object();
+						}
+					});
+				});
+			}
+		}
+		
+		spinner1.spin(target);
+		xhr1 = $.getJSON('http://ip-api.com/json/8.8.8.8?callback=?', function(location) {
+			if (location.countryCode != "" && $("#GeoIPSite").val() != "smartip") {
+				$("#GeoIPSite").val("ipapi");
+				getGeoIP();
+			}
+		})
+		.done(function() {
+			if(xhr2 != null) { xhr2.abort(); xhr2 = null; }
+			if(xhr3 != null) { xhr3.abort(); xhr3 = null; }
+			if(xhr4 != null) { xhr4.abort(); xhr4 = null; }
+			if(xhr5 != null) { xhr5.abort(); xhr5 = null; }
+			spinner1.stop();
+			if (timer1) { clearTimeout(timer1); timer1 = null; }
+		});
+		xhr2 = $.getJSON('http://smart-ip.net/geoip-json/8.8.8.8?callback=?', function(location) {
+			if (location.countryCode != "" && $("#GeoIPSite").val() != "ipapi") {
+				$("#GeoIPSite").val("smartip");
+				getGeoIP();
+			}
+		})
+		.done(function() {
+			if(xhr1 != null) { xhr1.abort(); xhr1 = null; }
+			if(xhr3 != null) { xhr3.abort(); xhr3 = null; }
+			if(xhr4 != null) { xhr4.abort(); xhr4 = null; }
+			if(xhr5 != null) { xhr5.abort(); xhr5 = null; }
+			spinner1.stop();
+			if (timer1) { clearTimeout(timer1); timer1 = null; }
+		});
+		if(totalIP>0) {
+			xhr3 = $.getJSON('https://geoip.nekudo.com/api/8.8.8.8', function(location) {
+				if (location.country.code != "" && $("#GeoIPSite").val() == "auto") {
+					$("#GeoIPSite").val("nekudo");
+					getGeoIP();
+				}
+			})
+			.done(function() {
+				if (!totalDomain) {
+					if(xhr1 != null) { xhr1.abort(); xhr1 = null; }
+					if(xhr2 != null) { xhr2.abort(); xhr2 = null; }
+					if (timer1) { clearTimeout(timer1); timer1 = null; }
+				}
+				if(xhr4 != null) { xhr4.abort(); xhr4 = null; }
+				if(xhr5 != null) { xhr5.abort(); xhr5 = null; }
+				spinner1.stop();
+			});
+			xhr4 = $.getJSON('https://geoip.cdnservice.eu/api/8.8.8.8', function(location) {
+				if (location.country.code != "" && $("#GeoIPSite").val() == "auto") {
+					$("#GeoIPSite").val("cdnservice");
+					getGeoIP();
+				}
+			})
+			.done(function() {
+				if (!totalDomain) {
+					if(xhr1 != null) { xhr1.abort(); xhr1 = null; }
+					if(xhr2 != null) { xhr2.abort(); xhr2 = null; }
+					if (timer1) { clearTimeout(timer1); timer1 = null; }
+				}
+				if(xhr3 != null) { xhr3.abort(); xhr3 = null; }
+				if(xhr5 != null) { xhr5.abort(); xhr5 = null; }
+				spinner1.stop();
+			});
+			xhr5 = $.getJSON('http://api.petabyet.com/geoip/8.8.8.8', function(location) {
+				if (location.country_code != "" && $("#GeoIPSite").val() == "auto") {
+					$("#GeoIPSite").val("petabyet");
+					getGeoIP();
+				}
+			})
+			.done(function() {
+				if (!totalDomain) {
+					if(xhr1 != null) { xhr1.abort(); xhr1 = null; }
+					if(xhr2 != null) { xhr2.abort(); xhr2 = null; }
+					if (timer1) { clearTimeout(timer1); timer1 = null; }
+				}
+				if(xhr3 != null) { xhr3.abort(); xhr3 = null; }
+				if(xhr4 != null) { xhr4.abort(); xhr4 = null; }
+				spinner1.stop();
+			});
+		}
+		timer1 = setTimeout(function(){
+			if(xhr1 != null) { xhr1.abort(); xhr1 = null; }
+			if(xhr2 != null) { xhr2.abort(); xhr2 = null; }
+			if(xhr3 != null) { xhr3.abort(); xhr3 = null; }
+			if(xhr4 != null) { xhr4.abort(); xhr4 = null; }
+			if(xhr5 != null) { xhr5.abort(); xhr5 = null; }
+			spinner1.stop();
+		}, {$refererConfig->timeout});
+	}
+});
+
+// ]]></script>

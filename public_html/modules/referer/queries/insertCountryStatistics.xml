@@ -1,0 +1,10 @@
+<query id="insertCountryStatistics" action="insert">
+	<tables>
+		<table name="referer_country_statistics" />
+	</tables>
+	<columns>
+		<column name="country_code" var="country_code" notnull="notnull" />
+		<column name="country" var="country" notnull="notnull" />
+		<column name="count" var="count" default="1" />
+	</columns>
+</query>

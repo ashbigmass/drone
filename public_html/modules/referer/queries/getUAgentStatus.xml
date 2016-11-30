@@ -1,0 +1,11 @@
+<query id="getUAgentStatus" action="select">
+	<tables>
+		<table name="referer_uagent_statistics" />
+	</tables>
+	<columns>
+		<column name="count(*)" alias="count"/>
+	</columns>
+	<conditions>
+		<condition operation="equal" column="uagent" var="uagent" notnull="notnull" />
+	</conditions>
+</query>

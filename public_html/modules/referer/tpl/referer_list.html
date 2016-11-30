@@ -1,0 +1,95 @@
+<include target="header.html" />
+<script>
+{@$oMemberModel = &getModel('member')}
+{@$oRefererClass = &getClass('referer')}
+{@$oRefererModel = &getModel('referer')}
+jQuery(function($){
+	$(".userAgent .ua_view").click(function(){
+		$(this).parent().find(".ua_more:not(:animated)").slideToggle("fast");
+	});
+	$(".refererUrl .rf_view").click(function(){
+		$(this).parent().find(".rf_more:not(:animated)").slideToggle("fast");
+	});
+});
+</script>
+<div class="table even">
+	<table cellspacing="0" class="rowTable">
+	<colgroup>
+		<col style="width:120px" />
+		<col style="width:170px" />
+		<col style="width:95px" />
+		<col style="max-width:580px" />
+		<col style="width:60px" />
+	</colgroup>
+	<caption>All ({number_format($total_count)}) / Page ({number_format($page)}/{number_format($total_page)}) &nbsp; &nbsp; &nbsp;
+		<span cond="$host" class="btn">URL: <a href="http://{$host}" target="_blank">{$host}</a></span>
+		<span cond="$remote" class="btn">{$lang->remote}: <a href="http://myip.ms/info/whois/{$remote}" title="{$lang->IP_Tracing}" target="_blank">{$remote}</a></span>
+		<span cond="$uagent" class="btn"><a href="http://useragentstring.com/" title="{$lang->uagent_info}" target="_blank">http://useragentstring.com/</a></span>
+	</caption>
+	<thead>
+		<tr>
+			<th class="mobile-portrait-hidden">{$lang->first_accessed}~{$lang->last_accessed}</th>
+			<th>{$lang->remote}</th>
+			<th>UAgent</th>
+			<th>{$lang->referer}</th>
+			<th>{$lang->readed_count}</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr cond="!$referer_list"><td colspan="5" style="text-align:center">{$lang->msg_no_result}</td></tr>
+		<!--@foreach($referer_list as $no => $val)-->
+		<tr>
+			<td class="date mobile-portrait-hidden">{zdate($val->regdate,"Y-m-d")}<br/>{zdate($val->regdate,"H:i:s")}~{zdate($val->regdate_last,"H:i:s")}</td>
+			<td>
+				<span id="IP_{$no}" class="flag mobile-portrait-hidden" ip="{$val->remote}"></span><a href="http://myip.ms/info/whois/{$val->remote}" title="{$lang->IP_Tracing}" target="_blank">{$val->remote}</a>
+			</td>
+			<td class="userAgent">
+				<button type="button" class="sTog ua_view" title="Open/Close"><i class="x_icon-chevron-down"></i></button>
+				<div class="ua_more" style="display:none">{$val->uagent}</div>
+<include target="ua_icons.html" />
+			</td>
+			<td class="refererUrl">
+				<button type="button" class="sTog rf_view" title="Open/Close"><i class="x_icon-chevron-down"></i></button>
+				<button type="button" class="sTog rf_view" title="{$val->user_id}" cond="$val->member_srl > 0"><i class="x_icon-user"></i></button>
+			<!--@if($val->url=="http://localhost")-->
+				{$lang->direct_access}
+			<!--@else-->
+			{@$url=urldecode($val->url)}
+				<div style="text-overflow:ellipsis;overflow:hidden;word-wrap:break-word;max-width:575px">
+					<span id="URL_{$no}" class="flag mobile-portrait-hidden" domain="{$val->host}"></span><a href="{$val->url}" title="{$val->url}" target="_blank"><!--@if(iconv("utf-8", "utf-8", $url) == $url)-->{$url}<!--@else-->{iconv("EUC-KR", "UTF-8", $url)}<!--@end--></a>
+				</div>
+			<!--@end-->
+				<div class="rf_more" style="display:none">
+					{@$member_info = $val->member_srl > 0 ? $oMemberModel->getMemberInfoByMemberSrl($val->member_srl) : NULL}
+					{$lang->host}: <!--@if($val->url=="http://localhost")-->localhost<!--@else--><a href="http://{$val->host}" title="http://{$val->host}" target="_blank">{$val->host}</a><!--@end--><br />
+					{$lang->visitor}: {$oRefererClass->getUserStringFromMemberSrl($val->member_srl, getUrl('', 'module', $module, 'act', 'dispRefererAdminIndex', 'page', '1', 'search_target', 'user_id', 'search_keyword', $oRefererClass->getUserIDFromMemberSrl($val->member_srl)), $lang->search_user)}<br />
+					{$lang->request_uri}: <a href="{$val->request_uri}" target="_blank" title="{$lang->cmd_go_to_page}">{$val->request_uri}</a>
+				</div>
+			</td>
+			<td class="number">{$val->count}</td>
+		</tr>
+		<!--@end-->
+	</tbody>
+	</table>
+	<div cond="$host" class="btnArea"><span class="btn"><a href="{getUrl('act', 'dispRefererAdminIndex', 'host', '')}">{$lang->cmd_view_all}</a></span></div>
+	<div cond="$remote" class="btnArea"><span class="btn"><a href="{getUrl('act', 'dispRefererAdminIndex', 'remote', '')}">{$lang->cmd_view_all}</a></span></div>
+	<div cond="$uagent" class="btnArea"><span class="btn"><a href="{getUrl('act', 'dispRefererAdminIndex', 'uagent', '')}">{$lang->cmd_view_all}</a></span></div>
+	<form action="./" method="post" class="search center x_input-append" no-error-return-url="true">
+		<input type="hidden" name="module" value="{$module}" />
+		<label for="mode" class="control-label"><input type="checkbox" name="mode" value="members" checked="checked"|cond="$mode=='members'"> {$lang->show_members_only} &nbsp;</label>
+		<select name="search_target" style="margin-right:4px" title="{$lang->search_target}">
+		{@$search_target_list = array("referer"=>$lang->referer, "remote"=>$lang->remote, "user_id"=>$lang->user_id, "request_uri"=>$lang->visiting_page, "uagent"=>$lang->uagent, "date"=>$lang->accessdate, "date_less"=>$lang->accessdate_less, "date_more"=>$lang->accessdate_more, "country_code"=>$lang->country_code)}
+		<option value="{$key}" loop="$search_target_list=>$key,$val" selected="selected"|cond="$search_target==$key">{$val}</option>
+		</select>
+		<input type="search" name="search_keyword" value="{htmlspecialchars($search_keyword, ENT_COMPAT | ENT_HTML401, 'UTF-8', false)}" style="width:140px">
+		<button class="x_btn x_btn-inverse" type="submit">{$lang->cmd_search}</button>
+		<a class="x_btn" href="{getUrl('', 'module', $module, 'act', $act, 'page', $page)}">{$lang->cmd_cancel}</a>
+	</form>
+</div>
+<include target="footer.html" />
+<include target="geoip_auto.html" cond="($refererConfig->GeoIPSite == 'auto' || $refererConfig->GeoIPSite == '')" />
+<include target="geoip_ipapi.html" cond="($refererConfig->GeoIPSite == 'ipapi')" />
+<include target="geoip_smartip.html" cond="($refererConfig->GeoIPSite == 'smartip')" />
+<include target="geoip_nekudo.html" cond="($refererConfig->GeoIPSite == 'nekudo')" />
+<include target="geoip_cdnservice.html" cond="($refererConfig->GeoIPSite == 'cdnservice')" />
+<include target="geoip_petabyet.html" cond="($refererConfig->GeoIPSite == 'petabyet')" />

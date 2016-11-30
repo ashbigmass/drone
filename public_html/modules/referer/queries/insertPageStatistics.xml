@@ -1,0 +1,10 @@
+<query id="insertPageStatistics" action="insert">
+	<tables>
+		<table name="referer_page_statistics" />
+	</tables>
+	<columns>
+		<column name="ref_mid" var="ref_mid" />
+		<column name="ref_document_srl" var="ref_document_srl" />
+		<column name="count" var="count" default="1" />
+	</columns>
+</query>

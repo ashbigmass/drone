@@ -1,0 +1,292 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<lang>
+	<item name="referer">
+		<value xml:lang="ko"><![CDATA[리퍼러]]></value>
+		<value xml:lang="en"><![CDATA[Referer]]></value>
+	</item>
+	<item name="referer_info">
+		<value xml:lang="ko"><![CDATA[접속하는 경로를 수집하는 모듈입니다.<br />'리퍼러 수집기 애드온'을 함께 설치해야 합니다.]]></value>
+		<value xml:lang="en"><![CDATA[Module for collecting referer informations.<br />You must install Referer addon also.]]></value>
+	</item>
+	<item name="ranking">
+		<value xml:lang="ko"><![CDATA[순위]]></value>
+		<value xml:lang="en"><![CDATA[Ranking]]></value>
+	</item>
+	<item name="remote">
+		<value xml:lang="ko"><![CDATA[접속 IP]]></value>
+		<value xml:lang="en"><![CDATA[Remote IP]]></value>
+	</item>
+	<item name="delete_ranking">
+		<value xml:lang="ko"><![CDATA[순위 삭제]]></value>
+		<value xml:lang="en"><![CDATA[Delete Ranking]]></value>
+	</item>
+	<item name="first_accessed">
+		<value xml:lang="ko"><![CDATA[첫 접근]]></value>
+		<value xml:lang="en"><![CDATA[The First Time]]></value>
+	</item>
+	<item name="last_accessed">
+		<value xml:lang="ko"><![CDATA[최근 접근]]></value>
+		<value xml:lang="en"><![CDATA[Last Time]]></value>
+	</item>
+	<item name="view_selected_host">
+		<value xml:lang="ko"><![CDATA[이 호스트의 접근 기록만 봅니다.]]></value>
+		<value xml:lang="en"><![CDATA[View referer data only from this host.]]></value>
+	</item>
+	<item name="view_selected_remote">
+		<value xml:lang="ko"><![CDATA[이 접속 IP의 접근 기록만 봅니다.]]></value>
+		<value xml:lang="en"><![CDATA[View access data only from this remote IP.]]></value>
+	</item>
+	<item name="direct_access">
+		<value xml:lang="ko"><![CDATA[바로 접속]]></value>
+		<value xml:lang="en"><![CDATA[Direct Access]]></value>
+	</item>
+	<item name="IP_Tracing">
+		<value xml:lang="ko"><![CDATA[IP 정보 추적]]></value>
+		<value xml:lang="en"><![CDATA[IP Tracing]]></value>
+	</item>
+	<item name="uagent">
+		<value xml:lang="ko"><![CDATA[User Agent]]></value>
+		<value xml:lang="en"><![CDATA[User Agent]]></value>
+	</item>
+	<item name="view_selected_uagent">
+		<value xml:lang="ko"><![CDATA[이 User Agent의 접근 기록만 봅니다.]]></value>
+		<value xml:lang="en"><![CDATA[View access data of this User Agent only.]]></value>
+	</item>
+	<item name="uagent_info">
+		<value xml:lang="ko"><![CDATA[User Agent 문자열을 복사한 후 http://useragentstring.com/에서 붙여넣기 하시면 정보를 볼 수 있습니다.]]></value>
+		<value xml:lang="en"><![CDATA[To see User Agent informations, copy a User Agent string and past it into http://useragentstring.com/.]]></value>
+	</item>
+	<item name="GeoIPSite">
+		<value xml:lang="ko">Geo IP 서버</value>
+		<value xml:lang="en">Geo IP Server</value>
+	</item>
+	<item name="about_GeoIPSite">
+		<value xml:lang="ko">IP 및 호스트 이름으로 위치 정보를 검색할 사이트를 선택하세요. (사이트에 따라 지원하는 정보가 조금씩 다를 수 있습니다.)</value>
+		<value xml:lang="en">Select a site for searching geolocation of IP addresses and host names.</value>
+	</item>
+	<item name="accessdate">
+		<value xml:lang="ko"><![CDATA[접속일시]]></value>
+		<value xml:lang="en"><![CDATA[Access Date]]></value>
+	</item>
+	<item name="accessdate_more">
+		<value xml:lang="ko"><![CDATA[접속일시(이후)]]></value>
+		<value xml:lang="en"><![CDATA[Access Date(Newer)]]></value>
+	</item>
+	<item name="accessdate_less">
+		<value xml:lang="ko"><![CDATA[접속일시(이전)]]></value>
+		<value xml:lang="en"><![CDATA[Access Date(Older)]]></value>
+	</item>
+	<item name="statistics">
+		<value xml:lang="ko"><![CDATA[통계]]></value>
+		<value xml:lang="en"><![CDATA[Statistics]]></value>
+	</item>
+	<item name="conn_bot">
+		<value xml:lang="ko"><![CDATA[봇 접속 현황]]></value>
+		<value xml:lang="en"><![CDATA[Connections by Bots]]></value>
+	</item>
+	<item name="conn_pl">
+		<value xml:lang="ko"><![CDATA[플랫폼별 접속 현황]]></value>
+		<value xml:lang="en"><![CDATA[Connections by Platforms]]></value>
+	</item>
+	<item name="conn_os">
+		<value xml:lang="ko"><![CDATA[운영체제별 접속 현황]]></value>
+		<value xml:lang="en"><![CDATA[Connections by OS]]></value>
+	</item>
+	<item name="conn_br">
+		<value xml:lang="ko"><![CDATA[브라우저별 접속 현황]]></value>
+		<value xml:lang="en"><![CDATA[Connections by Browser]]></value>
+	</item>
+	<item name="conn_country">
+		<value xml:lang="ko"><![CDATA[국가별 접속 현황]]></value>
+		<value xml:lang="en"><![CDATA[Connections by Country]]></value>
+	</item>
+	<item name="country">
+		<value xml:lang="ko"><![CDATA[국가]]></value>
+		<value xml:lang="en"><![CDATA[Country]]></value>
+	</item>
+	<item name="conn_mids">
+		<value xml:lang="ko"><![CDATA[모듈 접근 현황]]></value>
+		<value xml:lang="en"><![CDATA[Module Views]]></value>
+	</item>
+	<item name="ua_normal">
+		<value xml:lang="ko"><![CDATA[사람]]></value>
+		<value xml:lang="en"><![CDATA[Human]]></value>
+	</item>
+	<item name="ua_bot">
+		<value xml:lang="ko"><![CDATA[봇]]></value>
+		<value xml:lang="en"><![CDATA[Bots]]></value>
+	</item>
+	<item name="ua_bot_provider">
+		<value xml:lang="ko"><![CDATA[봇 제공사]]></value>
+		<value xml:lang="en"><![CDATA[Bot Providers]]></value>
+	</item>
+	<item name="ua_desktop">
+		<value xml:lang="ko"><![CDATA[데스크톱]]></value>
+		<value xml:lang="en"><![CDATA[Desktops]]></value>
+	</item>
+	<item name="ua_mobile">
+		<value xml:lang="ko"><![CDATA[모바일]]></value>
+		<value xml:lang="en"><![CDATA[Mobiles]]></value>
+	</item>
+	<item name="ua_online">
+		<value xml:lang="ko"><![CDATA[온라인]]></value>
+		<value xml:lang="en"><![CDATA[Onlines]]></value>
+	</item>
+	<item name="ua_unknown">
+		<value xml:lang="ko"><![CDATA[알 수 없음]]></value>
+		<value xml:lang="en"><![CDATA[Unknown]]></value>
+	</item>
+	<item name="ua_os">
+		<value xml:lang="ko"><![CDATA[운영체제]]></value>
+		<value xml:lang="en"><![CDATA[Operating Systems]]></value>
+	</item>
+	<item name="detail_view">
+		<value xml:lang="ko"><![CDATA[상세보기]]></value>
+		<value xml:lang="en"><![CDATA[Detail View]]></value>
+	</item>
+	<item name="host">
+		<value xml:lang="ko"><![CDATA[호스트]]></value>
+		<value xml:lang="en"><![CDATA[Host]]></value>
+	</item>
+	<item name="request_uri">
+		<value xml:lang="ko"><![CDATA[방문 페이지]]></value>
+		<value xml:lang="en"><![CDATA[Requested Page]]></value>
+	</item>
+	<item name="not_logged_in">
+		<value xml:lang="ko"><![CDATA[로긴 안 함]]></value>
+		<value xml:lang="en"><![CDATA[Not Logged In]]></value>
+	</item>
+	<item name="search_user">
+		<value xml:lang="ko"><![CDATA[이 사용자의 리퍼러 기록만 보기]]></value>
+		<value xml:lang="en"><![CDATA[Show this user's referer data only]]></value>
+	</item>
+	<item name="visitor">
+		<value xml:lang="ko"><![CDATA[방문자]]></value>
+		<value xml:lang="en"><![CDATA[Visitor]]></value>
+	</item>
+	<item name="user">
+		<value xml:lang="ko"><![CDATA[사용자]]></value>
+		<value xml:lang="en"><![CDATA[User]]></value>
+	</item>
+	<item name="country">
+		<value xml:lang="ko"><![CDATA[접속 국가]]></value>
+		<value xml:lang="en"><![CDATA[Access Country]]></value>
+	</item>
+	<item name="country_code">
+		<value xml:lang="ko"><![CDATA[접속 국가 코드]]></value>
+		<value xml:lang="en"><![CDATA[The Code of Access Country]]></value>
+	</item>
+	<item name="view_selected_country">
+		<value xml:lang="ko"><![CDATA[이 국가로부터의 접근 기록만 봅니다.]]></value>
+		<value xml:lang="en"><![CDATA[View referer data from this country.]]></value>
+	</item>
+	<item name="show_members_only">
+		<value xml:lang="ko"><![CDATA[회원 기록만]]></value>
+		<value xml:lang="en"><![CDATA[Only Members' Data]]></value>
+	</item>
+	<item name="visiting_page">
+		<value xml:lang="ko"><![CDATA[방문 페이지]]></value>
+		<value xml:lang="en"><![CDATA[Visiting Page]]></value>
+	</item>
+	<item name="view_selected_page">
+		<value xml:lang="ko"><![CDATA[이 페이지의 접근 기록만 봅니다.]]></value>
+		<value xml:lang="en"><![CDATA[View referer data of this page.]]></value>
+	</item>
+	<item name="auto_sel">
+		<value xml:lang="ko"><![CDATA[자동 선택]]></value>
+		<value xml:lang="en"><![CDATA[Automatic Selection]]></value>
+	</item>
+	<item name="timeout_label">
+		<value xml:lang="ko"><![CDATA[원격 쿼리 제한 시간]]></value>
+		<value xml:lang="en"><![CDATA[Remote Query Timeout]]></value>
+	</item>
+	<item name="help_timeout">
+		<value xml:lang="ko"><![CDATA[Geo IP 서버 자동 선택을 사용할 때 서버가 응답하지 않는 것으로 처리할 시간을 지정합니다.<br/>사용 중인 서버와 Geo IP 서버 사이의 속도에 따라 적절한 값을 지정하세요.<br/>시간이 너무 짧으면 제대로 국기 정보를 받아오지 못할 수 있습니다. 반대로 시간이 너무 길면 페이지 이동 시에 경고가 발생할 수 있습니다.<br/>기본값: 5000ms(5초)]]></value>
+		<value xml:lang="en"><![CDATA[Specify the timeout of Geo IP servers when using the automatic selection. Default: 5000ms(5 seconds)]]></value>
+	</item>
+
+	<item name="include_admin">
+		<value xml:lang="ko"><![CDATA[최고관리자 포함]]></value>
+		<value xml:lang="en"><![CDATA[Include Administrator]]></value>
+	</item>
+	<item name="include">
+		<value xml:lang="ko"><![CDATA[포함]]></value>
+		<value xml:lang="en"><![CDATA[Include]]></value>
+	</item>
+	<item name="not_include">
+		<value xml:lang="ko"><![CDATA[포함 안함]]></value>
+		<value xml:lang="en"><![CDATA[Not Include]]></value>
+	</item>
+	<item name="help_include_admin">
+		<value xml:lang="ko"><![CDATA[최고관리자도 포함하시겠습니까?]]></value>
+		<value xml:lang="en"><![CDATA[Do you want to include the referer of admin's connection?]]></value>
+	</item>
+	<item name="include_direct_access">
+		<value xml:lang="ko"><![CDATA[바로 접속 포함]]></value>
+		<value xml:lang="en"><![CDATA[Include Direct Access]]></value>
+	</item>
+	<item name="help_include_direct_access">
+		<value xml:lang="ko"><![CDATA[바로 접속한 정보도 포함하시겠습니까? (주소창에 주소를 직접 적었거나 즐겨찾기로 접속)]]></value>
+		<value xml:lang="en"><![CDATA[Do you want to include direct access informations? (In case of direct access via address bar or bookmark)]]></value>
+	</item>
+	<item name="logging_country">
+		<value xml:lang="ko"><![CDATA[접속 국가 수집하기]]></value>
+		<value xml:lang="en"><![CDATA[Logging Country]]></value>
+	</item>
+	<item name="help_logging_country">
+		<value xml:lang="ko"><![CDATA[GeoIP를 이용하여 접속 국가 순위를 기록하려면 '예'를 선택하세요.<br/>(홈페이지 접근 속도가 느려질 수 있습니다. 서버에 cURL 라이브러리가 설치되어 있어야 동작합니다.)]]></value>
+		<value xml:lang="en"><![CDATA[Select 'Yes' to record access country rankings using GeoIP.<br/>(Access speed of your homepage may be slower. This option requires cURL library.)]]></value>
+	</item>
+	<item name="include_bot">
+		<value xml:lang="ko"><![CDATA[알려진 봇의 접근 기록 포함]]></value>
+		<value xml:lang="en"><![CDATA[Include access data of known bots]]></value>
+	</item>
+	<item name="help_include_bot">
+		<value xml:lang="ko"><![CDATA[알려진 검색 로봇 및 크로울러 등의 접근을 기록합니다.]]></value>
+		<value xml:lang="en"><![CDATA[Write access data of known bots and crawlers.]]></value>
+	</item>
+	<item name="treat_msie6_bot">
+		<value xml:lang="ko"><![CDATA[MSIE 6을 봇으로 취급]]></value>
+		<value xml:lang="en"><![CDATA[Treat MSIE 6 as a bot]]></value>
+	</item>
+	<item name="help_treat_msie6_bot">
+		<value xml:lang="ko"><![CDATA[중국산 봇에서 많이 사용하는 Microsoft Internet Explorer 6.x로 된 User Agent를 봇으로 취급합니다.]]></value>
+		<value xml:lang="en"><![CDATA[Treat a User Agent with Microsoft Internet Explorer 6.x as a bot.]]></value>
+	</item>
+	<item name="treat_moz5_bot">
+		<value xml:lang="ko"><![CDATA[Mozilla/5.0을 봇으로 취급]]></value>
+		<value xml:lang="en"><![CDATA[Treat Mozilla/5.0 as a bot]]></value>
+	</item>
+	<item name="help_treat_moz5_bot">
+		<value xml:lang="ko"><![CDATA[다음 봇에서 사용하는 'Mozilla/5.0'로만 된 User Agent를 봇으로 취급합니다.]]></value>
+		<value xml:lang="en"><![CDATA[Treat a User Agent with 'Mozilla/5.0' only as a bot.]]></value>
+	</item>
+	<item name="exclude_uagent">
+		<value xml:lang="ko"><![CDATA[제외할 User Agent]]></value>
+		<value xml:lang="en"><![CDATA[User Agent to Exclude]]></value>
+	</item>
+	<item name="help_exclude_uagent">
+		<value xml:lang="ko"><![CDATA[이 문자열을 포함하는 User Agent는 기록에 넣지 않습니다.<br/>항목이 여러 개일 경우 각 문자열은 '|'로 구분하세요. (예: bot|slurp|spider|yeti|daumoa)]]></value>
+		<value xml:lang="en"><![CDATA[User Agents including these strings are not included.<br/>Two or more items must be seperated by '|'. (Ex: bot|slurp|spider|yeti|daumoa)]]></value>
+	</item>
+	<item name="exclude_host">
+		<value xml:lang="ko"><![CDATA[제외할 호스트]]></value>
+		<value xml:lang="en"><![CDATA[Hosts to Exclude]]></value>
+	</item>
+	<item name="help_exclude_host">
+		<value xml:lang="ko"><![CDATA[이 문자열을 포함하는 주소는 기록에 넣지 않습니다.<br/>항목이 여러 개일 경우 각 문자열은 '|'로 구분하세요. (예: google|www.xpressengine.com)]]></value>
+		<value xml:lang="en"><![CDATA[Hosts including these strings are not included.<br/>Two or more items must be seperated by '|'. (Ex: google|www.xpressengine.com)]]></value>
+	</item>
+	<item name="delete_olddata">
+		<value xml:lang="ko"><![CDATA[자동 삭제]]></value>
+		<value xml:lang="en"><![CDATA[Auto-Delete]]></value>
+	</item>
+	<item name="help_delete_olddata">
+		<value xml:lang="ko"><![CDATA[지정한 일 수가 지난 데이터를 자동 삭제합니다. (기본값: 0 = 자동 삭제하지 않습니다.)<br/>자동 삭제 시 리퍼러 기록만 삭제하고 순위 데이터는 변경하지 않습니다.]]></value>
+		<value xml:lang="en"><![CDATA[Data after these days are automatically deleted. (Default: 0 = Do not delete automatically.)<br/>Auto-Delete will delete referer log only, but do not delete or modify referer statistics.]]></value>
+	</item>
+	<item name="help_referer_reset">
+		<value xml:lang="ko"><![CDATA[리퍼러 모듈의 모든 데이터를 삭제하고 리퍼러 DB의 테이블을 초기화합니다.]]></value>
+		<value xml:lang="en"><![CDATA[Delete all data of the Referer module, and reset tables of the Refer database.]]></value>
+	</item>
+</lang>

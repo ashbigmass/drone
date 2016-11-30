@@ -1,0 +1,15 @@
+<query id="getMidStatistics" action="select">
+	<tables>
+		<table name="referer_page_statistics" />
+	</tables>
+	<columns>
+		<column name="ref_mid" />
+		<column name="count" alias="cnt" />
+	</columns>
+	<groups>
+		<group column="ref_mid" />
+	</groups>
+	<navigation>
+		<index var="sort_index" default="cnt" order="desc" />
+	</navigation>
+</query>

@@ -1,0 +1,8 @@
+<query id="deleteUserStat" action="delete">
+	<tables>
+		<table name="referer_user_statistics" />
+	</tables>
+	<conditions>
+		<condition operation="equal" column="member_srl" var="member_srl" notnull="notnull" />
+	</conditions>
+</query>

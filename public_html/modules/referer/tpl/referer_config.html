@@ -1,0 +1,130 @@
+<include target="header.html" />
+<script>
+function digit_check(evt){
+	var code = evt.which?evt.which:event.keyCode;
+	if(code < 48 || code > 57) return false;
+}
+</script>
+{$config->GeoIPSite}
+<section class="section">
+<h1>{$lang->cmd_setup}</h1>
+<form action="./" class="x_form-horizontal" ruleset="insertConfig" method="post">
+	<input type="hidden" name="module" value="referer" />
+	<input type="hidden" name="act" value="procRefererAdminInsertConfig" />
+	<input type="hidden" name="success_return_url" value="{getUrl('', 'module', 'admin', 'act', $act)}" />
+	<input type="hidden" name="xe_validator_id" value="modules/referer/tpl/1" />
+	<div class="x_control-group">
+		<label class="x_control-label">{$lang->GeoIPSite}</label>
+		<div class="x_controls">
+			<label class="x_inline" for="auto"><input type="radio" name="GeoIPSite" id="auto" value="auto" checked="checked"|cond="$refererConfig->GeoIPSite=='auto'||$refererConfig->GeoIPSite==''" /> {$lang->auto_sel}</label>
+			<label class="x_inline" for="ipapi"><input type="radio" name="GeoIPSite" id="ipapi" value="ipapi" checked="checked"|cond="$refererConfig->GeoIPSite=='ipapi'" /> ip-api.com</label>
+			<label class="x_inline" for="smartip"><input type="radio" name="GeoIPSite" id="smartip" value="smartip" checked="checked"|cond="$refererConfig->GeoIPSite=='smartip'" /> smart-ip.net</label>
+			<label class="x_inline" for="nekudo"><input type="radio" name="GeoIPSite" id="nekudo" value="nekudo" checked="checked"|cond="$refererConfig->GeoIPSite=='nekudo'" /> geoip.nekudo.com</label>
+			<label class="x_inline" for="cdnservice"><input type="radio" name="GeoIPSite" id="cdnservice" value="cdnservice" checked="checked"|cond="$refererConfig->GeoIPSite=='cdnservice'" /> geoip.cdnservice.eu</label>
+			<label class="x_inline" for="petabyet"><input type="radio" name="GeoIPSite" id="petabyet" value="petabyet" checked="checked"|cond="$refererConfig->GeoIPSite=='petabyet'" /> petabyet.com</label>
+			<p class="x_help-block">{$lang->about_GeoIPSite}<br /><br />
+				Powered by
+				<a href="http://ip-api.com/" target="_blank">ip-api.com</a>,
+				<a href="http://smart-ip.net" target="_blank">smart-ip.net</a>,
+				<a href="https://geoip.nekudo.com" target="_blank">geoip.nekudo.com</a>,
+				<a href="https://geoip.cdnservice.eu" target="_blank">geoip.cdnservice.eu</a>,
+				<a href="http://www.petabyet.com" target="_blank">petabyet.com</a>.
+			</p>
+		</div>
+		<div class="x_control-label">{$lang->timeout_label}</div>
+		<div class="x_controls">
+			<label class="x_inline" for="timeout"><input type="number" name="timeout" id="timeout" value="{$refererConfig->timeout}" onkeypress="return digit_check(event)" style="-ms-ime-mode:disabled;ime-mode:disabled;text-align:right; padding-right:1px" /> ms</label>
+			<span class="x_help-block">{$lang->help_timeout}</span>
+		</div>
+	</div>
+	<div class="x_control-group">
+		<label class="x_control-label" for="logging_country">{$lang->logging_country}</label>
+		<div class="x_controls">
+			<select name="logging_country" id="logging_country">
+				<option value="yes" selected="selected"|cond="$refererConfig->logging_country=='yes'||$refererConfig->logging_country==''">{$lang->cmd_yes} ({$lang->use})</option>
+				<option value="no" selected="selected"|cond="$refererConfig->logging_country=='no'">{$lang->cmd_no} ({$lang->notuse})</option>
+			</select>
+			<span class="x_help-inline">{$lang->help_logging_country}</span>
+		</div>
+	</div>
+	<div class="x_control-group">
+		<label class="x_control-label" for="include_admin">{$lang->include_admin}</label>
+		<div class="x_controls">
+			<select name="include_admin" id="include_admin">
+				<option value="yes" selected="selected"|cond="$refererConfig->include_admin=='yes'">{$lang->cmd_yes} ({$lang->include})</option>
+				<option value="no" selected="selected"|cond="$refererConfig->include_admin=='no'||$refererConfig->include_admin==''">{$lang->cmd_no} ({$lang->not_include})</option>
+			</select>
+			<span class="x_help-inline">{$lang->help_include_admin}</span>
+		</div>
+	</div>
+	<div class="x_control-group">
+		<label class="x_control-label" for="include_direct_access">{$lang->include_direct_access}</label>
+		<div class="x_controls">
+			<select name="include_direct_access" id="include_direct_access">
+				<option value="yes" selected="selected"|cond="$refererConfig->include_direct_access=='yes'||$refererConfig->include_direct_access==''">{$lang->cmd_yes} ({$lang->include})</option>
+				<option value="no" selected="selected"|cond="$refererConfig->include_direct_access=='no'">{$lang->cmd_no} ({$lang->not_include})</option>
+			</select>
+			<span class="x_help-inline">{$lang->help_include_direct_access}</span>
+		</div>
+	</div>
+	<div class="x_control-group">
+		<label class="x_control-label" for="include_bot">{$lang->include_bot}</label>
+		<div class="x_controls">
+			<select name="include_bot" id="include_bot">
+				<option value="yes" selected="selected"|cond="$refererConfig->include_bot=='yes'||$refererConfig->include_bot==''">{$lang->cmd_yes} ({$lang->include})</option>
+				<option value="no" selected="selected"|cond="$refererConfig->include_bot=='no'">{$lang->cmd_no} ({$lang->not_include})</option>
+			</select>
+			<span class="x_help-inline">{$lang->help_include_bot}</span>
+		</div>
+		<label class="x_control-label" for="treat_msie6_bot">{$lang->treat_msie6_bot}</label>
+		<div class="x_controls">
+			<select name="treat_msie6_bot" id="treat_msie6_bot">
+				<option value="yes" selected="selected"|cond="$refererConfig->treat_msie6_bot=='yes'||$refererConfig->treat_msie6_bot==''">{$lang->cmd_yes} ({$lang->use})</option>
+				<option value="no" selected="selected"|cond="$refererConfig->treat_msie6_bot=='no'">{$lang->cmd_no} ({$lang->notuse})</option>
+			</select>
+			<span class="x_help-inline">{$lang->help_treat_msie6_bot}</span>
+		</div>
+		<label class="x_control-label" for="treat_moz5_bot">{$lang->treat_moz5_bot}</label>
+		<div class="x_controls">
+			<select name="treat_moz5_bot" id="treat_moz5_bot">
+				<option value="yes" selected="selected"|cond="$refererConfig->treat_moz5_bot=='yes'||$refererConfig->treat_moz5_bot==''">{$lang->cmd_yes} ({$lang->use})</option>
+				<option value="no" selected="selected"|cond="$refererConfig->treat_moz5_bot=='no'">{$lang->cmd_no} ({$lang->notuse})</option>
+			</select>
+			<span class="x_help-inline">{$lang->help_treat_moz5_bot}</span>
+		</div>
+	</div>
+	<div class="x_control-group">
+		<label class="x_control-label" for="exclude_uagent">{$lang->exclude_uagent}</label>
+		<div class="x_controls">
+			<input type="text" name="exclude_uagent" id="exclude_uagent" value="{$refererConfig->exclude_uagent}" />
+			<span class="x_help-inline">{$lang->help_exclude_uagent}</span>
+		</div>
+	</div>
+	<div class="x_control-group">
+		<label class="x_control-label" for="exclude_host">{$lang->exclude_host}</label>
+		<div class="x_controls">
+			<input type="text" name="exclude_host" id="exclude_host" value="{$refererConfig->exclude_host}" />
+			<span class="x_help-inline">{$lang->help_exclude_host}</span>
+		</div>
+	</div>
+	<div class="x_control-group">
+		<label class="x_control-label" for="delete_olddata">{$lang->delete_olddata}</label>
+		<div class="x_controls">
+			<input type="text" name="delete_olddata" id="delete_olddata" value="{$refererConfig->delete_olddata}" onkeypress="return digit_check(event)" style="-ms-ime-mode:disabled;ime-mode:disabled;text-align:right; padding-right:1px" />{$lang->unit_day}
+			<span class="x_help-inline">{$lang->help_delete_olddata}</span>
+		</div>
+	</div>
+	<div class="btnArea x_clearfix">
+		<span class="x_pull-right"><input class="x_btn x_btn-primary" type="submit" value="{$lang->cmd_save}" /></span>
+	</div>
+</form>
+</section>
+<section class="section">
+	<h1>{$lang->referer} {$lang->cmd_reset}</h1>
+	<div class="x_control-group">
+		<div class="x_controls">
+    		<a href="{getUrl('act','dispRefererAdminConfirmReset')}"><input class="x_btn x_btn-warning" type="button" value="&nbsp; &nbsp; &nbsp; {$lang->cmd_reset} &nbsp; &nbsp; &nbsp;" /></a>
+    		<span class="x_help-inline">{$lang->help_referer_reset}</span>
+    	</div>
+    </div>
+</section>

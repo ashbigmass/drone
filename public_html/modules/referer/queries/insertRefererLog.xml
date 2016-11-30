@@ -1,0 +1,19 @@
+<query id="insertRefererLog" action="insert">
+	<tables>
+		<table name="referer_log" />
+	</tables>
+	<columns>
+		<column name="host"				var="host" />
+		<column name="remote"			var="remote" />
+		<column name="url"				var="url" />
+		<column name="uagent"			var="uagent" />
+		<column name="count"			var="count"   default="1" />
+		<column name="member_srl"		var="member_srl" />
+		<column name="request_uri"		var="request_uri" />
+		<column name="ref_mid"			var="ref_mid" />
+		<column name="ref_document_srl"	var="ref_document_srl" />
+		<column name="country_code"		var="country_code" />
+		<column name="regdate"			var="regdate" default="curdate()" notnull="notnull"/>
+		<column name="regdate_last"		var="regdate" default="curdate()" notnull="notnull"/>
+	</columns>
+</query>

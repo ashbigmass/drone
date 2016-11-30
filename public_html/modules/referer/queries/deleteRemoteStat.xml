@@ -1,0 +1,8 @@
+<query id="deleteRemoteStat" action="delete">
+	<tables>
+		<table name="referer_remote_statistics" />
+	</tables>
+	<conditions>
+		<condition operation="equal" column="remote" var="remote" notnull="notnull" />
+	</conditions>
+</query>
