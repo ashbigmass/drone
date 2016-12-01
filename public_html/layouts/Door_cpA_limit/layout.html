@@ -5,11 +5,11 @@
 <load target="css/default.css" />
 <load target="js/jquery.scrollUp.min.js" type="body" />
 <block cond="Mobile::isMobileCheckByAgent()">
-   <!--@if(file_exists('./common/js/jquery.min.js'))-->
-   {@ Context::addJsFile("./common/js/jquery.min.js", true, '', -10000011) }
-   <!--@elseif(file_exists('./common/js/jquery.js'))-->
-   {@ Context::addJsFile("./common/js/jquery.js", true, '', -10000011) }
-   <!--@end-->
+	<!--@if(file_exists('./common/js/jquery.min.js'))-->
+	{@ Context::addJsFile("./common/js/jquery.min.js", true, '', -10000011) }
+	<!--@elseif(file_exists('./common/js/jquery.js'))-->
+	{@ Context::addJsFile("./common/js/jquery.js", true, '', -10000011) }
+	<!--@end-->
 </block>
 <load target="css/owl.carousel.css" />
 <load target="js/owl.carousel.min.js" type="body" />
@@ -171,14 +171,11 @@
 .sub_header{background-image:url({$layout_info->m_sub_bgimg});}
 </block>
 }
-
 </style>
 <div class="xe {$layout_info->layout_style} mobile-{$layout_info->header_style}">
-<!-- 헤더 시작 -->
 	<div class="header" id="header">
 		<div class="in_header">
 			<p class="skip"><a href="#content">{$lang->skip_to_content}</a></p>
-			<!-- 우상단 로그인 -->
 			<div class="top_header">
 				<div class="wrap_account xe_width clearBoth">
 					<div class="account {$layout_info->color_login} {$layout_info->bg_account}">
@@ -206,7 +203,6 @@
 					</div>
 				</div>
 			</div>
-				<!-- 우상단 로그인 끝 -->
 			<div class="xe_width wrap_logo">
 				<h1 class="large_logo {$layout_info->logo_align}">
 					<a href="{$layout_info->logo_url}" cond="$layout_info->logo_image&&$layout_info->logo_url" title="{$layout_info->logo_image_alt}">
@@ -216,7 +212,7 @@
 						<img class="logo" src="{$layout_info->logo_image}" alt="{$layout_info->logo_image_alt}" border="0" />
 					</a>
 					<a href="{getSiteUrl()}" cond="!$layout_info->logo_image" class="text_logo"><img class="logo" src="img/p.logo.png" border="0" alt="logo"></a>
-				</h1>	
+				</h1>
 				<h1 class="logo_min">
 					<a href="{$layout_info->logo_url}" cond="$layout_info->Mlogo_image&&$layout_info->logo_url" title="{$layout_info->logo_image_alt}">
 						<img class="logo" src="{$layout_info->Mlogo_image}" alt="{$layout_info->logo_image_alt}" border="0" />
@@ -226,7 +222,6 @@
 					</a>
 					<a href="{getSiteUrl()}" cond="!$layout_info->Mlogo_image" class="text_logo"><img class="logo" src="img/logo.png" border="0" alt="logo"></a>
 				</h1>
-				<!-- 메인메뉴 끝 -->	
 				<a href="#" class="mobile_menu mobile_menu_act"><img src="img/menu.png" alt="메뉴보기" /></a>
 				<!--@if($is_logged)-->
 				<a href="{getUrl('act','dispMemberLogout')}" class="mobile_menu mobile_menu_login"><img src="img/logout.png" alt="logout" /></a>
@@ -255,10 +250,10 @@
 							</div>
 							</block>
 						{@$dx++}
-						</li>		
-					</ul>	
+						</li>
+					</ul>
 				</div>
-				
+
 			</div>
 			<div class="fix_menu">
 				<div class="wrap_menu middle_header xe_width clearBoth {$layout_info->menu_style}">
@@ -282,14 +277,12 @@
 								</div>
 								</block>
 							{@$dx++}
-							</li>		
-						</ul>	
+							</li>
+						</ul>
 					</div>
 				</div>
 			</div>
 		</div>
-		
-		
 		<div class="top_menu" cond="$layout_info->header_style=='B'">
 			<div class="top-owl-menu owl-menu owl-carousel">
 				{@$idx=1}
@@ -318,12 +311,11 @@
 						autoWidth:true,
 						nav:true,
 						items:3
-						})	
+						})
 					});
 				</script>
 		</div>
 	</div>
-<!-- 헤더 끝 -->
 	<section class="section0">
 	<block cond="!Mobile::isMobileCheckByAgent()">
 	<div class="wrap_slide" cond="$layout_info->main_slide=='A'||$layout_info->main_slide=='B'">
@@ -336,11 +328,8 @@
 	</div>
 	</block>
 	<div class="wrap_sub_header" cond="$layout_info->breadclumb=='Y'">
-		<!-- depth 1 -->
 		<block loop="$main_menu->list=>$key, $val" cond="$val['selected']">{@$menu_depth1 = $val}</block>
-		<!-- depth 2 -->
 		<block loop="$menu_depth1['list']=>$key, $val" cond="$val['selected'] && $menu_depth1">{@$menu_depth2 = $val}</block>
-		<!-- depth 3 -->
 		<block loop="$menu_depth2['list']=>$key, $val" cond="$val['selected'] && $menu_depth2">{@$menu_depth3 = $val}</block>
 		<div class="has_bg_breadclumb sub_header animation-pulseBgSlow">
 			<div class="bg_breadclumb">
@@ -365,7 +354,6 @@
 				<div class="xe_width wrap_body">
 					<div class="in_body clearBoth">
 						<div class="e1" cond="$layout_info->layout_style=='ec'||$layout_info->layout_style=='ce'">
-							<!-- 서브메뉴 하위메뉴 -->
 							<div class="lnb_title">
 								<h2 loop="$sub_menu->list=>$key1,$val1" cond="$val1['selected']" class="has_span"|cond="$layout_info->locNav_img">
 									<block cond="$layout_info->locNav_img">
@@ -394,7 +382,7 @@
 								<li cond="$layout_info->sub_banner_img1">
 									<a href="{$layout_info->sub_banner_url1}"><img src="{$layout_info->sub_banner_img1}" alt="{$layout_info->sub_banner_alt1}" /></a>
 								</li>
-								
+
 								<li cond="$layout_info->sub_banner_img2">
 									<a href="{$layout_info->sub_banner_url2}"><img src="{$layout_info->sub_banner_img2}" alt="{$layout_info->sub_banner_alt2}" /></a>
 								</li>
@@ -414,9 +402,9 @@
 						</div>
 						<div class="content" cond="$content">
 							<block cond="$layout_info->breadclumb=='Y'">
-							
+
 							<div class="wrap_breadclumb">
-								<ul class="breadclumb">											
+								<ul class="breadclumb">
 									<li class="first_breadclumb png_bg">
 										<a href="{getSiteUrl()}">
 											HOME
@@ -434,7 +422,7 @@
 									<li cond="!$menu_depth1">
 											{$module_info->browser_title}
 									</li>
-								</ul>		
+								</ul>
 							</div>
 							</block>
 							<div class="wrap_section">
@@ -471,7 +459,7 @@
 						</li>
 					</ul>
 				</div>
-		
+
 				<p class="copylight" cond="!$layout_info->copyright">
 						<span>Address</span>: 서울특별시 ***&nbsp;&nbsp;
 						<span>Tel</span>: 000-000-0000&nbsp;&nbsp;
@@ -506,19 +494,12 @@
 				</ul>
 				<a href="http://doorweb.net/xe" target="_blank" class="ds_dw">Design by <span class="skin_by">DoorWeb</span></a>
 			</div>
-			
+
 		</div>
 	</div>
 	</section>
 </div>
-<script>
-
-		/* scrollUp Minimum setup */
-	jQuery(function($){
-			$.scrollUp();
-		});
-
-	</script>
+<script>jQuery(function($){$.scrollUp();});	</script>
 			<div class="fix_mobile">
 			</div>
 			<div class="mm_mobile_menu none_mobile_menu">
@@ -527,7 +508,7 @@
 					<!--@if($is_logged)-->
 					<li class="fl"><a href="{getUrl('act', 'dispMemberInfo')}">{$lang->cmd_view_member_info}</a></li>
 					<li class="fl"><a class="login_A" href="{getUrl('act','dispMemberLogout')}">{$lang->cmd_logout}</a></li>
-					
+
 					<!--@elseif($act!='dispMemberLoginForm')-->
 					<li class="fl"><a href="{getUrl('act','dispMemberLoginForm')}">{$lang->cmd_login}</a></li>
 					<li class="fl"><a class="login_A" href="{getUrl('act','dispMemberSignUpForm')}">{$lang->cmd_signup}</a></li>
@@ -536,7 +517,7 @@
 					<a href="#" class="mobile_menu_act in_mobile_act">CLOSE</a>
 				</div>
 				<nav id="mm-menu">
-					
+
 					<ul class="mm-list">
 						<li class="mm-list-li" cond="$layout_info->use_language=='Y'">
 							<a class="mm_a mm_lang" href="#">Select language</a><button class="Nav_i"><i class="xi-angle-down"></i><i class="xi-angle-up"> </i></button>

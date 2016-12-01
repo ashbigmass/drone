@@ -1,197 +1,159 @@
 <load target="css/blessing.css" />
 <load target="https://s3.amazonaws.com/icomoon.io/49314/XEIconv10/style.css"/>
 <load target="js/blessing.js"/>
-
 {@ $_is_indexmodule = ($site_module_info->module_srl === $current_module_info->module_srl)}
 {@ $_body_class = array()}
-
-<!--// 레이아웃 타입 -->
-<block cond="$layout_info->layout_type === 'auto'">
-{@ $layout_info->layout_type = ($_is_indexmodule) ? 'full' : 'sub';}
-</block>
-
+<block cond="$layout_info->layout_type === 'auto'">{@ $layout_info->layout_type = ($_is_indexmodule) ? 'full' : 'sub';}</block>
 {@ $_body_class[] = $layout_info->layout_type}
-
-
 {@ $_body_class = join(' ', $_body_class)}
-
-
-
 <body style="background-color:{$layout_info->main_bg}">
 <div class="container" style="background-color:{$layout_info->main_bg}">
-
-    <div style="background-image:url({$layout_info->main_image})"|cond="$layout_info->main_image_use == 'ok'" class="top_bg top_bg_none"|cond="$layout_info->main_image_use == 'no'" class="top_bg"></div>
+	<div style="background-image:url({$layout_info->main_image})"|cond="$layout_info->main_image_use == 'ok'" class="top_bg top_bg_none"|cond="$layout_info->main_image_use == 'no'" class="top_bg"></div>
 	<p class="skip"><a href="#content">메뉴 건너뛰기</a></p>
-    <header class="header">
-        <div class="top_section">
-            <h1>
-                <a href="{getUrl('')}">
-                    <span cond="$layout_info->main_tit" class="blind">{$layout_info->main_tit}</span>
-                    <img cond="$layout_info->main_image_use == 'no'" src="{$layout_info->main_image}" class="header_img" alt="">
-                </a>
-            </h1>
-
-            <div class="search_area" cond="$layout_info->main_search == 'add'">
-                <!-- SEARCH -->
-                <form action="{getUrl()}" method="post" class="search">
-                    <input type="hidden" name="vid" value="{$vid}" cond="$vid">
-                    <input type="hidden" name="mid" value="{$mid}">
-                    <input type="hidden" name="act" value="IS">
-                    <input type="text" name="is_keyword" value="" required="" placeholder="search" title="search input">
-                    <input type="submit" value="">
-                </form>
-                <!-- /SEARCH -->
-            </div>
-
-            <div class="login_area">
-               <a href="index.php?module=admin" cond="$logged_info->is_admin " class="admin"><i class="xe-tool"></i><span class="blind">xe admin</span></a>
-                <!-- before_login -->
-                <div class="lg_box">
-                <a href="#" class="login" ><i class="xe-user"></i><span class="blind">로그인</span></a>
-                <div class="ly_login">
-                    <ul>
-                    <li><a href="#" id="ly_login_btn">로그인</a></li>
-                    </ul>
-                    <span class="edge"></span>
-                </div>
-                </div>
-                <!-- /before_login -->
-            </div>
-
-        </div>
-        <!-- GNB -->
-        <nav class="gnb" id="gnb">
-            <ul>
-                <li loop="$main_menu->list=>$key1,$val1" >
-                  <a href="{$val1['href']}"|cond="!$val1['list']" href="#" target="_blank"|cond="$val1['open_window']=='Y'" class="tri"|cond="$val1['list']" style="color:{$layout_info->tab_color}">{$val1['link']}</a>
-                     <block cond="$val1['selected']">{@ $_selected_menu = $val1}</block>
-                     <ul class="depth2" cond="$val1['list']">
-                        <li loop="$val1['list']=>$key2,$val2" class="active"|cond="$val2['selected']">
-                           <a href="{$val2['href']}" >{$val2['link']}</a>
-                               <ul cond="$val2['list']" class="depth3">
-                                 <li loop="$val2['list']=>$key3,$val3" class="active"|cond="$val3['selected']">
-                                 <a href="{$val3['href']}" target="_blank"|cond="$val3['open_window']=='Y'">{$val3['link']}</a>
-                                 </li>
-                                </ul>
-                        </li>
-                     </ul>
-                </li>
-            </ul>
-        </nav>
-	    <!-- /GNB -->
-    </header>
-
-	<div class="body left {$_body_class}"|cond="$layout_info->sub_type === 'left'" class="body right {$_body_class}"|cond="$layout_info->sub_type === 'right'" class="body full" >
-
-	    <div class="sidebar" cond="$layout_info->layout_type === 'sub' && $layout_info->sub_type !== 'full'">
-		    <div class="profile">
-		        <!-- 이미지 기본 사이즈 200*160 -->
-		        <a href="#" class="thumb"><img src="{$layout_info->side_bar_img}" alt=""></a>
-		        <h1>{$layout_info->side_tit}</h1>
-		        <p>{$layout_info->side_exp}</p>
-		    </div>
-
-		    <div class="lnb">
-              <h2>Categories</h2>
-		      <ul>
-                <li loop="$main_menu->list=>$key1,$val1" class="more"|cond="$val1['list']">
-                 <a href="#" class="btn_open" cond="$val1['list']"><span class="blind">하위 메뉴 열기</span><i class="xe-plus-square"></i></a>
-                  <a href="{$val1['href']}" target="_blank"|cond="$val1['open_window']=='Y'" class="tri"|cond="$val1['list']">{$val1['link']}</a>
-                     <ul cond="$val1['list']" class="more_info">
-                        <li loop="$val1['list']=>$key2,$val2" class="active"|cond="$val2['selected']">
-                           <a href="{$val2['href']}" target="_blank"|cond="$val2['open_window']=='Y'">{$val2['link']}</a>
-                               <ul cond="$val2['list']" class="depth3">
-                                 <li loop="$val2['list']=>$key3,$val3" class="active"|cond="$val3['selected']">
-                                 <a href="{$val3['href']}" target="_blank"|cond="$val3['open_window']=='Y'">{$val3['link']}</a>
-                                 </li>
-                                 </ul>
-                        </li>
-                     </ul>
-                </li>
-            </ul>
-		      </div>
+	<header class="header">
+		<div class="top_section">
+			<h1>
+				<a href="{getUrl('')}">
+					<span cond="$layout_info->main_tit" class="blind">{$layout_info->main_tit}</span>
+					<img cond="$layout_info->main_image_use == 'no'" src="{$layout_info->main_image}" class="header_img" alt="">
+				</a>
+			</h1>
+			<div class="search_area" cond="$layout_info->main_search == 'add'">
+				<form action="{getUrl()}" method="post" class="search">
+					<input type="hidden" name="vid" value="{$vid}" cond="$vid">
+					<input type="hidden" name="mid" value="{$mid}">
+					<input type="hidden" name="act" value="IS">
+					<input type="text" name="is_keyword" value="" required="" placeholder="search" title="search input">
+					<input type="submit" value="">
+				</form>
+			</div>
+			<div class="login_area">
+			   <a href="index.php?module=admin" cond="$logged_info->is_admin " class="admin"><i class="xe-tool"></i><span class="blind">xe admin</span></a>
+				<div class="lg_box">
+				<a href="#" class="login" ><i class="xe-user"></i><span class="blind">로그인</span></a>
+				<div class="ly_login">
+					<ul>
+					<li><a href="#" id="ly_login_btn">로그인</a></li>
+					</ul>
+					<span class="edge"></span>
+				</div>
+				</div>
+			</div>
 		</div>
-
+		<nav class="gnb" id="gnb">
+			<ul>
+				<li loop="$main_menu->list=>$key1,$val1" >
+				  <a href="{$val1['href']}"|cond="!$val1['list']" href="#" target="_blank"|cond="$val1['open_window']=='Y'" class="tri"|cond="$val1['list']" style="color:{$layout_info->tab_color}">{$val1['link']}</a>
+					 <block cond="$val1['selected']">{@ $_selected_menu = $val1}</block>
+					 <ul class="depth2" cond="$val1['list']">
+						<li loop="$val1['list']=>$key2,$val2" class="active"|cond="$val2['selected']">
+						   <a href="{$val2['href']}" >{$val2['link']}</a>
+							   <ul cond="$val2['list']" class="depth3">
+								 <li loop="$val2['list']=>$key3,$val3" class="active"|cond="$val3['selected']">
+								 <a href="{$val3['href']}" target="_blank"|cond="$val3['open_window']=='Y'">{$val3['link']}</a>
+								 </li>
+								</ul>
+						</li>
+					 </ul>
+				</li>
+			</ul>
+		</nav>
+	</header>
+	<div class="body left {$_body_class}"|cond="$layout_info->sub_type === 'left'" class="body right {$_body_class}"|cond="$layout_info->sub_type === 'right'" class="body full" >
+		<div class="sidebar" cond="$layout_info->layout_type === 'sub' && $layout_info->sub_type !== 'full'">
+			<div class="profile">
+				<a href="#" class="thumb"><img src="{$layout_info->side_bar_img}" alt=""></a>
+				<h1>{$layout_info->side_tit}</h1>
+				<p>{$layout_info->side_exp}</p>
+			</div>
+			<div class="lnb">
+			  <h2>Categories</h2>
+			  <ul>
+				<li loop="$main_menu->list=>$key1,$val1" class="more"|cond="$val1['list']">
+				 <a href="#" class="btn_open" cond="$val1['list']"><span class="blind">하위 메뉴 열기</span><i class="xe-plus-square"></i></a>
+				  <a href="{$val1['href']}" target="_blank"|cond="$val1['open_window']=='Y'" class="tri"|cond="$val1['list']">{$val1['link']}</a>
+					 <ul cond="$val1['list']" class="more_info">
+						<li loop="$val1['list']=>$key2,$val2" class="active"|cond="$val2['selected']">
+						   <a href="{$val2['href']}" target="_blank"|cond="$val2['open_window']=='Y'">{$val2['link']}</a>
+							   <ul cond="$val2['list']" class="depth3">
+								 <li loop="$val2['list']=>$key3,$val3" class="active"|cond="$val3['selected']">
+								 <a href="{$val3['href']}" target="_blank"|cond="$val3['open_window']=='Y'">{$val3['link']}</a>
+								 </li>
+								 </ul>
+						</li>
+					 </ul>
+				</li>
+			</ul>
+			  </div>
+		</div>
 		<div class="content_wrap">
-    		<!-- CONTENT -->
-    		<div class="content" id="content">
-    		   {$content}
-    		</div>
-    		<!-- /CONTENT -->
+			<div class="content" id="content">{$content}</div>
 		</div>
 		<div class="ccl_area">
-		    <a href="http://creativecommons.org/licenses/by-sa/4.0/deed.ko " target="_blank"><span class="blind">저작자표시 - 동일조건변경허락</span></a>
+			<a href="http://creativecommons.org/licenses/by-sa/4.0/deed.ko " target="_blank"><span class="blind">저작자표시 - 동일조건변경허락</span></a>
 		</div>
 	</div>
+	<div class="footer_wrap" style="background-color:{$layout_info->ft_bg}">
+		<footer class="footer">
+			<div class="about">
+				<p class="about_thumb<!--@if(!$layout_info->footer_logo_img)--> log_txt<!--@end-->"><a href="<!--@if($layout_info->footer_logo_url)-->{$layout_info->footer_logo_url}<!--@else-->#<!--@end-->" target="_blank">
+					<!--@if($layout_info->footer_logo_img)-->
+					<img src="{$layout_info->footer_logo_img}" alt="{$layout_info->footer_logo_text}">
+					<!--@else-->
+						{$layout_info->footer_logo_text}
+					<!--@end-->
+					</a>
+				</p>
+				<p class="f_cont">{$layout_info->footer_text}</p>
+			</div>
+			<div class="about_company">
+				<h2 class="f_title">Introduce</h2>
+				<ul>
+					<li cond="$layout_info->company_info">{$layout_info->company_info}</li>
+					<li cond="$layout_info->company_email"><i class="xe-email"></i> {$layout_info->company_email}</li>
+					<li cond="$layout_info->company_tel"><i class="xe-telephone"></i> {$layout_info->company_tel}</li>
+					<li cond="$layout_info->company_address"><i class="xe-marker-circle"></i> {$layout_info->company_address}</li>
+				</ul>
+			</div>
+			<div class="subscribe">
+			<h2 class="f_title">menu</h2>
+				<ul>
+					{@$i = 0}
+					<li loop="$main_menu->list=>$key1,$val1" class="f_cont"|cond="$i > 0">
+						{@$i++}
+						<block cond="$i<13">
+						 <a href="{$val1['href']}" target="_blank"|cond="$val1['open_window']=='Y'" >{$val1['link']}</a>
+						</block>
 
-    <!-- footer -->
-    <div class="footer_wrap" style="background-color:{$layout_info->ft_bg}">
-        <footer class="footer">
-            <div class="about">
-                <p class="about_thumb<!--@if(!$layout_info->footer_logo_img)--> log_txt<!--@end-->"><a href="<!--@if($layout_info->footer_logo_url)-->{$layout_info->footer_logo_url}<!--@else-->#<!--@end-->" target="_blank">
-                    <!--@if($layout_info->footer_logo_img)-->
-                    <img src="{$layout_info->footer_logo_img}" alt="{$layout_info->footer_logo_text}">
-                    <!--@else-->
-                        {$layout_info->footer_logo_text}
-                    <!--@end-->
-                    </a>
-                </p>
-                <p class="f_cont">{$layout_info->footer_text}</p>
-            </div>
-            <div class="about_company">
-                <h2 class="f_title">Introduce</h2>
-                <ul>
-                    <li cond="$layout_info->company_info">{$layout_info->company_info}</li>
-                    <li cond="$layout_info->company_email"><i class="xe-email"></i> {$layout_info->company_email}</li>
-                    <li cond="$layout_info->company_tel"><i class="xe-telephone"></i> {$layout_info->company_tel}</li>
-                    <li cond="$layout_info->company_address"><i class="xe-marker-circle"></i> {$layout_info->company_address}</li>
-                </ul>
-            </div>
-            <div class="subscribe">
-            <h2 class="f_title">menu</h2>
-                <ul>
-                    {@$i = 0}
-                    <li loop="$main_menu->list=>$key1,$val1" class="f_cont"|cond="$i > 0">
-                        {@$i++}
-                        <block cond="$i<13">
-                         <a href="{$val1['href']}" target="_blank"|cond="$val1['open_window']=='Y'" >{$val1['link']}</a>
-                        </block>
-
-                    </li>
-                </ul>
-            </div>
-            <div class="explore">
-                <h2 class="f_title">Explore</h2>
-                <ul class="lst_sns">
-                <li cond="$layout_info->sns_link1"><a href="{$layout_info->sns_link1}" target="_blank">
-                <i class="{$layout_info->sns_link_icon1}"></i></a></li>
-                <li cond="$layout_info->sns_link2"><a href="{$layout_info->sns_link2}" target="_blank">
-                <i class="{$layout_info->sns_link_icon2}"></i></a></li>
-                <li cond="$layout_info->sns_link3"><a href="{$layout_info->sns_link3}" target="_blank">
-                <i class="{$layout_info->sns_link_icon3}"></i></a></li>
-                <li cond="$layout_info->sns_link4"><a href="{$layout_info->sns_link4}" target="_blank">
-                <i class="{$layout_info->sns_link_icon4}"></i></a></li>
-                <li cond="$layout_info->sns_link5"><a href="{$layout_info->sns_link5}" target="_blank">
-                <i class="{$layout_info->sns_link_icon5}"></i></a></li>
-                <li cond="$layout_info->sns_link6"><a href="{$layout_info->sns_link6}" target="_blank">
-                <i class="{$layout_info->sns_link_icon6}"></i></a></li>
-                </ul>
-            </div>
-
-            <p class="copyright" style="padding-top:20px">
-                Copyright @ <a href="{$layout_info->footer_logo_url}">
-                <!--@if(!$_sample_footer)-->
-                    {$layout_info->footer_copyright}
-                <!--@end-->
-                </a></p>
-        </footer>
-    </div>
-    <!-- //footer -->
-
+					</li>
+				</ul>
+			</div>
+			<div class="explore">
+				<h2 class="f_title">Explore</h2>
+				<ul class="lst_sns">
+				<li cond="$layout_info->sns_link1"><a href="{$layout_info->sns_link1}" target="_blank">
+				<i class="{$layout_info->sns_link_icon1}"></i></a></li>
+				<li cond="$layout_info->sns_link2"><a href="{$layout_info->sns_link2}" target="_blank">
+				<i class="{$layout_info->sns_link_icon2}"></i></a></li>
+				<li cond="$layout_info->sns_link3"><a href="{$layout_info->sns_link3}" target="_blank">
+				<i class="{$layout_info->sns_link_icon3}"></i></a></li>
+				<li cond="$layout_info->sns_link4"><a href="{$layout_info->sns_link4}" target="_blank">
+				<i class="{$layout_info->sns_link_icon4}"></i></a></li>
+				<li cond="$layout_info->sns_link5"><a href="{$layout_info->sns_link5}" target="_blank">
+				<i class="{$layout_info->sns_link_icon5}"></i></a></li>
+				<li cond="$layout_info->sns_link6"><a href="{$layout_info->sns_link6}" target="_blank">
+				<i class="{$layout_info->sns_link_icon6}"></i></a></li>
+				</ul>
+			</div>
+			<p class="copyright" style="padding-top:20px">
+				Copyright @ <a href="{$layout_info->footer_logo_url}">
+				<!--@if(!$_sample_footer)-->
+					{$layout_info->footer_copyright}
+				<!--@end-->
+				</a></p>
+		</footer>
+	</div>
 </div>
-
-
-<!-- Login widget -->
 <section cond="$layout_info->use_login_widget != 'N'" class="login_widget" style="display:none"|cond="$XE_VALIDATOR_ID != 'layouts/xedition/layout/1' || !$XE_VALIDATOR_MESSAGE">
 	<load target="./css/widget.login.css" />
 	<div class="ly_dimmed"></div>
@@ -242,38 +204,35 @@
 		</div>
 		<a href="#" class="btn_ly_popup"><span class="blind">닫기</span></a>
 	</div>
-	<script>
-	jQuery(function ($) {
-		var keep_msg = $("#warning");
-		$(".chk_label").on("mouseenter mouseleave focusin focusout", function (e) {
-			if(e.type == "mouseenter" || e.type == "focusin") {
-				keep_msg.show();
-			}
-			else {
-				keep_msg.hide();
-			}
-		});
-		$("#ly_login_btn, #ly_btn").click(function () {
-			$(".login_widget").show();
-			return false;
-		});
-		$(".btn_ly_popup").click(function () {
-			$(".login_widget").hide();
-			return false;
-		});
-		$("input").blur(function () {
-			var $this = $(this);
-			if ($this.val()) {
-				$this.addClass("used");
-			}
-			else {
-				$this.removeClass("used");
-			}
-		});
+<script>
+jQuery(function ($) {
+	var keep_msg = $("#warning");
+	$(".chk_label").on("mouseenter mouseleave focusin focusout", function (e) {
+		if(e.type == "mouseenter" || e.type == "focusin") {
+			keep_msg.show();
+		}
+		else {
+			keep_msg.hide();
+		}
 	});
-	</script>
+	$("#ly_login_btn, #ly_btn").click(function () {
+		$(".login_widget").show();
+		return false;
+	});
+	$(".btn_ly_popup").click(function () {
+		$(".login_widget").hide();
+		return false;
+	});
+	$("input").blur(function () {
+		var $this = $(this);
+		if ($this.val()) {
+			$this.addClass("used");
+		}
+		else {
+			$this.removeClass("used");
+		}
+	});
+});
+</script>
 </section>
-<!-- /Login widget -->
-
 </body>
-
