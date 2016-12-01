@@ -1,0 +1,21 @@
+{@
+if ($layout_info->c4_title) $c4_title = $layout_info->c4_title;
+if ($layout_info->c4_text) $c4_text =$layout_info->c4_text;
+if ($layout_info->c4_widget) $c4_widget =$layout_info->c4_widget;
+if ($layout_info->gallery_bg) $gallery_bg = 'f-header-'.$layout_info->gallery_bg;
+}
+<div id="gallery-1" class="gallery-1 {$gallery_bg}">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-12">
+				<h1 class="text-center">{$c4_title}</h1>
+				<p class="text-center mbottom50">{$c4_text}</p>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12">
+				{$c4_widget}
+			</div>
+		</div>
+	</div>
+</div>

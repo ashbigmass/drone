@@ -1,0 +1,37 @@
+{@
+if ($layout_info->c2_title) $c2_title = $layout_info->c2_title;
+if ($layout_info->c2_text) $c2_text =$layout_info->c2_text;
+if ($layout_info->c2_title1) $c2_title1 = $layout_info->c2_title1;
+if ($layout_info->c2_text1) $c2_text1 =$layout_info->c2_text1;
+if ($layout_info->c2_title2) $c2_title2 = $layout_info->c2_title2;
+if ($layout_info->c2_text2) $c2_text2 =$layout_info->c2_text2;
+if ($layout_info->c2_title3) $c2_title3 = $layout_info->c2_title3;
+if ($layout_info->c2_text3) $c2_text3 =$layout_info->c2_text3;
+if ($layout_info->c2_image) $c2_image =$layout_info->c2_image;
+if ($layout_info->c2_url) $c2_url =$layout_info->c2_url;
+if ($layout_info->ourservices_bg) $ourservices_bg = 'f-header-'.$layout_info->ourservices_bg;
+}
+<div id="ourservices-1" class="ourservices-1 {$ourservices_bg}">
+	<div class="container">
+				<h1 class="text-center">{$c2_title}</h1>
+				<p class="text-center mbottom50">{$c2_text}</p>
+				<div class="row">
+				<div class="col-sm-8">
+					<h2 class="text-023550">{$c2_title1}</h2>
+					<p class="mbottom50">{$c2_text1}</p>
+					<h2 class="text-023550">{$c2_title2}</h2>
+					<p class="mbottom50">{$c2_text2}</p>
+					<h2 class="text-023550">{$c2_title3}</h2>
+					<p class="mbottom50">{$c2_text3}</p>
+				</div>
+				<div class="col-sm-4 text-center">
+					<img class="aboutusceo" src="{$c2_image}" />
+				</div>
+				</div>
+				<div class="row">
+				<div class="col-sm-12">
+					<p cond="$c2_url" class="text-center"><a class="p-btn btn-red mtop15" href="{$c2_url}" target="_blank">자세히 보기</a></p>
+				</div>
+		</div>
+	</div>
+</div>

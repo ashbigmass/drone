@@ -1,0 +1,44 @@
+{@
+if (!$layout_info->twocol_lnb) $twocol_lnb = 'yes';
+if ($layout_info->twocol_lnb) $twocol_lnb = $layout_info->twocol_lnb;
+if ($layout_info->twocol_widget1) $twocol_widget1 = $layout_info->twocol_widget1;
+if ($layout_info->twocol_widget2) $twocol_widget2 = $layout_info->twocol_widget2;
+if ($layout_info->twocol_widget3) $twocol_widget3 = $layout_info->twocol_widget3;
+}
+<p class="skip"><a href="#content">{$lang->skip_to_content}</a></p>
+<include target="phiz_themes/topmenu/topmenu01.html" />
+<include target="phiz_themes/pages/phizkr_promotion_0.html" />
+<section class="content-wrap">
+	<div class="container">
+		<div class="row">
+		<aside class="col-sm-3 hidden-xs<!--@if($layout_info->layout_type == 'two_left')--> pull-right<!--@end-->">
+			<!--// LNB -->
+		<nav cond="$twocol_lnb == 'yes'" class="lnb">
+<!--//			<h1 loop="$main_menu->list=>$key1,$val1" cond="$val1['selected'] && $val1['list']"><a class="btn-gold" href="{$val1['href']}" target="_blank"|cond="$val1['open_window']=='Y'">{$val1['link']}</a></h1> -->
+			<ul loop="$main_menu->list=>$key1,$val1" cond="$val1['selected'] && $val1['list']">
+				<li loop="$val1['list']=>$key2,$val2" class="active"|cond="$val2['selected']"><a href="{$val2['href']}" target="_blank"|cond="$val2['open_window']=='Y'">{$val2['link']}</a></li>
+			</ul>
+		</nav>
+		<!--// 위젯1 -->
+		<div cond="$twocol_widget1" class="content mtop15">
+			{$twocol_widget1}
+		</div>
+		<div cond="$twocol_widget2" class="content mtop15">
+			{$twocol_widget2}
+		</div>
+		<div cond="$twocol_widget3" class="content mtop15">
+			{$twocol_widget3}
+		</div>
+
+		</aside>
+		<article class="col-sm-9">
+			<!--// 컨텐츠 시작 -->
+			<div class="content" id="content">
+				{$content}
+			</div>
+		</article>
+
+		</div>
+	</div>
+</section>
+

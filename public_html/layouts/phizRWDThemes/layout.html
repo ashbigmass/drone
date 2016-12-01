@@ -1,0 +1,59 @@
+<!--@if(class_exists(Mobile) && Mobile::isFromMobilePhone())-->
+{@Context::addHtmlHeader('<meta name="viewport" content="width=device-width, initial-scale=1.0">')}
+<load target="css/bootstrap.min.css" />
+<load target="css/style_pm.css" index="10" />
+<load target="../../common/js/jquery.min.js" index="-100006" />
+<!--@end-->
+<!--@if($layout_info->layout_frame == 'reponsive_layout')-->
+{@
+Context::addHtmlHeader('<meta name="viewport" content="width=device-width, initial-scale=1.0">');
+Context::addHtmlHeader('<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->');
+Context::set("admin_bar","false");
+}
+<load target="css/bootstrap.min.css" />
+<load target="css/style_pm.css" index="10" />
+<!--@end-->
+<!--@if($layout_info->layout_frame == 'fixed_layout')-->
+{@
+Context::addHtmlHeader('<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->');
+Context::set("admin_bar","false");
+}
+<load target="css/bootstrap_f.css" />
+<load target="css/style_f.css" index="10" />
+<!--@end-->
+{@
+if (!$layout_info->footer_copyright) $footer_copyright = 'Copyright &copy; phiz.kr All rights reserved';
+if ($layout_info->footer_copyright) $footer_copyright = $layout_info->footer_copyright;
+if (!$layout_info->help_one) $help_one = 'preview';
+if ($layout_info->help_one) $help_one = $layout_info->help_one;
+}
+
+<load target="http://fonts.googleapis.com/earlyaccess/nanumgothic.css" />
+<load target="fonts/font-awesome/css/font-awesome.min.css" />
+<load target="css/default.css" />
+<load target="js/js.js" type="body" />
+<load target="js/phizDefault.js" />
+<load target="js/respond.min.js" targetie="lt IE 9" />
+
+<!--@if($help_one == 'help')-->
+	<include target="phiz_themes/pages/help.html" />
+<!--@end-->
+<!--@if($help_one == 'preview')-->
+	<include target="phiz_themes/pages/preview.html" />
+<!--@end-->
+<block cond="$layout_info->layout_type == 'one_page'">
+	<include target="layout_onepage.html" />
+</block>
+<block cond="$layout_info->layout_type == 'main_page'">
+	<include target="layout_mainpage.html" />
+</block>
+<block cond="$layout_info->layout_type == 'one_column'">
+	<include target="layout_one.html" />
+</block>
+<block cond="$layout_info->layout_type == 'two_left' || $layout_info->layout_type == 'two_right'">
+	<include target="layout_twocol.html" />
+</block>
+<include target="phiz_themes/footer/footer01.html" />
+<script>
+<include target="js/custom.js" />
+</script>

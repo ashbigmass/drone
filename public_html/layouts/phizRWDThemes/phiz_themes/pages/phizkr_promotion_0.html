@@ -1,0 +1,22 @@
+{@
+if ($layout_info->pm_title) $pm_title = $layout_info->pm_title;
+if ($layout_info->pm_text1) $pm_text1 = $layout_info->pm_text1;
+if ($layout_info->pm_content1) $pm_content1 = $layout_info->pm_content1;
+if ($layout_info->pm_content2) $pm_content2 = $layout_info->pm_content2;
+if ($layout_info->pm_content3) $pm_content3 = $layout_info->pm_content3;
+if ($layout_info->pm_content4) $pm_content4 = $layout_info->pm_content4;
+if ($layout_info->pm_content5) $pm_content5 = $layout_info->pm_content5;
+}
+<div id="pm-0" class="pm-0">
+	<div class="container">
+		<h1 class="text-center"><i class="fa fa-desktop"></i> {$pm_title}</h1>
+		<p cond="$pm_text1" class="text-center">{$pm_text1}</p>
+		<p class="text-center">
+			<span cond="$pm_content1" class="p-icon-1"><i class="fa fa-check-circle text-ff540d"></i> {$pm_content1}</span>
+			<span cond="$pm_content2" class="p-icon-1"><i class="fa fa-check-circle text-ff540d"></i> {$pm_content2}</span>
+			<span cond="$pm_content3" class="p-icon-1"><i class="fa fa-check-circle text-ff540d"></i> {$pm_content3}</span>
+			<span cond="$pm_content4" class="p-icon-1"><i class="fa fa-check-circle text-ff540d"></i> {$pm_content4}</span>
+			<span cond="$pm_content5" class="p-icon-1"><i class="fa fa-check-circle text-ff540d"></i> {$pm_content5}</span>
+		</p>
+	</div>
+</div>

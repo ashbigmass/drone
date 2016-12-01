@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout version="0.2">
+    <title xml:lang="ko">Blessing 레이아웃 템플릿</title>
+    <description xml:lang="ko">Blessing 테마</description>
+    <version>1.0</version>
+    <date>2015-11-05</date>
+    <author email_address="gke11@naver.com" link="#/">
+        <name xml:lang="ko">kke/pmh</name> 
+    </author>
+    <menus>
+        <menu name="main_menu" maxdepth="3" default="true">
+            <title xml:lang="ko">전역 네비게이션 바</title> 
+        </menu>
+    </menus>
+    <extra_vars>
+       <group>
+         <title xml:lang="ko">메인</title>
+          <var name="layout_type" type="select" default="auto">
+				<title xml:lang="ko">레이아웃 타입</title>
+				<options value="auto">
+					<title xml:lang="ko">자동 적용</title>
+				</options>
+				<options value="full">
+					<title xml:lang="ko">메인형</title>
+				</options>
+				<options value="sub">
+					<title xml:lang="ko">서브형</title>
+				</options> 
+			</var>
+           <var name="main_image_use" type="select">
+                <title xml:lang="ko">전체 배경 이미지 사용/미사용</title>
+                 <options value="ok">
+                    <title xml:lang="ko">사용</title> 
+                </options>
+                <options value="no">
+                    <title xml:lang="ko">미사용</title> 
+                </options>
+            </var>
+            <var name="main_image" type="image">
+                <title xml:lang="ko">배경 or 상단 로고 이미지</title>
+                 <description xml:lang="ko">배경이미지 사용하지 않을경우, 이미지 올리지 않으셔도 됩니다.</description>
+            </var>
+             <var name="main_bg" type="text">
+                 <title xml:lang="ko">메인 배경색</title>
+                 <description xml:lang="ko">이미지 뒤 메인 배경색 설정 ex)#000000</description>
+             </var>
+             <var name="ft_bg" type="text">
+                 <title xml:lang="ko">footer 배경색</title>
+                 <description xml:lang="ko">아래 footer 배경색 설정 ex)#000000</description>
+             </var>
+             <var name="main_tit" type="text">
+                 <title xml:lang="ko">메인 제목</title>
+                 <description xml:lang="ko">블라인드 텍스트 적용(홈페이지 제목)</description>
+             </var>          
+            <var name="main_search" type="select">
+                 <title xml:lang="ko">검색기능</title> 
+                 <options value="add">
+                    <title xml:lang="ko">검색기능 추가</title> 
+                </options>
+                <options value="delete">
+                    <title xml:lang="ko">검색기능 삭제</title> 
+                </options>
+             </var>   
+             <var name="tab_color" type="text">
+             <title xml:lang="ko">탭 글자색</title>
+             <description xml:lang="ko">탭 글자색 설정 ex)#000</description>
+         </var>    
+        </group>
+         <group>
+			<title xml:lang="ko">서브페이지</title>
+            <var name="sub_type" type="select">
+                 <title xml:lang="ko">서브페이지 메뉴 위치</title> 
+                 <options value="left">
+                    <title xml:lang="ko">왼쪽</title> 
+                </options>
+                <options value="right">
+                    <title xml:lang="ko">오른쪽</title> 
+                </options>
+            <options value="full">
+                    <title xml:lang="ko">FULL</title> 
+                </options>
+             </var>     
+             <var name="side_bar_img" type="image">
+             <title xml:lang="ko">사이드바 이미지</title>
+             <description xml:lang="ko">사이드바 이미지</description>
+         </var>
+         <var name="side_tit" type="text">
+             <title xml:lang="ko">사이드바 이미지 아래 텍스트</title>
+             <description xml:lang="ko">사이드바 이미지아래 텍스트 설정</description>
+         </var>
+         <var name="side_exp" type="text">
+             <title xml:lang="ko">사이드바 이미지 아래 설명 텍스트</title>
+             <description xml:lang="ko">사이드바 이미지 아래 설명 텍스트 설정</description>
+         </var>    
+        </group>
+        <group>
+			<title xml:lang="ko">FOOTER 영역</title>
+			<var name="footer_logo_img" type="image">
+            <title xml:lang="ko">푸터 로고 이미지</title>
+            <description xml:lang="ko">로고 이미지 크기 : 240px x 45px</description>
+			</var>
+			<var name="footer_logo_text" type="text">
+				<title xml:lang="ko">푸터 로고 문자</title>
+			</var>
+			<var name="footer_logo_url" type="text">
+				<title xml:lang="ko">푸터 로고 링크 주소</title>
+			</var>
+			<var name="footer_text" type="textarea">
+				<title xml:lang="ko">푸터 내용</title>
+			</var>
+			<var name="footer_copyright" type="textarea">
+				<title xml:lang="ko">카피라이트 내용</title>
+			</var>
+			<var name="sns_link1" type="text">
+				<title xml:lang="ko">SNS1 url 주소</title>
+				<description xml:lang="ko">링크 주소를 입력합니다.</description>	
+			</var>
+			<var name="sns_link_icon1" type="text">
+				<title xml:lang="ko">SNS1 아이콘</title>
+				<description xml:lang="ko">XE 아이콘 코드명을 입력(ex:xe-facebook),
+				http://contest.xpressengine.com/templates/xe_icon/index.html 참고</description>	
+			</var>
+			<var name="sns_link2" type="text">
+				<title xml:lang="ko">SNS2 url 주소</title>
+				<description xml:lang="ko">링크 주소를 입력합니다.</description>	
+			</var>
+			<var name="sns_link_icon2" type="text">
+				<title xml:lang="ko">- SNS2 아이콘</title>
+				<description xml:lang="ko">XE 아이콘 코드명을 입력(ex:xe-facebook)</description>	
+			</var>
+			<var name="sns_link3" type="text">
+				<title xml:lang="ko"> SNS3 링크 주소</title>
+				<description xml:lang="ko">링크 주소를 입력합니다.</description>	
+			</var>
+			<var name="sns_link_icon3" type="text">
+				<title xml:lang="ko">- SNS3 아이콘</title>
+				<description xml:lang="ko">XE 아이콘 코드명을 입력(ex:xe-facebook)</description>	
+			</var>
+			<var name="sns_link4" type="text">
+				<title xml:lang="ko"> SNS4 링크 주소</title>
+				<description xml:lang="ko">링크 주소를 입력합니다.</description>	
+			</var>
+			<var name="sns_link_icon4" type="text">
+				<title xml:lang="ko">- SNS4 아이콘</title>
+				<description xml:lang="ko">XE 아이콘 코드명을 입력(ex:xe-facebook)</description>	
+			</var>
+			<var name="sns_link5" type="text">
+				<title xml:lang="ko"> SNS5 링크 주소</title>
+				<description xml:lang="ko">링크 주소를 입력합니다.</description>	
+			</var>
+			<var name="sns_link_icon5" type="text">
+				<title xml:lang="ko">- SNS5 아이콘</title>
+				<description xml:lang="ko">XE 아이콘 코드명을 입력(ex:xe-facebook)</description>	
+			</var>
+            <var name="sns_link6" type="text">
+				<title xml:lang="ko"> SNS6 링크 주소</title>
+				<description xml:lang="ko">링크 주소를 입력합니다.</description>	
+			</var>
+			<var name="sns_link_icon6" type="text">
+				<title xml:lang="ko">- SNS6 아이콘</title>
+				<description xml:lang="ko">XE 아이콘 코드명을 입력(ex:xe-facebook)</description>	
+			</var>
+			<var name="company_info" type="textarea">
+				<title xml:lang="ko">회사정보</title>
+				<description xml:lang="ko">대표자, 사업자등록번호 등 기본적인 회사 정보 및 웹사이트 정보를 입력합니다.</description>	
+			</var>
+			<var name="company_address" type="textarea">
+				<title xml:lang="ko">회사주소</title>
+				<description xml:lang="ko">회사 주소를 입력합니다.</description>	
+			</var>
+			<var name="company_email" type="text">
+				<title xml:lang="ko">이메일</title>
+				<description xml:lang="ko">이메일 주소를 입력합니다.</description>	
+			</var>
+			<var name="company_tel" type="text">
+				<title xml:lang="ko">전화번호</title>
+				<description xml:lang="ko">전화번호를 입력합니다.</description>	
+			</var>
+		</group>
+    </extra_vars>
+       
+</layout>

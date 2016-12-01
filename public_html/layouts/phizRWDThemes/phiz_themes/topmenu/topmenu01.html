@@ -1,0 +1,49 @@
+{@
+if (!$layout_info->header_bg) $header_bg = 'f-header-primary';
+if ($layout_info->header_bg) $header_bg = 'f-header-'.$layout_info->header_bg;
+if (!$layout_info->brand_color) $brand_color = 'brand-color-danger';
+if ($layout_info->brand_color) $brand_color = 'brand-color-'.$layout_info->brand_color;
+}
+
+<div class="header-wrapper">
+	<header class="header {$header_bg}">
+		<nav class="gnb">
+			<div class="container">
+				<div class="navbar navbar-phiz">
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+					<!--@if($layout_info->logo_image)--><a class="navbar-brand" href="{$layout_info->index_url}"><img src="{$layout_info->logo_image}" alt="{$layout_info->logo_text}"|cond="$layout_info->logo_text" alt="logo"|cond="!$layout_info->logo_text" /></a><!--@else--><a class="navbar-brand {$brand_color}" href="{$layout_info->index_url}">{$layout_info->logo_text}</a><!--@end-->
+					</div>
+					<div class="navbar-collapse collapse">
+						<ul class="nav navbar-nav">
+							<block loop="$main_menu->list=>$key1,$val1" cond="$val1['text']">
+							<li class="<!--@if($val1['list'])-->dropdown<!--@end--><!--@if($val1['selected'])--> active<!--@end-->">
+							<a href="{$val1['href']}" target="_blank"|cond="$val1['open_window']=='Y'"<!--@if($val1['list'])--> class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"<!--@end-->>{$val1['link']}<!--@if($val1['list'])--> <span class="caret"></span><!--@end--></a>
+									<ul cond="$val1['list']" class="dropdown-menu">
+										<block loop="$val1['list']=>$key2,$val2" cond="$val2['link']">
+										<li class="<!--@if($val2['list'])-->dropdown-menu<!--@end--><!--@if($val2['selected'])--> active<!--@end-->"><a href="{$val2['href']}" target="_blank"|cond="$val2['open_window']=='Y'">{$val2['link']}</a></li>
+										</block>
+									</ul>
+							</li>
+							</block>
+						</ul>
+						<ul class="nav navbar-nav pull-right">
+							<li cond="!$is_logged"><a href="{getUrl('act','dispMemberLoginForm')}">{$lang->cmd_login}</a></li>
+							<block cond="$is_logged">
+							<li><a href="{getUrl('act','dispMemberInfo','member_srl','')}">{$logged_info->nick_name}님</a></li>
+							<li><a href="{getUrl('act','dispMemberLogout')}">{$lang->cmd_logout}</a></li>
+							<!--@if($logged_info->is_admin=="Y" && !$site_module_info->site_srl)-->
+							<li><a href="{getUrl('','module','admin')}" onclick="window.open(this.href);return false;">{$lang->cmd_management}</a></li>
+							<!--@end-->
+							</block>
+						</ul>
+					</div><!--/.nav-collapse -->
+				</div>
+			</div>
+		</nav>
+	</header>
+</div>

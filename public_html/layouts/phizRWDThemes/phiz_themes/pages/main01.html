@@ -1,0 +1,56 @@
+{@
+if ($layout_info->m1_title1) $m1_title1 = $layout_info->m1_title1;
+if ($layout_info->m1_text1) $m1_text1 =$layout_info->m1_text1;
+if ($layout_info->m1_title2) $m1_title2 = $layout_info->m1_title2;
+if ($layout_info->m1_text2) $m1_text2 =$layout_info->m1_text2;
+if ($layout_info->m1_title3) $m1_title3 = $layout_info->m1_title3;
+if ($layout_info->m1_text3) $m1_text3 =$layout_info->m1_text3;
+if ($layout_info->m1_url1) $m1_url1 =$layout_info->m1_url1;
+if ($layout_info->m1_url2) $m1_url2 =$layout_info->m1_url2;
+if ($layout_info->m1_url3) $m1_url3 =$layout_info->m1_url3;
+
+if ($layout_info->m2_widget1) $m2_widget1 = $layout_info->m2_widget1;
+if ($layout_info->m2_widget2) $m2_widget2 = $layout_info->m2_widget2;
+if ($layout_info->m3_widget1) $m3_widget1 = $layout_info->m3_widget1;
+
+}
+<div id="main01" class="main01">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-4">
+				<div class="doc-wrap doc-inner">
+					<h2 cond="$m1_title1" class="text-023550">{$m1_title1}</h2>
+					<p>{$m1_text1}</p>
+					<p cond="$m1_url1" class="text-center"><a class="p-btn btn-red mtop15" href="{$m1_url1}" target="_blank">자세히 보기</a></p>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="doc-wrap doc-inner">
+					<h2 cond="$m1_title2" class="text-023550">{$m1_title2}</h2>
+					<p>{$m1_text2}</p>
+					<p cond="$m1_url2" class="text-center"><a class="p-btn btn-red mtop15" href="{$m1_url2}" target="_blank">자세히 보기</a></p>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="doc-wrap doc-inner">
+					<h2 cond="$m1_title3" class="text-023550">{$m1_title3}</h2>
+					<p>{$m1_text3}</p>
+					<p cond="$m1_url3" class="text-center"><a class="p-btn btn-red mtop15" href="{$m1_url3}" target="_blank">자세히 보기</a></p>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-6">
+			{$m2_widget1}
+			</div>
+			<div class="col-sm-6">
+			{$m2_widget2}
+			</div>
+		</div>
+		<div class="row mbottom50">
+			<div class="col-sm-12">
+			{$m3_widget1}
+			</div>
+		</div>
+	</div>
+</div>

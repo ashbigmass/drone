@@ -1,0 +1,41 @@
+{@
+if ($layout_info->c5_title) $c5_title = $layout_info->c5_title;
+if ($layout_info->c5_text) $c5_text =$layout_info->c5_text;
+if ($layout_info->c5_url4) $c5_url =$layout_info->c5_url;
+if ($layout_info->c5_company) $c5_company =$layout_info->c5_company;
+if ($layout_info->c5_address) $c5_address =$layout_info->c5_address;
+if ($layout_info->c5_phone) $c5_phone =$layout_info->c5_phone;
+if ($layout_info->c5_fax) $c5_fax =$layout_info->c5_fax;
+if ($layout_info->c5_email) $c5_email =$layout_info->c5_email;
+if ($layout_info->c5_url) $c5_url =$layout_info->c5_url;
+if ($layout_info->contact_bg) $contact_bg = 'f-header-'.$layout_info->contact_bg;
+}
+
+<div id="contact-1" class="contact-1 {$contact_bg}">
+	<div class="container">
+		<div class="col-sm-12">
+			<h1 class="text-center">{$c5_title}</h1>
+			<p class="text-center mbottom100">{$c5_text}</p>
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-6">
+			<h2>{@c5_company}</h2>
+				<ul class="fa-ul">
+					<li cond="$c5_address"><i class="fa-li fa fa-square-o"></i> {$c5_address}</li>
+					<li cond="$c5_phone"><i class="fa-li fa fa-phone"></i> {$c5_phone}</li>
+					<li cond="$c5_fax"><i class="fa-li fa fa-print"></i> {$c5_fax}</li>
+					<li cond="$c5_email"><i class="fa-li fa fa-envelope-o"></i> {$c5_email}</li>
+				</ul>
+			</div>
+			<div class="col-sm-6">
+
+				<div class="contact-inner">
+					<p class="text-center"><a class="p-btn btn-red" href="{$c5_url}" target="_blank">Contact Us</a></p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,55 @@
+{@
+if ($layout_info->main_image1) $main_image1 = $layout_info->main_image1;
+if ($layout_info->main_image2) $main_image2 = $layout_info->main_image2;
+if ($layout_info->main_image3) $main_image3 = $layout_info->main_image3;
+if ($layout_info->main_image4) $main_image4 = $layout_info->main_image4;
+if ($layout_info->main_image5) $main_image5 = $layout_info->main_image5;
+}
+<load target="css/camera.css" />
+<style>
+.camera_caption {
+	bottom: 30%;
+	display: block;
+	position: absolute;
+	width: 100%;
+}
+.camera_caption > div {
+	padding: 10px 20px;
+}
+.camera_caption {
+	color: #fff;
+}
+.camera_caption > div {
+	background: #fff;
+	background: rgba(255, 255, 255, 0);
+}
+</style>
+<div class="row">
+	<div class="camera_wrap camera_azure_skin" id="camera_wrap">
+		<div cond="$main_image1" data-src="{$main_image1}">
+			<div class="camera_caption moveFromLeft">
+				<h2 class="text-center color-default">왕초보를 위한 XE 사용설명서</h2>
+			</div>
+		</div>
+		<div cond="$main_image2" data-src="{$main_image2}">
+			<div class="camera_caption fadeIn">
+				<h2 class="text-center color-default">XE 반응형 웹 토탈 솔루션</h2>
+			</div>
+		</div>
+		<div cond="$main_image3" data-src="{$main_image3}">
+			<div class="camera_caption moveFromRight">
+				<h2 class="text-center color-default">phiz 반응형 웹 Themes</h2>
+			</div>
+		</div>
+		<div cond="$main_image4" data-src="{$main_image4}">
+			<div class="camera_caption moveFromTop">
+				<h2 class="text-center color-default">phiz 반응형 게시판스킨</h2>
+			</div>
+		</div>
+		<div cond="$main_image5" data-src="{$main_image5}">
+			<div class="camera_caption moveFromBottom">
+				<h2 class="text-center color-default">phiz 반응형 위젯스킨</h2>
+			</div>
+		</div>
+	</div>
+</div>

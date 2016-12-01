@@ -1,0 +1,55 @@
+{@
+if ($layout_info->c3_title) $c3_title = $layout_info->c3_title;
+if ($layout_info->c3_text) $c3_text =$layout_info->c3_text;
+if ($layout_info->c3_image1) $c3_image1 = $layout_info->c3_image1;
+if ($layout_info->c3_title1) $c3_title1 = $layout_info->c3_title1;
+if ($layout_info->c3_text1) $c3_text1 = $layout_info->c3_text1;
+if ($layout_info->c3_url1) $c3_url1 =$layout_info->c3_url1;
+if ($layout_info->c3_image2) $c3_image2 = $layout_info->c3_image2;
+if ($layout_info->c3_title2) $c3_title2 = $layout_info->c3_title2;
+if ($layout_info->c3_text2) $c3_text2 = $layout_info->c3_text2;
+if ($layout_info->c3_url2) $c3_url2 =$layout_info->c3_url2;
+if ($layout_info->c3_image3) $c3_image3 = $layout_info->c3_image3;
+if ($layout_info->c3_title3) $c3_title3 = $layout_info->c3_title3;
+if ($layout_info->c3_text3) $c3_text3 = $layout_info->c3_text3;
+if ($layout_info->c3_url3) $c3_url3 =$layout_info->c3_url3;
+if ($layout_info->c3_image4) $c3_image4 = $layout_info->c3_image4;
+if ($layout_info->c3_title4) $c3_title4 = $layout_info->c3_title4;
+if ($layout_info->c3_text4) $c3_text4 = $layout_info->c3_text4;
+if ($layout_info->c3_url4) $c3_url4 =$layout_info->c3_url4;
+if ($layout_info->products_bg) $products_bg = 'f-header-'.$layout_info->products_bg;
+}
+<div id="products-1" class="products-1 {$products_bg}">
+	<div class="container">
+		<div class="row">
+			<h1 class="text-center">{$c3_title}</h1>
+			<p class="text-center mbottom50">{$c3_text}</p>
+		</div>
+		<div class="row">
+			<div class="col-sm-3 text-center">
+			<img class="aboutusceo img-circle " src="{$c3_image1}" />
+			<h2 class="text-center">{$layout_info->c3_title1}</h2>
+			<p class="text-center">{$layout_info->c3_text1}</p>
+			<p cond="$c2_url" class="text-center"><a class="p-btn btn-red" href="{$c3_url1}" target="_blank">자세히 보기</a></p>
+			</div>
+			<div class="col-sm-3 text-center">
+			<img class="aboutusceo img-circle" src="{$c3_image2}" />
+			<h2 class="text-center">{$layout_info->c3_title2}</h2>
+			<p class="text-center">{$layout_info->c3_text2}</p>
+			<p cond="$c2_url" class="text-center"><a class="p-btn btn-red" href="{$c3_url2}" target="_blank">자세히 보기</a></p>
+			</div>
+			<div class="col-sm-3 text-center">
+			<img class="aboutusceo img-circle" src="{$c3_image3}" />
+			<h2 class="text-center">{$layout_info->c3_title3}</h2>
+			<p class="text-center">{$layout_info->c3_text3}</p>
+			<p cond="$c2_url" class="text-center"><a class="p-btn btn-red" href="{$c3_url3}" target="_blank">자세히 보기</a></p>
+			</div>
+			<div class="col-sm-3 text-center">
+			<img class="aboutusceo img-circle" src="{$c3_image4}" />
+			<h2 class="text-center">{$layout_info->c3_title4}</h2>
+			<p class="text-center">{$layout_info->c3_text4}</p>
+			<p cond="$c2_url" class="text-center"><a class="p-btn btn-red" href="{$c3_url4}" target="_blank">자세히 보기</a></p>
+			</div>
+		</div>
+	</div>
+</div>

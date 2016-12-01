@@ -1,0 +1,39 @@
+{@
+if ($layout_info->c1_title) $c1_title = $layout_info->c1_title;
+if ($layout_info->c1_text) $c1_text =$layout_info->c1_text;
+if ($layout_info->c1_image1) $c1_image1 = $layout_info->c1_image1;
+if ($layout_info->c1_title1) $c1_title1 = $layout_info->c1_title1;
+if ($layout_info->c1_text1) $c1_text1 = $layout_info->c1_text1;
+if ($layout_info->c1_image2) $c1_image2 = $layout_info->c1_image2;
+if ($layout_info->c1_title2) $c1_title2 = $layout_info->c1_title2;
+if ($layout_info->c1_text2) $c1_text2 = $layout_info->c1_text2;
+if ($layout_info->c1_image3) $c1_image3 = $layout_info->c1_image3;
+if ($layout_info->c1_title3) $c1_title3 = $layout_info->c1_title3;
+if ($layout_info->c1_text3) $c1_text3 = $layout_info->c1_text3;
+if ($layout_info->about_bg) $about_bg = 'f-header-'.$layout_info->about_bg;
+}
+<div id="aboutus-1" class="aboutus-1 {$about_bg}">
+	<div class="container">
+		<div class="row">
+			<h1 class="text-center">{$c1_title}</h1>
+			<p class="text-center mbottom100">{$c1_text}</p>
+		</div>
+		<div class="row">
+			<div class="col-sm-4 text-center">
+				<img class="aboutusceo img-circle" src="{$c1_image1}" />
+				<h2 cond="$c1_title1" class="text-center">{$c1_title1}</h2>
+				<p cond="$c1_text1" class="text-center">{$c1_text1}</p>
+			</div>
+			<div class="col-sm-4 text-center">
+				<img class="aboutusceo img-circle" src="{$c1_image2}" />
+				<h2 cond="$c1_title2" class="text-center">{$c1_title2}</h2>
+				<p cond="$c1_text2" class="text-center">{$c1_text2}</p>
+			</div>
+			<div class="col-sm-4 text-center">
+				<img class="aboutusceo img-circle" src="{$c1_image3}" />
+				<h2 cond="$c1_title3" class="text-center">{$c1_title3}</h2>
+				<p cond="$c1_text3" class="text-center">{$c1_text3}</p>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout version="0.2">
+    <title xml:lang="ko">웹빌드 부트스트랩  레이아웃 2</title>
+    <title xml:lang="en"> webbuilder bootstrap layout 2</title>
+    <title xml:lang="jp">webbuilder bootstrap layout 2</title>
+    <description xml:lang="ko">부트스트랩을 활용한 레이아웃입니다.</description>
+
+    <version>1.0.3</version>
+    <date>2014-02-18</date>
+    <author email_address="ch7@daum.net" link="http://webbuilder.kr/">
+        <name xml:lang="ko">webbuilder</name>
+        <name xml:lang="en">webbuilder</name>
+        <name xml:lang="jp">webbuilder</name>
+    </author>
+    <menus>
+        <menu name="global_menu" maxdepth="3" default="true">
+            <title xml:lang="ko">전역 메뉴</title>
+            <title xml:lang="en">Global Menu</title>
+            <title xml:lang="jp">グローバルメニュー</title>
+        </menu>
+    </menus>
+    	<extra_vars>
+	 <group>
+		<title xml:lang="ko">레이아웃 설정</title>
+		 <var name="body_style" type="select">
+			<title xml:lang="ko">본문 스타일</title>
+			<title xml:lang="en">Layout Style</title>
+			<description xml:lang="ko">본문 스타일을 선택하세요.</description>
+			<options value="main">
+				<title xml:lang="ko">메인페이지</title>
+				<title xml:lang="en">Main Page</title>
+				<value>home</value>
+				</options>	
+			<options value="sub">
+				<title xml:lang="ko">서브페이지</title>
+				<title xml:lang="en">Sub Page</title>
+				<value>sub</value>
+			</options>
+		</var>
+		<var name="LOGO_IMG" type="image">
+			<title xml:lang="ko">사이트 로고 이미지</title>
+			<title xml:lang="en">Site logo image</title>
+		</var>
+		<var name="LOGO_TEXT" type="text">
+			<title xml:lang="ko">사이트 로고 문자</title>
+			<title xml:lang="en">Site logo text</title>
+		</var>
+			<var name="index_url" type="text">
+			<title xml:lang="ko">로고 링크</title>
+			<title xml:lang="en">Site url</title>
+		</var>
+					<var name="FOOT_TEXT" type="text">
+			<title xml:lang="ko">하단 메시지</title>
+			<title xml:lang="en">Site foot text</title>
+		</var>
+
+		</group>
+
+		</extra_vars>
+</layout>

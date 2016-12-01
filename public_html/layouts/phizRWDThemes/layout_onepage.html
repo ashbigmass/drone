@@ -1,0 +1,44 @@
+{@
+if ($layout_info->c1_title) $c1_title = $layout_info->c1_title;
+if ($layout_info->c2_title) $c2_title = $layout_info->c2_title;
+if ($layout_info->c3_title) $c3_title = $layout_info->c3_title;
+if ($layout_info->c4_title) $c4_title = $layout_info->c4_title;
+if ($layout_info->c5_title) $c5_title = $layout_info->c5_title;
+}
+<include target="phiz_themes/slide/backgroundslide/index.html" cond="$layout_info->bg_slide == 'yes'" />
+<div id="lpreview" class="hidden-xs">
+	<div class="previewBox">
+		<div class="leftPreview">
+			<ul id="menuList">
+			<li ><a href="#no0" class="arctic_scroll" data-toggle="tooltip" data-placement="right" title data-original-title="Home"><i class="fa fa-home text-red"></i></a></li>
+			<li><a href="#no1" class="arctic_scroll"  data-toggle="tooltip" data-placement="right" title data-original-title="{$c1_title}"><i class="fa fa-smile-o text-red"></i></a></li>
+			<li><a href="#no2" class="arctic_scroll"  data-toggle="tooltip" data-placement="right" title data-original-title="{$c2_title}"><i class="fa fa-magic text-red"></i></a></li>
+			<li><a href="#no3" class="arctic_scroll"  data-toggle="tooltip" data-placement="right" title data-original-title="{$c3_title}"><i class="fa fa-lemon-o text-red"></i></a></li>
+			<li><a href="#no4" class="arctic_scroll"  data-toggle="tooltip" data-placement="right" title data-original-title="{$c4_title}"><i class="fa fa-picture-o text-red"></i></a></li>
+			<li><a href="#no5" class="arctic_scroll"  data-toggle="tooltip" data-placement="right" title data-original-title="{$c5_title}"><i class="fa fa-envelope-o text-red"></i></a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<div id="no0">
+<include target="phiz_themes/topmenu/topmenu01.html" />
+</div>
+<div class="onepage-wrap">
+<include target="phiz_themes/pages/phizkr_promotion_0.html" />
+<div id="no1">
+<include target="phiz_themes/pages/phizkr_aboutus_1.html" />
+</div>
+<div id="no2">
+<include target="phiz_themes/pages/phizkr_ourservices_1.html" />
+</div>
+<div id="no3">
+<include target="phiz_themes/pages/phizkr_products_1.html" />
+</div>
+<div id="no4">
+<include target="phiz_themes/pages/phizkr_gallery_1.html" />
+</div>
+<div id="no5">
+<include target="phiz_themes/pages/phizkr_contactus_1.html" />
+</div>
+<include target="phiz_themes/pages/phizkr_promotion_1.html" />
+</div>

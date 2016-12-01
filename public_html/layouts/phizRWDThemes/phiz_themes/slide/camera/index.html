@@ -1,0 +1,17 @@
+{@
+if ($layout_info->main_image1) $main_image1 = $layout_info->main_image1;
+if ($layout_info->main_image2) $main_image2 = $layout_info->main_image2;
+if ($layout_info->main_image3) $main_image3 = $layout_info->main_image3;
+if ($layout_info->main_image4) $main_image4 = $layout_info->main_image4;
+if ($layout_info->main_image5) $main_image5 = $layout_info->main_image5;
+}
+<load target="css/camera.css" />
+<div class="row">
+	<div class="camera_wrap camera_azure_skin" id="camera_wrap">
+		<div cond="$main_image1" data-src="{$main_image1}"></div>
+		<div cond="$main_image2" data-src="{$main_image2}"></div>
+		<div cond="$main_image3" data-src="{$main_image3}"></div>
+		<div cond="$main_image4" data-src="{$main_image4}"></div>
+		<div cond="$main_image5" data-src="{$main_image5}"></div>
+	</div>
+</div>

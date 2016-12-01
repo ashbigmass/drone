@@ -1,0 +1,168 @@
+@charset "utf-8";
+.container {
+  max-width: none !important;
+  width: 980px;
+  padding:0;
+}
+.navbar-phiz .navbar-brand {font:bold 28px "Arial black", 돋음, "Helvetica black", "Tahoma", Gadget, sans-serif;float: left;padding: 12px 15px 12px 0;line-height: 20px;letter-spacing: -2px;text-shadow: 1px 1px 1px #bbb;}
+.navbar-phiz { margin-bottom:0;}
+.navbar-phiz .navbar-nav > li > a {
+color: #fff;
+}
+.navbar-phiz .navbar-nav > li > a:hover,
+.navbar-phiz .navbar-nav > li > a:focus {
+color: #fff;
+background-color: transparent;
+}
+.navbar-phiz .navbar-nav > .active > a,
+.navbar-phiz .navbar-nav > .active > a:hover,
+.navbar-phiz .navbar-nav > .active > a:focus {
+color: #555555;
+background-color: #e7e7e7;
+}
+.dropdown-menu > li > a {
+  display: block;
+  padding: 3px 20px;
+  clear: both;
+  font-weight: normal;
+  line-height: 1.428571429;
+  color: #333;
+  white-space: nowrap;
+}
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus {
+  color: #333;
+  text-decoration: none;
+  background-color: #ecf0f1;
+}
+.dropdown-menu > .active > a,
+.dropdown-menu > .active > a:hover,
+.dropdown-menu > .active > a:focus {
+  color: #333;
+  text-decoration: none;
+  background-color: #ecf0f1;
+  outline: 0;
+}
+.navbar-phiz .navbar-nav > .disabled > a,
+.navbar-phiz .navbar-nav > .disabled > a:hover,
+.navbar-phiz .navbar-nav > .disabled > a:focus {
+color: #cccccc;
+background-color: transparent;
+}
+.navbar-phiz .navbar-toggle {
+border-color: #dddddd;
+}
+.navbar-phiz .navbar-toggle:hover,
+.navbar-phiz .navbar-toggle:focus {
+background-color: #dddddd;
+}
+.navbar-phiz .navbar-toggle .icon-bar {
+background-color: #cccccc;
+}
+.navbar-phiz .navbar-nav > .dropdown > a:hover .caret,
+.navbar-phiz .navbar-nav > .dropdown > a:focus .caret {
+border-top-color: #333333;
+border-bottom-color: #333333;
+}
+.navbar-phiz .navbar-nav > li> a:hover,
+.navbar-phiz .navbar-nav > li > a:focus {
+color: #333;
+background-color: #e7e7e7;
+}
+.navbar-phiz .navbar-nav > .open > a,
+.navbar-phiz .navbar-nav > .open > a:hover,
+.navbar-phiz .navbar-nav > .open > a:focus {
+color: #555555;
+background-color: #e7e7e7;
+}
+.navbar-phiz .navbar-nav > .open > a .caret,
+.navbar-phiz .navbar-nav > .open > a:hover .caret,
+.navbar-phiz .navbar-nav > .open > a:focus .caret {
+border-top-color: #555555;
+border-bottom-color: #555555;
+}
+.navbar-phiz .navbar-nav > .dropdown > a .caret {
+border-top-color: #777777;
+border-bottom-color: #777777;
+}
+.header-wrapper.stuck {
+position: fixed;
+width: 100%;
+top: 0;
+box-shadow: 0 2px 4px rgba(0, 0, 0, .3);
+z-index: 9999999;
+}
+.f-header-default .navbar-phiz .navbar-nav > li > a {
+color: #333; 
+}
+.f-header-default .dropdown-menu > li > a:hover,
+.f-header-default .dropdown-menu > li > a:focus {
+  color: #333;
+  text-decoration: none;
+  background-color: #ecf0f1;
+}
+.f-header-default .dropdown-menu > .active > a,
+.f-header-default .dropdown-menu > .active > a:hover,
+.f-header-default .dropdown-menu > .active > a:focus {
+  color: #333;
+  text-decoration: none;
+  background-color: #ecf0f1;
+  outline: 0;
+}
+.page-header {
+  margin-bottom: 30px;
+}
+.page-header .lead {
+  margin-bottom: 10px;
+}
+.col-xs-4 {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  background-color: #eee;
+  border: 1px solid #ddd;
+  background-color: rgba(86,61,124,.15);
+  border: 1px solid rgba(86,61,124,.2);
+}
+.btcontainer .navbar-header,
+.btcontainer .navbar-collapse {
+  margin-right: 0;
+  margin-left: 0;
+}
+.navbar-header {
+  float: left;
+}
+.navbar-collapse {
+  display: block !important;
+  height: auto !important;
+  padding-bottom: 0;
+  overflow: visible !important;
+}
+.navbar-toggle {
+  display: none;
+}
+.navbar-nav {
+  float: left;
+margin: 0 0 0 100px;
+}
+.navbar-nav > li {
+  float: left;
+}
+.navbar-nav > li > a {
+  padding: 15px;
+}
+.navbar-nav.navbar-right {
+  float: right;
+}
+.camera-wrap {
+width: 980px;
+padding-right: 15px;
+padding-left: 15px;
+margin-right: auto;
+margin-left: auto;
+}
+@media screen and (max-width: 767px){
+.pm-0 h1,.pm-1 h1,.main-pm-0 h1,.camera_caption h2 {font-size:36px}
+.aboutusceo {
+width: 100% !important;
+}
+}

@@ -1,0 +1,914 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout version="0.2">
+    <title xml:lang="ko">phiz 반응형 테마</title>
+    <title xml:lang="en">phiz Responsive Themes</title>
+    <description xml:lang="ko">
+        phiz 반응형 테마
+        Author : phiz
+    </description>
+    <description xml:lang="en">
+        phiz Responsive Themes
+        Author : phiz
+    </description>
+    <version>1.2</version>
+    <date>2014-05-03</date>
+    <link>http://phiz.kr/</link>
+
+    <author email_address="phiz@phiz.kr" link="http://phiz.kr/">
+        <name xml:lang="ko">phiz</name>
+        <name xml:lang="en">phiz</name>
+    </author>
+    <extra_vars>
+	<group>
+	<title xml:lang="ko">일반 설정</title>
+	<title xml:lang="en">General Settings</title>
+		<var name="help_one" type="radio">
+			<title xml:lang="ko">세팅 도우미</title>
+			<title xml:lang="en">Setup Assistant</title>
+			<options value="help">
+				<title xml:lang="ko">설정도우미출력</title>
+				<title xml:lang="en">help</title>
+			</options>
+			<options value="preview">
+				<title xml:lang="ko">예시화면출력</title>
+				<title xml:lang="en">preview</title>
+			</options>
+			<options value="setting">
+				<title xml:lang="ko">실제사용화면출력</title>
+				<title xml:lang="en">use</title>
+			</options>
+			</var>
+		<var name="layout_frame" type="select">
+			<title xml:lang="ko">레이아웃 프레임</title>
+			<title xml:lang="en">Layout frame</title>
+			<options value="reponsive_layout">
+				<title xml:lang="ko">반응형 레이아웃</title>
+				<title xml:lang="en">reponsive</title>
+			</options>
+			<options value="fixed_layout">
+				<title xml:lang="ko">고정폭 레이아웃</title>
+				<title xml:lang="en">Fixed width layout</title>
+			</options>
+			<options value="mobile_layout">
+				<title xml:lang="ko">모바일 레이아웃</title>
+				<title xml:lang="en">Mobile layout</title>
+			</options>
+		</var>
+		<var name="layout_type" type="select">
+			<title xml:lang="ko">레이아웃 유형</title>
+			<title xml:lang="en">Layout Type</title>
+			<options value="one_page">
+				<title xml:lang="ko">원페이지</title>
+				<title xml:lang="en">One Page</title>
+			</options>
+			<options value="main_page">
+				<title xml:lang="ko">메인페이지</title>
+				<title xml:lang="en">Main page</title>
+			</options>
+			<options value="one_column">
+				<title xml:lang="ko">서브 1컬럼</title>
+				<title xml:lang="en">Sub One Column</title>
+			</options>
+			<options value="two_left">
+				<title xml:lang="ko">서브 2컬럼(좌측본문)</title>
+				<title xml:lang="en">Two Columns(left contents)</title>
+			</options>
+			<options value="two_right">
+				<title xml:lang="ko">서브2컬럼(우측본문)</title>
+				<title xml:lang="en">Two Columns(right contents)</title>
+			</options>
+		</var>
+		<var name="logo_text" type="text">
+			<title xml:lang="ko">로고 글자</title>
+			<title xml:lang="en">Logo text</title>
+		</var>
+			<var name="brand_color" type="select">
+				<title xml:lang="ko">로고 글자 색상</title>
+				<description xml:lang="ko">로고의 텍스트 색상을 지정합니다.</description>
+				<options value="default">
+					<title xml:lang="ko">회색</title>
+					<title xml:lang="en">default</title>
+				</options>
+				<options value="primary">
+					<title xml:lang="ko">파란색</title>
+					<title xml:lang="en">primary</title>
+				</options>
+				<options value="success">
+					<title xml:lang="ko">초록색</title>
+					<title xml:lang="en">success</title>
+				</options>
+				<options value="info">
+					<title xml:lang="ko">하늘색</title>
+					<title xml:lang="en">info</title>
+				</options>
+				<options value="warning">
+					<title xml:lang="ko">주황색</title>
+					<title xml:lang="en">warning</title>
+				</options>
+				<options value="danger">
+					<title xml:lang="ko">빨간색</title>
+					<title xml:lang="en">danger</title>
+				</options>
+				<options value="wisteria">
+					<title xml:lang="ko">보라색</title>
+					<title xml:lang="en">wisteria</title>
+				</options>
+				<options value="inverse">
+					<title xml:lang="ko">아스팔트색</title>
+					<title xml:lang="en">Wet Asphalt</title>
+				</options>
+			</var>
+			<var name="header_bg" type="select">
+				<title xml:lang="ko">메뉴바 배경색</title>
+				<description xml:lang="ko">메뉴바의 배경색을 지정합니다.</description>
+				<options value="default">
+					<title xml:lang="ko">회색</title>
+					<title xml:lang="en">default</title>
+				</options>
+				<options value="primary">
+					<title xml:lang="ko">파란색</title>
+					<title xml:lang="en">primary</title>
+				</options>
+				<options value="success">
+					<title xml:lang="ko">초록색</title>
+					<title xml:lang="en">success</title>
+				</options>
+				<options value="info">
+					<title xml:lang="ko">하늘색</title>
+					<title xml:lang="en">info</title>
+				</options>
+				<options value="warning">
+					<title xml:lang="ko">주황색</title>
+					<title xml:lang="en">warning</title>
+				</options>
+				<options value="danger">
+					<title xml:lang="ko">빨간색</title>
+					<title xml:lang="en">danger</title>
+				</options>
+				<options value="wisteria">
+					<title xml:lang="ko">보라색</title>
+					<title xml:lang="en">wisteria</title>
+				</options>
+				<options value="inverse">
+					<title xml:lang="ko">아스팔트색</title>
+					<title xml:lang="en">Wet Asphalt</title>
+				</options>
+			</var>
+		<var name="logo_image" type="image">
+			<title xml:lang="ko">로고이미지</title>
+			<title xml:lang="en">Logo image</title>
+			<description xml:lang="ko">레이아웃의 상단에 표시될 로고이미지를 입력하세요. (세로길이는 메뉴바 높이에 알맞게 작성하십시오.)</description>
+			<description xml:lang="en">Please input a logo image which will be displayed on the top of layout. (the image with a transparent background, 23px height is recommended.)</description>
+		</var>
+		<var name="index_url" type="text">
+			<title xml:lang="ko">홈 페이지 URL</title>
+			<title xml:lang="en">Homepage URL</title>
+			<description xml:lang="ko">로고를 클릭시에 이동할 홈 페이지 URL을 입력해 주세요.</description>
+			<description xml:lang="en">Please input the URL to redirect when user clicks the logo.</description>
+		</var>
+
+		<var name="pm_title" type="text">
+			<title xml:lang="ko">프로모션 타이틀(A-3)</title>
+			<title xml:lang="en">pm title</title>
+			<description xml:lang="ko">프로모션 타이틀을 입력해 주세요.</description>
+			<description xml:lang="en">Please input the pm title.</description>
+		</var>
+		<var name="pm_text1" type="text">
+			<title xml:lang="ko">프로모션 텍스트(A-4)</title>
+			<title xml:lang="en">pm text</title>
+			<description xml:lang="ko">프로모션 텍스트를 입력해 주세요.</description>
+			<description xml:lang="en">Please input the pm text.</description>
+		</var>
+		<var name="pm_content1" type="text">
+			<title xml:lang="ko">프로모션 콘텐츠 1(A-5-1)</title>
+			<title xml:lang="en">pm content</title>
+			<description xml:lang="ko">프로모션 콘텐츠 입력해 주세요.</description>
+			<description xml:lang="en">Please input the pm content.</description>
+		</var>
+		<var name="pm_content2" type="text">
+			<title xml:lang="ko">프로모션 콘텐츠 2(A-5-2)</title>
+			<title xml:lang="en">pm content</title>
+			<description xml:lang="ko">프로모션 콘텐츠 입력해 주세요.</description>
+			<description xml:lang="en">Please input the pm content.</description>
+		</var>
+		<var name="pm_content3" type="text">
+			<title xml:lang="ko">프로모션 콘텐츠 3(A-5-3)</title>
+			<title xml:lang="en">pm content</title>
+			<description xml:lang="ko">프로모션 콘텐츠 입력해 주세요.</description>
+			<description xml:lang="en">Please input the pm content.</description>
+		</var>
+		<var name="pm_content4" type="text">
+			<title xml:lang="ko">프로모션 콘텐츠 4(A-5-4)</title>
+			<title xml:lang="en">pm content</title>
+			<description xml:lang="ko">프로모션 콘텐츠 입력해 주세요.</description>
+			<description xml:lang="en">Please input the pm content.</description>
+		</var>
+		<var name="pm_content5" type="text">
+			<title xml:lang="ko">프로모션 콘텐츠 5(A-5-5)</title>
+			<title xml:lang="en">pm content</title>
+			<description xml:lang="ko">프로모션 콘텐츠 입력해 주세요.</description>
+			<description xml:lang="en">Please input the pm content.</description>
+		</var>
+		<var name="footer_copyright" type="textarea">
+			<title xml:lang="ko">footer 카피라이트</title>
+			<title xml:lang="en">Copyright of footer</title>
+			<description xml:lang="ko">footer 카피라이트</description>
+			<description xml:lang="en">Copyright of footer</description>
+		</var>
+		</group>
+	<group>
+	<title xml:lang="ko">원페이지</title>
+	<title xml:lang="en">One page layout Settings</title>
+	<var name="bg_slide" type="radio">
+			<title xml:lang="ko">백그라운드 슬라이드</title>
+			<title xml:lang="en">Background Slide</title>
+			<options value="yes">
+				<title xml:lang="ko">사용</title>
+				<title xml:lang="en">Use the Slide</title>
+			</options>
+			<options value="no">
+				<title xml:lang="ko">사용하지 않음</title>
+				<title xml:lang="en">Do not use the Slide</title>
+			</options>
+		</var>
+		<var name="top_slide_title" type="text">
+			<title xml:lang="ko">슬라이드 타이틀(A-1)</title>
+			<title xml:lang="en">Background Slide title</title>
+			<description xml:lang="ko">백그라운드 슬라이드 가운데 출력할 타이틀을 입력해 주세요.</description>
+			<description xml:lang="en">Please input the Background Slide title.</description>
+		</var>
+		<var name="top_slide_text" type="text">
+			<title xml:lang="ko">슬라이드 텍스트(A-2)</title>
+			<title xml:lang="en">Background Slide text</title>
+			<description xml:lang="ko">백그라운드 슬라이드 가운데 출력할 텍스트를 입력해 주세요.</description>
+			<description xml:lang="en">Please input the Background Slide text.</description>
+		</var>
+		<var name="bg_image1" type="image">
+			<title xml:lang="ko">백그라운드 슬라이드 이미지 1</title>
+			<title xml:lang="en">Background Slide Image 1</title>
+		</var>
+		<var name="bg_image2" type="image">
+			<title xml:lang="ko">백그라운드 슬라이드 이미지 2</title>
+			<title xml:lang="en">Background Slide Image 2</title>
+		</var>
+		<var name="bg_image3" type="image">
+			<title xml:lang="ko">백그라운드 슬라이드 이미지 3</title>
+			<title xml:lang="en">Background Slide Image 3</title>
+		</var>
+		<var name="bg_image4" type="image">
+			<title xml:lang="ko">백그라운드 슬라이드 이미지 4</title>
+			<title xml:lang="en">Background Slide Image 4</title>
+		</var>
+		<var name="bg_image5" type="image">
+			<title xml:lang="ko">백그라운드 슬라이드 이미지 5</title>
+			<title xml:lang="en">Background Slide Image 5</title>
+		</var>
+		<var name="c1_title" type="text">
+			<title xml:lang="ko">***콘텐츠1 제목(B-1)</title>
+			<title xml:lang="en">content title</title>
+			<description xml:lang="ko">콘텐츠 제목을 입력해 주세요.</description>
+			<description xml:lang="en">Please input the content title.</description>
+		</var>
+		<var name="c1_text" type="text">
+			<title xml:lang="ko">소제목(B-2)</title>
+			<title xml:lang="en">Small title</title>
+			<description xml:lang="ko">소제목을 입력해 주세요.</description>
+			<description xml:lang="en">Please input the Small title.</description>
+		</var>
+		<var name="c1_image1" type="image">
+			<title xml:lang="ko">이미지1</title>
+			<title xml:lang="en">Image 1 of content1</title>
+		</var>
+		<var name="c1_title1" type="text">
+			<title xml:lang="ko">이미지1 제목(B-3-1)</title>
+			<title xml:lang="en">title</title>
+			<description xml:lang="ko">제목을 입력해 주세요.</description>
+			<description xml:lang="en">Please input the title.</description>
+		</var>
+		<var name="c1_text1" type="textarea">
+			<title xml:lang="ko">이미지1 설명(B-3-2)</title>
+			<title xml:lang="en">description</title>
+			<description xml:lang="ko">설명을 입력해 주세요.</description>
+			<description xml:lang="en">Please input the description.</description>
+		</var>
+		<var name="c1_image2" type="image">
+			<title xml:lang="ko">이미지2</title>
+			<title xml:lang="en">Image 2 of content1</title>
+		</var>
+		<var name="c1_title2" type="text">
+			<title xml:lang="ko">제목(B-4-1)</title>
+			<title xml:lang="en">title</title>
+			<description xml:lang="ko">제목을 입력해 주세요.</description>
+			<description xml:lang="en">Please input the title.</description>
+		</var>
+		<var name="c1_text2" type="textarea">
+			<title xml:lang="ko">설명(B-4-2)</title>
+			<title xml:lang="en">description</title>
+			<description xml:lang="ko">설명을 입력해 주세요.</description>
+			<description xml:lang="en">Please input the description.</description>
+		</var>
+		<var name="c1_image3" type="image">
+			<title xml:lang="ko">이미지3</title>
+			<title xml:lang="en">Image 1 of content1</title>
+		</var>
+		<var name="c1_title3" type="text">
+			<title xml:lang="ko">제목(B-5-1)</title>
+			<title xml:lang="en">title</title>
+			<description xml:lang="ko">제목을 입력해 주세요.</description>
+			<description xml:lang="en">Please input the title.</description>
+		</var>
+		<var name="c1_text3" type="textarea">
+			<title xml:lang="ko">설명(B-5-2)</title>
+			<title xml:lang="en">description</title>
+			<description xml:lang="ko">설명을 입력해 주세요.</description>
+			<description xml:lang="en">Please input the description.</description>
+		</var>
+			<var name="about_bg" type="select">
+				<title xml:lang="ko">배경색</title>
+				<description xml:lang="ko">배경색을 지정합니다.</description>
+				<options value="white">
+					<title xml:lang="ko">하얀색</title>
+					<title xml:lang="en">white</title>
+				</options>
+				<options value="default">
+					<title xml:lang="ko">회색</title>
+					<title xml:lang="en">default</title>
+				</options>
+				<options value="primary">
+					<title xml:lang="ko">파란색</title>
+					<title xml:lang="en">primary</title>
+				</options>
+				<options value="success">
+					<title xml:lang="ko">초록색</title>
+					<title xml:lang="en">success</title>
+				</options>
+				<options value="info">
+					<title xml:lang="ko">하늘색</title>
+					<title xml:lang="en">info</title>
+				</options>
+				<options value="warning">
+					<title xml:lang="ko">주황색</title>
+					<title xml:lang="en">warning</title>
+				</options>
+				<options value="danger">
+					<title xml:lang="ko">빨간색</title>
+					<title xml:lang="en">danger</title>
+				</options>
+				<options value="wisteria">
+					<title xml:lang="ko">보라색</title>
+					<title xml:lang="en">wisteria</title>
+				</options>
+				<options value="inverse">
+					<title xml:lang="ko">아스팔트색</title>
+					<title xml:lang="en">Wet Asphalt</title>
+				</options>
+			</var>
+		<var name="c2_title" type="text">
+			<title xml:lang="ko">***콘텐츠2 제목(C-1)</title>
+			<title xml:lang="en">content title</title>
+			<description xml:lang="ko">콘텐츠 제목을 입력해 주세요.</description>
+			<description xml:lang="en">Please input the content title.</description>
+		</var>
+		<var name="c2_text" type="text">
+			<title xml:lang="ko">소제목(C-2)</title>
+			<title xml:lang="en">Small title</title>
+			<description xml:lang="ko">소제목을 입력해 주세요.</description>
+			<description xml:lang="en">Please input the Small title.</description>
+		</var>
+		<var name="c2_title1" type="text">
+			<title xml:lang="ko">제목(C-3-1)</title>
+			<title xml:lang="en">title</title>
+			<description xml:lang="ko">제목을 입력해 주세요.</description>
+			<description xml:lang="en">Please input the title.</description>
+		</var>
+		<var name="c2_text1" type="textarea">
+			<title xml:lang="ko">설명(C-3-2)</title>
+			<title xml:lang="en">description</title>
+			<description xml:lang="ko">설명을 입력해 주세요.</description>
+			<description xml:lang="en">Please input the description.</description>
+		</var>
+		<var name="c2_title2" type="text">
+			<title xml:lang="ko">제목(C-4-1)</title>
+			<title xml:lang="en">title</title>
+			<description xml:lang="ko">제목을 입력해 주세요.</description>
+			<description xml:lang="en">Please input the title.</description>
+		</var>
+		<var name="c2_text2" type="textarea">
+			<title xml:lang="ko">설명(C-4-2)</title>
+			<title xml:lang="en">description</title>
+			<description xml:lang="ko">설명을 입력해 주세요.</description>
+			<description xml:lang="en">Please input the description.</description>
+		</var>
+		<var name="c2_title3" type="text">
+			<title xml:lang="ko">제목(C-5-1)</title>
+			<title xml:lang="en">title</title>
+			<description xml:lang="ko">제목을 입력해 주세요.</description>
+			<description xml:lang="en">Please input the title.</description>
+		</var>
+		<var name="c2_text3" type="textarea">
+			<title xml:lang="ko">설명(C-5-2)</title>
+			<title xml:lang="en">description</title>
+			<description xml:lang="ko">설명을 입력해 주세요.</description>
+			<description xml:lang="en">Please input the description.</description>
+		</var>
+		<var name="c2_image" type="image">
+			<title xml:lang="ko">이미지</title>
+			<title xml:lang="en">Image</title>
+		</var>
+		<var name="c2_url" type="text">
+			<title xml:lang="ko">바로가기 URL(C-6)</title>
+			<title xml:lang="en"> URL</title>
+			<description xml:lang="ko">클릭시에 이동할 홈 페이지 URL을 입력해 주세요.</description>
+			<description xml:lang="en">Please input the URL to redirect when user clicks.</description>
+		</var>
+			<var name="ourservices_bg" type="select">
+				<title xml:lang="ko">배경색</title>
+				<description xml:lang="ko">배경색을 지정합니다.</description>
+				<options value="white">
+					<title xml:lang="ko">하얀색</title>
+					<title xml:lang="en">white</title>
+				</options>
+				<options value="default">
+					<title xml:lang="ko">회색</title>
+					<title xml:lang="en">default</title>
+				</options>
+				<options value="primary">
+					<title xml:lang="ko">파란색</title>
+					<title xml:lang="en">primary</title>
+				</options>
+				<options value="success">
+					<title xml:lang="ko">초록색</title>
+					<title xml:lang="en">success</title>
+				</options>
+				<options value="info">
+					<title xml:lang="ko">하늘색</title>
+					<title xml:lang="en">info</title>
+				</options>
+				<options value="warning">
+					<title xml:lang="ko">주황색</title>
+					<title xml:lang="en">warning</title>
+				</options>
+				<options value="danger">
+					<title xml:lang="ko">빨간색</title>
+					<title xml:lang="en">danger</title>
+				</options>
+				<options value="wisteria">
+					<title xml:lang="ko">보라색</title>
+					<title xml:lang="en">wisteria</title>
+				</options>
+				<options value="inverse">
+					<title xml:lang="ko">아스팔트색</title>
+					<title xml:lang="en">Wet Asphalt</title>
+				</options>
+			</var>
+		<var name="c3_title" type="text">
+			<title xml:lang="ko">***콘텐츠3 제목(D-1)</title>
+			<title xml:lang="en">content title</title>
+			<description xml:lang="ko">콘텐츠 제목을 입력해 주세요.</description>
+			<description xml:lang="en">Please input the content title.</description>
+		</var>
+		<var name="c3_text" type="text">
+			<title xml:lang="ko">소제목(D-2)</title>
+			<title xml:lang="en">Small title</title>
+			<description xml:lang="ko">소제목을 입력해 주세요.</description>
+			<description xml:lang="en">Please input the Small title.</description>
+		</var>
+		<var name="c3_image1" type="image">
+			<title xml:lang="ko">이미지1</title>
+			<title xml:lang="en">Image 1 of content 3</title>
+		</var>
+		<var name="c3_title1" type="text">
+			<title xml:lang="ko">이미지1 제목(D-3-1)</title>
+			<title xml:lang="en">title</title>
+			<description xml:lang="ko">제목을 입력해 주세요.</description>
+			<description xml:lang="en">Please input the title.</description>
+		</var>
+		<var name="c3_text1" type="text">
+			<title xml:lang="ko">이미지1 설명(D-3-2)</title>
+			<title xml:lang="en">description</title>
+			<description xml:lang="ko">설명을 입력해 주세요.</description>
+			<description xml:lang="en">Please input the description.</description>
+		</var>
+		<var name="c3_url1" type="text">
+			<title xml:lang="ko">바로가기 URL(D-3-3)</title>
+			<title xml:lang="en"> URL</title>
+			<description xml:lang="ko">클릭시에 이동할 홈 페이지 URL을 입력해 주세요.</description>
+			<description xml:lang="en">Please input the URL to redirect when user clicks.</description>
+		</var>
+		<var name="c3_image2" type="image">
+			<title xml:lang="ko">이미지2</title>
+			<title xml:lang="en">Image 2 of content 3</title>
+		</var>
+		<var name="c3_title2" type="text">
+			<title xml:lang="ko">제목(D-4-1)</title>
+			<title xml:lang="en">title</title>
+			<description xml:lang="ko">제목을 입력해 주세요.</description>
+			<description xml:lang="en">Please input the title.</description>
+		</var>
+		<var name="c3_text2" type="text">
+			<title xml:lang="ko">설명(D-4-2)</title>
+			<title xml:lang="en">description</title>
+			<description xml:lang="ko">설명을 입력해 주세요.</description>
+			<description xml:lang="en">Please input the description.</description>
+		</var>
+		<var name="c3_url2" type="text">
+			<title xml:lang="ko">바로가기 URL(D-4-3)</title>
+			<title xml:lang="en"> URL</title>
+			<description xml:lang="ko">클릭시에 이동할 홈 페이지 URL을 입력해 주세요.</description>
+			<description xml:lang="en">Please input the URL to redirect when user clicks.</description>
+		</var>
+		<var name="c3_image3" type="image">
+			<title xml:lang="ko">이미지3</title>
+			<title xml:lang="en">Image 3 of content 3</title>
+		</var>
+		<var name="c3_title3" type="text">
+			<title xml:lang="ko">제목(D-5-1)</title>
+			<title xml:lang="en">title</title>
+			<description xml:lang="ko">제목을 입력해 주세요.</description>
+			<description xml:lang="en">Please input the title.</description>
+		</var>
+		<var name="c3_text3" type="text">
+			<title xml:lang="ko">설명(D-5-2)</title>
+			<title xml:lang="en">description</title>
+			<description xml:lang="ko">설명을 입력해 주세요.</description>
+			<description xml:lang="en">Please input the description.</description>
+		</var>
+		<var name="c3_url3" type="text">
+			<title xml:lang="ko">바로가기 URL(D-5-3)</title>
+			<title xml:lang="en"> URL</title>
+			<description xml:lang="ko">클릭시에 이동할 홈 페이지 URL을 입력해 주세요.</description>
+			<description xml:lang="en">Please input the URL to redirect when user clicks.</description>
+		</var>
+		<var name="c3_image4" type="image">
+			<title xml:lang="ko">이미지4</title>
+			<title xml:lang="en">Image 4 of content 3</title>
+		</var>
+		<var name="c3_title4" type="text">
+			<title xml:lang="ko">제목(D-6-1)</title>
+			<title xml:lang="en">title</title>
+			<description xml:lang="ko">제목을 입력해 주세요.</description>
+			<description xml:lang="en">Please input the title.</description>
+		</var>
+		<var name="c3_text4" type="text">
+			<title xml:lang="ko">설명(D-6-2)</title>
+			<title xml:lang="en">description</title>
+			<description xml:lang="ko">설명을 입력해 주세요.</description>
+			<description xml:lang="en">Please input the description.</description>
+		</var>
+		<var name="c3_url4" type="text">
+			<title xml:lang="ko">바로가기 URL(D-6-3)</title>
+			<title xml:lang="en"> URL</title>
+			<description xml:lang="ko">클릭시에 이동할 홈 페이지 URL을 입력해 주세요.</description>
+			<description xml:lang="en">Please input the URL to redirect when user clicks.</description>
+		</var>
+			<var name="products_bg" type="select">
+				<title xml:lang="ko">배경색</title>
+				<description xml:lang="ko">배경색을 지정합니다.</description>
+				<options value="white">
+					<title xml:lang="ko">하얀색</title>
+					<title xml:lang="en">white</title>
+				</options>
+				<options value="default">
+					<title xml:lang="ko">회색</title>
+					<title xml:lang="en">default</title>
+				</options>
+				<options value="primary">
+					<title xml:lang="ko">파란색</title>
+					<title xml:lang="en">primary</title>
+				</options>
+				<options value="success">
+					<title xml:lang="ko">초록색</title>
+					<title xml:lang="en">success</title>
+				</options>
+				<options value="info">
+					<title xml:lang="ko">하늘색</title>
+					<title xml:lang="en">info</title>
+				</options>
+				<options value="warning">
+					<title xml:lang="ko">주황색</title>
+					<title xml:lang="en">warning</title>
+				</options>
+				<options value="danger">
+					<title xml:lang="ko">빨간색</title>
+					<title xml:lang="en">danger</title>
+				</options>
+				<options value="wisteria">
+					<title xml:lang="ko">보라색</title>
+					<title xml:lang="en">wisteria</title>
+				</options>
+				<options value="inverse">
+					<title xml:lang="ko">아스팔트색</title>
+					<title xml:lang="en">Wet Asphalt</title>
+				</options>
+			</var>
+		<var name="c4_title" type="text">
+			<title xml:lang="ko">***콘텐츠4 제목(E-1)</title>
+			<title xml:lang="en">content title</title>
+			<description xml:lang="ko">콘텐츠 제목을 입력해 주세요.</description>
+			<description xml:lang="en">Please input the content title.</description>
+		</var>
+		<var name="c4_text" type="text">
+			<title xml:lang="ko">소제목(E-2)</title>
+			<title xml:lang="en">Small title</title>
+			<description xml:lang="ko">소제목을 입력해 주세요.</description>
+			<description xml:lang="en">Please input the Small title.</description>
+		</var>
+		<var name="c4_widget" type="textarea">
+			<title xml:lang="ko">위젯코드(E-3)</title>
+			<title xml:lang="en">Widget code</title>
+			<description xml:lang="ko">위젯코드를 입력해 주세요.</description>
+			<description xml:lang="en">Please input the widget code.</description>
+		</var>
+			<var name="gallery_bg" type="select">
+				<title xml:lang="ko">배경색</title>
+				<description xml:lang="ko">배경색을 지정합니다.</description>
+				<options value="white">
+					<title xml:lang="ko">하얀색</title>
+					<title xml:lang="en">white</title>
+				</options>
+				<options value="default">
+					<title xml:lang="ko">회색</title>
+					<title xml:lang="en">default</title>
+				</options>
+				<options value="primary">
+					<title xml:lang="ko">파란색</title>
+					<title xml:lang="en">primary</title>
+				</options>
+				<options value="success">
+					<title xml:lang="ko">초록색</title>
+					<title xml:lang="en">success</title>
+				</options>
+				<options value="info">
+					<title xml:lang="ko">하늘색</title>
+					<title xml:lang="en">info</title>
+				</options>
+				<options value="warning">
+					<title xml:lang="ko">주황색</title>
+					<title xml:lang="en">warning</title>
+				</options>
+				<options value="danger">
+					<title xml:lang="ko">빨간색</title>
+					<title xml:lang="en">danger</title>
+				</options>
+				<options value="wisteria">
+					<title xml:lang="ko">보라색</title>
+					<title xml:lang="en">wisteria</title>
+				</options>
+				<options value="inverse">
+					<title xml:lang="ko">아스팔트색</title>
+					<title xml:lang="en">Wet Asphalt</title>
+				</options>
+			</var>
+		<var name="c5_title" type="text">
+			<title xml:lang="ko">***콘텐츠5 제목(F-1)</title>
+			<title xml:lang="en">content title</title>
+			<description xml:lang="ko">콘텐츠 제목을 입력해 주세요.</description>
+			<description xml:lang="en">Please input the content title.</description>
+		</var>
+		<var name="c5_text" type="text">
+			<title xml:lang="ko">소제목(F-2)</title>
+			<title xml:lang="en">Small title</title>
+			<description xml:lang="ko">소제목을 입력해 주세요.</description>
+			<description xml:lang="en">Please input the Small title.</description>
+		</var>
+		<var name="c5_company" type="text">
+			<title xml:lang="ko">상호(F-3)</title>
+			<title xml:lang="en">Company name</title>
+			<description xml:lang="ko">상호를 입력해 주세요.</description>
+			<description xml:lang="en">Please input the company name.</description>
+		</var>
+		<var name="c5_address" type="text">
+			<title xml:lang="ko">주소(F-4)</title>
+			<title xml:lang="en">Address</title>
+			<description xml:lang="ko">주소를 입력해 주세요.</description>
+			<description xml:lang="en">Please input the Address.</description>
+		</var>
+		<var name="c5_phone" type="text">
+			<title xml:lang="ko">전화번호(F-5)</title>
+			<title xml:lang="en">Phone nomber</title>
+			<description xml:lang="ko">전화번호를 입력해 주세요.</description>
+			<description xml:lang="en">Please input the Phone nomber.</description>
+		</var>
+		<var name="c5_fax" type="text">
+			<title xml:lang="ko">Fax(F-6)</title>
+			<title xml:lang="en">Fax</title>
+			<description xml:lang="ko">팩스 번호를 입력해 주세요.</description>
+			<description xml:lang="en">Please input the Fax nomber.</description>
+		</var>
+		<var name="c5_email" type="text">
+			<title xml:lang="ko">이메일(F-7)</title>
+			<title xml:lang="en">Email</title>
+			<description xml:lang="ko">이메일 주소를입력해 주세요.</description>
+			<description xml:lang="en">Please input the email address.</description>
+		</var>
+		<var name="c5_url" type="text">
+			<title xml:lang="ko">바로가기 URL(C-6)</title>
+			<title xml:lang="en"> URL</title>
+			<description xml:lang="ko">클릭시에 이동할 홈 페이지 URL을 입력해 주세요.</description>
+			<description xml:lang="en">Please input the URL to redirect when user clicks.</description>
+		</var>
+			<var name="contact_bg" type="select">
+				<title xml:lang="ko">배경색</title>
+				<description xml:lang="ko">배경색을 지정합니다.</description>
+				<options value="white">
+					<title xml:lang="ko">하얀색</title>
+					<title xml:lang="en">white</title>
+				</options>
+				<options value="default">
+					<title xml:lang="ko">회색</title>
+					<title xml:lang="en">default</title>
+				</options>
+				<options value="primary">
+					<title xml:lang="ko">파란색</title>
+					<title xml:lang="en">primary</title>
+				</options>
+				<options value="success">
+					<title xml:lang="ko">초록색</title>
+					<title xml:lang="en">success</title>
+				</options>
+				<options value="info">
+					<title xml:lang="ko">하늘색</title>
+					<title xml:lang="en">info</title>
+				</options>
+				<options value="warning">
+					<title xml:lang="ko">주황색</title>
+					<title xml:lang="en">warning</title>
+				</options>
+				<options value="danger">
+					<title xml:lang="ko">빨간색</title>
+					<title xml:lang="en">danger</title>
+				</options>
+				<options value="wisteria">
+					<title xml:lang="ko">보라색</title>
+					<title xml:lang="en">wisteria</title>
+				</options>
+				<options value="inverse">
+					<title xml:lang="ko">아스팔트색</title>
+					<title xml:lang="en">Wet Asphalt</title>
+				</options>
+			</var>
+	</group>
+	<group>
+	<title xml:lang="ko">메인페이지</title>
+	<title xml:lang="en">Main page Settings</title>
+	<var name="main_slide" type="radio">
+			<title xml:lang="ko">메인 슬라이드</title>
+			<title xml:lang="en">Main Slide</title>
+			<options value="yes">
+				<title xml:lang="ko">사용</title>
+				<title xml:lang="en">Use the Slide</title>
+			</options>
+			<options value="no">
+				<title xml:lang="ko">사용하지 않음</title>
+				<title xml:lang="en">Do not use the Slide</title>
+			</options>
+		</var>
+		<var name="main_image1" type="image">
+			<title xml:lang="ko">메인페이지 슬라이드 이미지 1</title>
+			<title xml:lang="en">Main page Slide Image 1</title>
+		</var>
+		<var name="main_image2" type="image">
+			<title xml:lang="ko">메인페이지 슬라이드 이미지 2</title>
+			<title xml:lang="en">Main page Slide Image 2</title>
+		</var>
+		<var name="main_image3" type="image">
+			<title xml:lang="ko">메인페이지 슬라이드 이미지 3</title>
+			<title xml:lang="en">Main page Slide Image 3</title>
+		</var>
+		<var name="main_image4" type="image">
+			<title xml:lang="ko">메인페이지 슬라이드 이미지 4</title>
+			<title xml:lang="en">Main page Slide Image 4</title>
+		</var>
+		<var name="main_image5" type="image">
+			<title xml:lang="ko">메인페이지 슬라이드 이미지 5</title>
+			<title xml:lang="en">Main page Slide Image 5</title>
+		</var>
+	<var name="main_pm" type="radio">
+			<title xml:lang="ko">메인 프로모션</title>
+			<title xml:lang="en">Main promotion</title>
+			<options value="yes">
+				<title xml:lang="ko">사용</title>
+				<title xml:lang="en">Use the promotion</title>
+			</options>
+			<options value="no">
+				<title xml:lang="ko">사용하지 않음</title>
+				<title xml:lang="en">Do not use the promotion</title>
+			</options>
+		</var>
+		<var name="m1_title1" type="text">
+			<title xml:lang="ko">*제목(G-1)</title>
+			<title xml:lang="en">title</title>
+			<description xml:lang="ko">제목을 입력해 주세요.</description>
+			<description xml:lang="en">Please input the title.</description>
+		</var>
+		<var name="m1_text1" type="textarea">
+			<title xml:lang="ko">설명(G-2)</title>
+			<title xml:lang="en">description</title>
+			<description xml:lang="ko">설명을 입력해 주세요.</description>
+			<description xml:lang="en">Please input the description.</description>
+		</var>
+		<var name="m1_url1" type="text">
+			<title xml:lang="ko">바로가기 URL(G-3)</title>
+			<title xml:lang="en"> URL</title>
+			<description xml:lang="ko">클릭시에 이동할 홈 페이지 URL을 입력해 주세요.</description>
+			<description xml:lang="en">Please input the URL to redirect when user clicks.</description>
+		</var>
+		<var name="m1_title2" type="text">
+			<title xml:lang="ko">*제목(G-4)</title>
+			<title xml:lang="en">title</title>
+			<description xml:lang="ko">제목을 입력해 주세요.</description>
+			<description xml:lang="en">Please input the title.</description>
+		</var>
+		<var name="m1_text2" type="textarea">
+			<title xml:lang="ko">설명(G-5)</title>
+			<title xml:lang="en">description</title>
+			<description xml:lang="ko">설명을 입력해 주세요.</description>
+			<description xml:lang="en">Please input the description.</description>
+		</var>
+		<var name="m1_url2" type="text">
+			<title xml:lang="ko">바로가기 URL(G-6)</title>
+			<title xml:lang="en"> URL</title>
+			<description xml:lang="ko">클릭시에 이동할 홈 페이지 URL을 입력해 주세요.</description>
+			<description xml:lang="en">Please input the URL to redirect when user clicks.</description>
+		</var>
+		<var name="m1_title3" type="text">
+			<title xml:lang="ko">*제목(G-7)</title>
+			<title xml:lang="en">title</title>
+			<description xml:lang="ko">제목을 입력해 주세요.</description>
+			<description xml:lang="en">Please input the title.</description>
+		</var>
+		<var name="m1_text3" type="textarea">
+			<title xml:lang="ko">설명(G-8)</title>
+			<title xml:lang="en">description</title>
+			<description xml:lang="ko">설명을 입력해 주세요.</description>
+			<description xml:lang="en">Please input the description.</description>
+		</var>
+		<var name="m1_url3" type="text">
+			<title xml:lang="ko">바로가기 URL(G-9)</title>
+			<title xml:lang="en"> URL</title>
+			<description xml:lang="ko">클릭시에 이동할 홈 페이지 URL을 입력해 주세요.</description>
+			<description xml:lang="en">Please input the URL to redirect when user clicks.</description>
+		</var>
+		<var name="m2_widget1" type="textarea">
+			<title xml:lang="ko">**리스트 위젯(H-1)</title>
+			<title xml:lang="en">description</title>
+			<description xml:lang="ko">위젯코드를 입력해 주세요.</description>
+			<description xml:lang="en">Please input the Widget code.</description>
+		</var>
+		<var name="m2_widget2" type="textarea">
+			<title xml:lang="ko">리스트 위젯(H-2)</title>
+			<title xml:lang="en">description</title>
+			<description xml:lang="ko">위젯코드를 입력해 주세요.</description>
+			<description xml:lang="en">Please input the Widget code.</description>
+		</var>
+		<var name="m3_widget1" type="textarea">
+			<title xml:lang="ko">***갤러리 위젯(I-1)</title>
+			<title xml:lang="en">description</title>
+			<description xml:lang="ko">위젯코드를 입력해 주세요.</description>
+			<description xml:lang="en">Please input the Widget code.</description>
+		</var>
+	</group>
+	<group>
+	<title xml:lang="ko">서브2컬럼</title>
+	<title xml:lang="en">Two column layout Settings</title>
+	<var name="twocol_lnb" type="radio">
+			<title xml:lang="ko">사이드메뉴 출력</title>
+			<title xml:lang="en">display side menu</title>
+			<options value="yes">
+				<title xml:lang="ko">출력</title>
+				<title xml:lang="en">Display</title>
+			</options>
+			<options value="no">
+				<title xml:lang="ko">출력안함</title>
+				<title xml:lang="en">Do not display</title>
+			</options>
+		</var>
+		<var name="twocol_widget1" type="textarea">
+			<title xml:lang="ko">***사이트바 컨텐츠(j-1)</title>
+			<title xml:lang="en">description</title>
+			<description xml:lang="ko">컨텐츠 또는 위젯코드를 입력해 주세요.</description>
+			<description xml:lang="en">Please input the content or the Widget code.</description>
+		</var>
+		<var name="twocol_widget2" type="textarea">
+			<title xml:lang="ko">***사이트바 컨텐츠(j-2)</title>
+			<title xml:lang="en">description</title>
+			<description xml:lang="ko">컨텐츠 또는 위젯코드를 입력해 주세요.</description>
+			<description xml:lang="en">Please input the content or the Widget code.</description>
+		</var>
+		<var name="twocol_widget3" type="textarea">
+			<title xml:lang="ko">***사이트바 컨텐츠(j-3)</title>
+			<title xml:lang="en">description</title>
+			<description xml:lang="ko">컨텐츠 또는 위젯코드를 입력해 주세요.</description>
+			<description xml:lang="en">Please input the content or the Widget code.</description>
+		</var>
+
+
+		</group>
+	</extra_vars>
+    <menus>
+        <menu name="main_menu" maxdepth="3" default="true">
+            <title xml:lang="ko">상단 메뉴</title>
+            <title xml:lang="en">Top menu</title>
+        </menu>
+    </menus>
+</layout>

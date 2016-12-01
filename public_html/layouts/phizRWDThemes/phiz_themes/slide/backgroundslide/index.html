@@ -1,0 +1,23 @@
+<load target="css/style.css"  />
+{@
+if ($layout_info->bg_image1) $bg_image1 = $layout_info->bg_image1;
+if ($layout_info->bg_image2) $bg_image2 = $layout_info->bg_image2;
+if ($layout_info->bg_image3) $bg_image3 = $layout_info->bg_image3;
+if ($layout_info->bg_image4) $bg_image4 = $layout_info->bg_image4;
+if ($layout_info->bg_image5) $bg_image5 = $layout_info->bg_image5;
+if ($layout_info->top_slide_title) $top_slide_title = $layout_info->top_slide_title;
+if ($layout_info->top_slide_text) $top_slide_text = $layout_info->top_slide_text;
+}
+<div id="top-slide">
+	<div class="overlay"></div>
+	<div class="top-title">
+		<h1>{$top_slide_title}</h1>
+		<p class="text-red">{$top_slide_text}</p>
+	</div>
+</div>
+<!--Time Bar-->
+<!--//
+<div id="progress-back" class="load-item">
+	<div id="progress-bar"></div>
+</div>
+-->
