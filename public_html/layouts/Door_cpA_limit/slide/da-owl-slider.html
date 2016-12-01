@@ -1,0 +1,84 @@
+
+<!--@if(!$layout_info->slide_speed)-->{@$layout_info->slide_speed = "7000"}<!--@end-->
+<load target="../css/owl.carousel.css" />
+<load target="../css/da-owl.css" />
+<load target="../js/owl.carousel.min.js" type="body" />
+
+<style>
+.wrap_slide{width:100%;padding:0;overflow:hidden;}
+.xe .owl-carousel .owl-item img.main_slide_img{width:100%;}
+.mobile-owl .mobile-owl{bottom:0;height:0;width:100%;text-align:center;position:initial;display:none;}
+.owl-theme .mobile-owl .owl-dots{display:none;}
+.owl-theme .mobile-owl .owl-dot{float:left;margin:0 5px;}
+.owl-theme .mobile-owl .owl-dots span{width:16px;height:16px;display:inline-block;-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px;background:#CDCDCD;-webkit-transition:all .2s;transition:all .2s;-moz-transition:all .2s;}
+.owl-theme .mobile-owl .owl-dots .active span {background:#91CF00;width:32px;height:16px;}
+</style>
+<div class="wrap-mobile-owl">
+	<div class="da-owl mobile-owl owl-carousel">
+		<div class="item" cond="$layout_info->Mslide_img1">
+		  <img class="main_slide_img" src="{$layout_info->Mslide_img1}" alt="{$layout_info->Mslide_title1}" />
+		</div>
+
+		<div class="item" cond="$layout_info->Mslide_img2">
+		  <img class="main_slide_img" src="{$layout_info->Mslide_img2}" alt="{$layout_info->Mslide_title2}" />
+		</div>
+
+		<div class="item" cond="$layout_info->Mslide_img3">
+		  <img class="main_slide_img" src="{$layout_info->Mslide_img3}" alt="{$layout_info->Mslide_title3}" />
+		</div>
+
+		<div class="item" cond="$layout_info->Mslide_img4">
+		  <img class="main_slide_img" src="{$layout_info->Mslide_img4}" alt="{$layout_info->Mslide_title4}" />
+		</div>
+
+		<div class="item" cond="$layout_info->Mslide_img5">
+		  <img class="main_slide_img" src="{$layout_info->Mslide_img5}" alt="{$layout_info->Mslide_title5}" />
+		</div>
+	</div>
+</div>
+
+		<script type="text/javascript">
+			jQuery(function($){
+			
+			  $('.mobile-owl').owlCarousel({
+				nav:true,
+                items: 1,
+                loop: true,
+				autoplay:false,
+				
+				autoplayTimeout:7000,
+				autoplayHoverPause:true,
+                margin:0
+               
+              });
+
+			 
+
+			
+		});
+		</script>	
+<style>
+.wrap-mobile-owl{position:relative;}
+.camera_in_widget_slideA {
+    position: relative;
+    padding: 25px 15px 15px 15px;
+    width: auto;
+    background:#f9f9f9;
+    border:0;
+    
+    -webkit-border-radius:0px;
+    -moz-border-radius: 0px;
+    border-radius:0px;
+    -webkit-box-shadow: 0 2px 10px rgba(0,0,0,.3);
+    -moz-box-shadow: 0 2px 10px rgba(0,0,0,.3);
+    box-shadow: 0 2px 10px rgba(0,0,0,.3);
+}
+.mobile-owl img {-webkit-border-radius:0px;
+    -moz-border-radius: 0px;
+    border-radius:0px;}
+.has_line_h2 {color:#333;}
+.has_line_h2:after {background:#999;}
+.camera_in_widget_slideA {padding:20px 0px 20px 0px;float:none;}
+.camera_in_widget_slideA .wrap_camera_widget {padding:0 10px;}
+.wrap_bg_h2{z-index:1000;}
+</style>
