@@ -1,26 +1,26 @@
 <?php
-define('PEAR_ERROR_RETURN',     1);
-define('PEAR_ERROR_PRINT',      2);
-define('PEAR_ERROR_TRIGGER',    4);
-define('PEAR_ERROR_DIE',        8);
+define('PEAR_ERROR_RETURN',  1);
+define('PEAR_ERROR_PRINT',   2);
+define('PEAR_ERROR_TRIGGER', 4);
+define('PEAR_ERROR_DIE',  8);
 define('PEAR_ERROR_CALLBACK',  16);
 define('PEAR_ERROR_EXCEPTION', 32);
 define('PEAR_ZE2', (function_exists('version_compare') && version_compare(zend_version(), "2-dev", "ge")));
 if (substr(PHP_OS, 0, 3) == 'WIN') {
 	define('OS_WINDOWS', true);
-	define('OS_UNIX',    false);
-	define('PEAR_OS',    'Windows');
+	define('OS_UNIX', false);
+	define('PEAR_OS', 'Windows');
 } else {
 	define('OS_WINDOWS', false);
-	define('OS_UNIX',    true);
-	define('PEAR_OS',    'Unix'); // blatant assumption
+	define('OS_UNIX', true);
+	define('PEAR_OS', 'Unix');
 }
 
-$GLOBALS['_PEAR_default_error_mode']     = PEAR_ERROR_RETURN;
+$GLOBALS['_PEAR_default_error_mode']  = PEAR_ERROR_RETURN;
 $GLOBALS['_PEAR_default_error_options']  = E_USER_NOTICE;
 $GLOBALS['_PEAR_destructor_object_list'] = array();
-$GLOBALS['_PEAR_shutdown_funcs']         = array();
-$GLOBALS['_PEAR_error_handler_stack']    = array();
+$GLOBALS['_PEAR_shutdown_funcs']   = array();
+$GLOBALS['_PEAR_error_handler_stack'] = array();
 
 @ini_set('track_errors', true);
 
@@ -80,10 +80,10 @@ class PEAR {
 
 	function setErrorHandling($mode = null, $options = null) {
 		if (isset($this) && is_a($this, 'PEAR')) {
-			$setmode     = &$this->_default_error_mode;
+			$setmode  = &$this->_default_error_mode;
 			$setoptions  = &$this->_default_error_options;
 		} else {
-			$setmode     = &$GLOBALS['_PEAR_default_error_mode'];
+			$setmode  = &$GLOBALS['_PEAR_default_error_mode'];
 			$setoptions  = &$GLOBALS['_PEAR_default_error_options'];
 		}
 		switch ($mode) {
@@ -124,7 +124,13 @@ class PEAR {
 				unset($this->_expected_errors[$key][array_search($error_code, $error_array)]);
 				$deleted = true;
 			}
+<<<<<<< HEAD
 			if (0 == count($this->_expected_errors[$key])) unset($this->_expected_errors[$key]);
+=======
+			if (0 == count($this->_expected_errors[$key])) {
+				unset($this->_expected_errors[$key]);
+			}
+>>>>>>> origin/drone
 		}
 		return $deleted;
 	}
@@ -153,21 +159,27 @@ class PEAR {
 		 $skipmsg = false)
 	{
 		if (is_object($message)) {
-			$code        = $message->getCode();
-			$userinfo    = $message->getUserInfo();
+			$code  = $message->getCode();
+			$userinfo = $message->getUserInfo();
 			$error_class = $message->getType();
 			$message->error_message_prefix = '';
-			$message     = $message->getMessage();
+			$message  = $message->getMessage();
 		}
 		if (isset($this) && isset($this->_expected_errors) && sizeof($this->_expected_errors) > 0 && sizeof($exp = end($this->_expected_errors))) {
+<<<<<<< HEAD
 		if ($exp[0] == "*" || (is_int(reset($exp)) && in_array($code, $exp)) || (is_string(reset($exp)) && in_array($message, $exp))) $mode = PEAR_ERROR_RETURN;
+=======
+			if ($exp[0] == "*" || (is_int(reset($exp)) && in_array($code, $exp)) || (is_string(reset($exp)) && in_array($message, $exp))) {
+				$mode = PEAR_ERROR_RETURN;
+			}
+>>>>>>> origin/drone
 		}
 		if ($mode === null) {
 			if (isset($this) && isset($this->_default_error_mode)) {
-				$mode    = $this->_default_error_mode;
+				$mode = $this->_default_error_mode;
 				$options = $this->_default_error_options;
 			} elseif (isset($GLOBALS['_PEAR_default_error_mode'])) {
-				$mode    = $GLOBALS['_PEAR_default_error_mode'];
+				$mode = $GLOBALS['_PEAR_default_error_mode'];
 				$options = $GLOBALS['_PEAR_default_error_options'];
 			}
 		}
@@ -182,6 +194,7 @@ class PEAR {
 		else $a = new $ec($message, $code, $mode, $options, $userinfo);
 		return $a;
 	}
+<<<<<<< HEAD
 
 	function &throwError($message = null, $code = null, $userinfo = null) {
 		if (isset($this) && is_a($this, 'PEAR')) {
@@ -194,7 +207,7 @@ class PEAR {
 
 	function staticPushErrorHandling($mode, $options = null) {
 		$stack = &$GLOBALS['_PEAR_error_handler_stack'];
-		$def_mode    = &$GLOBALS['_PEAR_default_error_mode'];
+		$def_mode = &$GLOBALS['_PEAR_default_error_mode'];
 		$def_options = &$GLOBALS['_PEAR_default_error_options'];
 		$stack[] = array($def_mode, $def_options);
 		switch ($mode) {
@@ -222,11 +235,28 @@ class PEAR {
 
 	function staticPopErrorHandling() {
 		$stack = &$GLOBALS['_PEAR_error_handler_stack'];
-		$setmode     = &$GLOBALS['_PEAR_default_error_mode'];
+		$setmode  = &$GLOBALS['_PEAR_default_error_mode'];
 		$setoptions  = &$GLOBALS['_PEAR_default_error_options'];
 		array_pop($stack);
 		list($mode, $options) = $stack[sizeof($stack) - 1];
 		array_pop($stack);
+=======
+
+	function &throwError($message = null, $code = null, $userinfo = null) {
+		if (isset($this) && is_a($this, 'PEAR')) {
+			$a = &$this->raiseError($message, $code, null, null, $userinfo);
+			return $a;
+		}
+		$a = &PEAR::raiseError($message, $code, null, null, $userinfo);
+		return $a;
+	}
+
+	function staticPushErrorHandling($mode, $options = null) {
+		$stack = &$GLOBALS['_PEAR_error_handler_stack'];
+		$def_mode = &$GLOBALS['_PEAR_default_error_mode'];
+		$def_options = &$GLOBALS['_PEAR_default_error_options'];
+		$stack[] = array($def_mode, $def_options);
+>>>>>>> origin/drone
 		switch ($mode) {
 			case PEAR_ERROR_EXCEPTION:
 			case PEAR_ERROR_RETURN:
@@ -234,16 +264,26 @@ class PEAR {
 			case PEAR_ERROR_TRIGGER:
 			case PEAR_ERROR_DIE:
 			case null:
+<<<<<<< HEAD
 				$setmode = $mode;
 				$setoptions = $options;
 			break;
 			case PEAR_ERROR_CALLBACK:
 				$setmode = $mode;
 				if (is_callable($options)) $setoptions = $options;
+=======
+				$def_mode = $mode;
+				$def_options = $options;
+			break;
+			case PEAR_ERROR_CALLBACK:
+				$def_mode = $mode;
+				if (is_callable($options)) $def_options = $options;
+>>>>>>> origin/drone
 				else trigger_error("invalid error callback", E_USER_WARNING);
 			break;
 			default:
 				trigger_error("invalid error mode", E_USER_WARNING);
+<<<<<<< HEAD
 				break;
 		}
 		return true;
@@ -252,10 +292,10 @@ class PEAR {
 	function pushErrorHandling($mode, $options = null) {
 		$stack = &$GLOBALS['_PEAR_error_handler_stack'];
 		if (isset($this) && is_a($this, 'PEAR')) {
-			$def_mode    = &$this->_default_error_mode;
+			$def_mode = &$this->_default_error_mode;
 			$def_options = &$this->_default_error_options;
 		} else {
-			$def_mode    = &$GLOBALS['_PEAR_default_error_mode'];
+			$def_mode = &$GLOBALS['_PEAR_default_error_mode'];
 			$def_options = &$GLOBALS['_PEAR_default_error_options'];
 		}
 		$stack[] = array($def_mode, $def_options);
@@ -291,6 +331,85 @@ class PEAR {
 }
 
 if (PEAR_ZE2) include_once 'PEAR5.php';
+=======
+			break;
+		}
+		$stack[] = array($mode, $options);
+		return true;
+	}
+
+	function staticPopErrorHandling() {
+		$stack = &$GLOBALS['_PEAR_error_handler_stack'];
+		$setmode  = &$GLOBALS['_PEAR_default_error_mode'];
+		$setoptions  = &$GLOBALS['_PEAR_default_error_options'];
+		array_pop($stack);
+		list($mode, $options) = $stack[sizeof($stack) - 1];
+		array_pop($stack);
+		switch ($mode) {
+			case PEAR_ERROR_EXCEPTION:
+			case PEAR_ERROR_RETURN:
+			case PEAR_ERROR_PRINT:
+			case PEAR_ERROR_TRIGGER:
+			case PEAR_ERROR_DIE:
+			case null:
+				$setmode = $mode;
+				$setoptions = $options;
+			break;
+			case PEAR_ERROR_CALLBACK:
+				$setmode = $mode;
+				if (is_callable($options)) $setoptions = $options;
+				else trigger_error("invalid error callback", E_USER_WARNING);
+			break;
+			default:
+				trigger_error("invalid error mode", E_USER_WARNING);
+			break;
+		}
+		return true;
+	}
+
+	function pushErrorHandling($mode, $options = null) {
+		$stack = &$GLOBALS['_PEAR_error_handler_stack'];
+		if (isset($this) && is_a($this, 'PEAR')) {
+			$def_mode = &$this->_default_error_mode;
+			$def_options = &$this->_default_error_options;
+		} else {
+			$def_mode = &$GLOBALS['_PEAR_default_error_mode'];
+			$def_options = &$GLOBALS['_PEAR_default_error_options'];
+		}
+		$stack[] = array($def_mode, $def_options);
+		if (isset($this) && is_a($this, 'PEAR')) $this->setErrorHandling($mode, $options);
+		else PEAR::setErrorHandling($mode, $options);
+		$stack[] = array($mode, $options);
+		return true;
+	}
+
+	function popErrorHandling() {
+		$stack = &$GLOBALS['_PEAR_error_handler_stack'];
+		array_pop($stack);
+		list($mode, $options) = $stack[sizeof($stack) - 1];
+		array_pop($stack);
+		if (isset($this) && is_a($this, 'PEAR')) $this->setErrorHandling($mode, $options);
+		else PEAR::setErrorHandling($mode, $options);
+		return true;
+	}
+
+	function loadExtension($ext) {
+		if (!extension_loaded($ext)) {
+			if ((ini_get('enable_dl') != 1) || (ini_get('safe_mode') == 1)) {
+				return false;
+			}
+			if (OS_WINDOWS) $suffix = '.dll';
+			elseif (PHP_OS == 'HP-UX') $suffix = '.sl';
+			elseif (PHP_OS == 'AIX') $suffix = '.a';
+			elseif (PHP_OS == 'OSX') $suffix = '.bundle';
+			else $suffix = '.so';
+			return @dl('php_'.$ext.$suffix) || @dl($ext.$suffix);
+		}
+		return true;
+	}
+
+	if (PEAR_ZE2) include_once 'PEAR5.php';
+>>>>>>> origin/drone
 
 	function _PEAR_call_destructors() {
 		global $_PEAR_destructor_object_list;
@@ -321,18 +440,18 @@ if (PEAR_ZE2) include_once 'PEAR5.php';
 class PEAR_Error
 {
 	var $error_message_prefix = '';
-	var $mode                 = PEAR_ERROR_RETURN;
-	var $level                = E_USER_NOTICE;
-	var $code                 = -1;
-	var $message              = '';
-	var $userinfo             = '';
-	var $backtrace            = null;
+	var $mode     = PEAR_ERROR_RETURN;
+	var $level    = E_USER_NOTICE;
+	var $code     = -1;
+	var $message     = '';
+	var $userinfo    = '';
+	var $backtrace   = null;
 
 	function PEAR_Error($message = 'unknown error', $code = null, $mode = null, $options = null, $userinfo = null) {
 		if ($mode === null) $mode = PEAR_ERROR_RETURN;
 		$this->message   = $message;
-		$this->code      = $code;
-		$this->mode      = $mode;
+		$this->code   = $code;
+		$this->mode   = $mode;
 		$this->userinfo  = $userinfo;
 		if (PEAR_ZE2) $skiptrace = PEAR5::getStaticProperty('PEAR_Error', 'skiptrace');
 		else $skiptrace = PEAR::getStaticProperty('PEAR_Error', 'skiptrace');
@@ -358,9 +477,13 @@ class PEAR_Error
 			$msg = $this->getMessage();
 			if (is_null($options) || is_int($options)) {
 				$format = "%s";
+<<<<<<< HEAD
 				if (substr($msg, -1) != "\n") {
 					$msg .= "\n";
 				}
+=======
+				if (substr($msg, -1) != "\n") $msg .= "\n";
+>>>>>>> origin/drone
 			} else {
 				$format = $options;
 			}
@@ -374,6 +497,7 @@ class PEAR_Error
 			eval('$e = new Exception($this->message, $this->code);throw($e);');
 		}
 	}
+<<<<<<< HEAD
 
 	function getMode() {
 		return $this->mode;
@@ -418,6 +542,52 @@ class PEAR_Error
 		return $this->getMessage();
 	}
 
+=======
+
+	function getMode() {
+		return $this->mode;
+	}
+
+	function getCallback() {
+		return $this->callback;
+	}
+
+	function getMessage() {
+		return ($this->error_message_prefix . $this->message);
+	}
+
+	function getCode() {
+		return $this->code;
+	}
+
+	function getType() {
+		return get_class($this);
+	}
+
+	function getUserInfo() {
+		return $this->userinfo;
+	}
+
+	function getDebugInfo() {
+		return $this->getUserInfo();
+	}
+
+	function getBacktrace($frame = null) {
+		if (defined('PEAR_IGNORE_BACKTRACE')) return null;
+		if ($frame === null) return $this->backtrace;
+		return $this->backtrace[$frame];
+	}
+
+	function addUserInfo($info) {
+		if (empty($this->userinfo)) $this->userinfo = $info;
+		else $this->userinfo .= " ** $info";
+	}
+
+	function __toString() {
+		return $this->getMessage();
+	}
+
+>>>>>>> origin/drone
 	function toString() {
 		$modes = array();
 		$levels = array(E_USER_NOTICE  => 'notice', E_USER_WARNING => 'warning', E_USER_ERROR   => 'error');
@@ -425,6 +595,7 @@ class PEAR_Error
 			if (is_array($this->callback)) {
 				$callback = (is_object($this->callback[0]) ? strtolower(get_class($this->callback[0])) : $this->callback[0]) . '::' . $this->callback[1];
 			} else {
+<<<<<<< HEAD
 			$callback = $this->callback;
 		}
 		return sprintf('[%s: message="%s" code=%d mode=callback '.
@@ -432,6 +603,15 @@ class PEAR_Error
 			strtolower(get_class($this)), $this->message, $this->code,
 			$callback, $this->error_message_prefix,
 			$this->userinfo);
+=======
+				$callback = $this->callback;
+			}
+			return sprintf('[%s: message="%s" code=%d mode=callback '.
+				'callback=%s prefix="%s" info="%s"]',
+				strtolower(get_class($this)), $this->message, $this->code,
+				$callback, $this->error_message_prefix,
+				$this->userinfo);
+>>>>>>> origin/drone
 		}
 		if ($this->mode & PEAR_ERROR_PRINT) $modes[] = 'print';
 		if ($this->mode & PEAR_ERROR_TRIGGER) $modes[] = 'trigger';
@@ -444,3 +624,7 @@ class PEAR_Error
 			$this->error_message_prefix,
 			$this->userinfo);
 	}
+<<<<<<< HEAD
+=======
+}
+>>>>>>> origin/drone
