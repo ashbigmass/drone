@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<module>
+	<permissions />
+	<actions>
+		<action name="dispSupercacheAdminConfigBasic" type="view" admin_index="true" menu_name="supercache" />
+		<action name="dispSupercacheAdminConfigFullCache" type="view" />
+		<action name="dispSupercacheAdminConfigBoardCache" type="view" />
+		<action name="dispSupercacheAdminConfigWidgetCache" type="view" />
+		<action name="dispSupercacheAdminConfigOther" type="view" />
+		<action name="procSupercacheAdminInsertBasic" type="controller" />
+		<action name="procSupercacheAdminInsertFullCache" type="controller" />
+		<action name="procSupercacheAdminInsertBoardCache" type="controller" />
+		<action name="procSupercacheAdminInsertWidgetCache" type="controller" />
+		<action name="procSupercacheAdminInsertOther" type="controller" />
+		<action name="procSupercacheAdminFlushCache" type="controller" />
+	</actions>
+	<menus>
+		<menu name="supercache" type="all">
+			<title xml:lang="ko">슈퍼 캐시</title>
+			<title xml:lang="en">Super Cache</title>
+		</menu>
+	</menus>
+</module>

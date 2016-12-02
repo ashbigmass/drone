@@ -1,0 +1,196 @@
+<include target="./_header.html" />
+<load target="css/config.css" />
+<load target="js/config.js" />
+
+<form class="x_form-horizontal" action="./" method="post" id="supercache_config">
+	<input type="hidden" name="module" value="supercache" />
+	<input type="hidden" name="act" value="procSupercacheAdminInsertBoardCache" />
+	<input type="hidden" name="success_return_url" value="{getRequestUriByServerEnviroment()}" />
+	<div cond="$XE_VALIDATOR_MESSAGE" class="message {$XE_VALIDATOR_MESSAGE_TYPE}">
+		<p>{$XE_VALIDATOR_MESSAGE}</p>
+	</div>
+	
+	<div class="supercache_help">
+		{$lang->cmd_supercache_config_board_cache_help}
+	</div>
+	
+	<section class="section">
+	
+		<h2>{$lang->cmd_supercache_paging_cache}</h2>
+		
+		<div class="x_control-group">
+			<label class="x_control-label"><span class="important_block">★</span> {$lang->cmd_supercache_paging_cache_use}</label>
+			<div class="x_controls">
+				<label for="sc_paging_cache_y" class="x_inline">
+					<input name="sc_paging_cache" id="sc_paging_cache_y" type="radio" value="Y" checked="checked"|cond="$sc_config->paging_cache && $sc_list_replace" disabled="disabled"|cond="!$sc_list_replace" />
+					{$lang->cmd_yes}
+				</label>
+				<label for="sc_paging_cache_n" class="x_inline">
+					<input name="sc_paging_cache" id="sc_paging_cache_n" type="radio" value="N" checked="checked"|cond="!$sc_config->paging_cache || !$sc_list_replace" />
+					{$lang->cmd_no}
+				</label>
+				<label cond="$sc_list_replace" class="x_inline supported">&#10003; {$lang->cmd_supercache_paging_cache_supported_list_replace}</label>
+				<label cond="!$sc_list_replace" class="x_inline unsupported">&#10007; {$lang->cmd_supercache_paging_cache_supported_list_replace_x}</label>
+				<p class="x_help-block">
+					{$lang->cmd_supercache_paging_cache_use_help}
+				</p>
+			</div>
+		</div>
+		
+		<div class="x_control-group">
+			<label class="x_control-label"><span class="important_block">★</span> {$lang->cmd_supercache_paging_cache_use_offset_query}</label>
+			<div class="x_controls">
+				<label for="sc_paging_cache_use_offset_y" class="x_inline">
+					<input name="sc_paging_cache_use_offset" id="sc_paging_cache_use_offset_y" type="radio" value="Y" checked="checked"|cond="$sc_config->paging_cache_use_offset && $sc_offset_query" disabled="disabled"|cond="!$sc_offset_query" />
+					{$lang->cmd_yes}
+				</label>
+				<label for="sc_paging_cache_use_offset_n" class="x_inline">
+					<input name="sc_paging_cache_use_offset" id="sc_paging_cache_use_offset_n" type="radio" value="N" checked="checked"|cond="!$sc_config->paging_cache_use_offset || !$sc_offset_query" />
+					{$lang->cmd_no}
+				</label>
+				<label cond="$sc_offset_query" class="x_inline supported">&#10003; {$lang->cmd_supercache_paging_cache_supported_offset_query}</label>
+				<label cond="!$sc_offset_query" class="x_inline unsupported">&#10007; {$lang->cmd_supercache_paging_cache_supported_offset_query_x}</label>
+				<p class="x_help-block">
+					{$lang->cmd_supercache_paging_cache_use_offset_query_help}
+				</p>
+			</div>
+		</div>
+		
+		<div class="x_control-group">
+			<label class="x_control-label" for="sc_paging_cache_threshold">{$lang->cmd_supercache_paging_cache_threshold}</label>
+			<div class="x_controls">
+				<input name="sc_paging_cache_threshold" id="sc_paging_cache_threshold" type="number" value="{intval($sc_config->paging_cache_threshold) ?: 1200}" style="width:100px" />
+				<p class="x_help-block">
+					{$lang->cmd_supercache_paging_cache_threshold_help}
+				</p>
+			</div>
+		</div>
+		
+		<div class="x_control-group">
+			<label class="x_control-label" for="sc_paging_cache_duration">{$lang->cmd_supercache_paging_cache_duration}</label>
+			<div class="x_controls">
+				<input name="sc_paging_cache_duration" id="sc_paging_cache_duration" type="number" value="{intval($sc_config->paging_cache_duration) ?: 3600}" style="width:100px" />
+				<p class="x_help-block">
+					{$lang->cmd_supercache_paging_cache_duration_help}
+				</p>
+			</div>
+		</div>
+		
+		<div class="x_control-group">
+			<label class="x_control-label" for="sc_paging_cache_duration">{$lang->cmd_supercache_paging_cache_auto_refresh}</label>
+			<div class="x_controls">
+				<input name="sc_paging_cache_auto_refresh" id="sc_paging_cache_auto_refresh" type="number" value="{intval($sc_config->paging_cache_auto_refresh) ?: 2400}" style="width:100px" />
+				<p class="x_help-block">
+					{$lang->cmd_supercache_paging_cache_auto_refresh_help}
+				</p>
+			</div>
+		</div>
+		
+		<div class="x_control-group">
+			<label class="x_control-label">{$lang->cmd_supercache_paging_cache_exclude_modules}</label>
+			<div class="x_controls">
+				<div loop="$sc_modules => $sc_module">
+					<label for="sc_paging_cache_exclude_modules_{$sc_module->module_srl}" class="checkbox_wrapper x_inline">
+						<input name="sc_paging_cache_exclude_modules[]" id="sc_paging_cache_exclude_modules_{$sc_module->module_srl}" type="checkbox" value="{$sc_module->module_srl}" checked="checked"|cond="isset($sc_config->paging_cache_exclude_modules[$sc_module->module_srl])" />
+						{$sc_module->browser_title}
+					</label>
+					<span class="mid">({$sc_module->mid})</span>
+				</div>
+				<p class="x_help-block more_margin">
+					{$lang->cmd_supercache_paging_cache_exclude_modules_help}
+				</p>
+			</div>
+		</div>
+	
+	</section>
+	
+	<section class="section">
+	
+		<h2>{$lang->cmd_supercache_search_cache}</h2>
+		
+		<div class="x_control-group">
+			<label class="x_control-label"><span class="important_block">★</span> {$lang->cmd_supercache_search_cache_use}</label>
+			<div class="x_controls">
+				<label for="sc_search_cache_y" class="x_inline">
+					<input name="sc_search_cache" id="sc_search_cache_y" type="radio" value="Y" checked="checked"|cond="$sc_config->search_cache && $sc_list_replace" disabled="disabled"|cond="!$sc_list_replace" />
+					{$lang->cmd_yes}
+				</label>
+				<label for="sc_search_cache_n" class="x_inline">
+					<input name="sc_search_cache" id="sc_search_cache_n" type="radio" value="N" checked="checked"|cond="!$sc_config->search_cache || !$sc_list_replace" />
+					{$lang->cmd_no}
+				</label>
+				<label cond="$sc_list_replace" class="x_inline supported">&#10003; {$lang->cmd_supercache_search_cache_supported_list_replace}</label>
+				<label cond="!$sc_list_replace" class="x_inline unsupported">&#10007; {$lang->cmd_supercache_search_cache_supported_list_replace_x}</label>
+				<p class="x_help-block">
+					{$lang->cmd_supercache_search_cache_use_help}
+				</p>
+			</div>
+		</div>
+		
+		<div class="x_control-group">
+			<label class="x_control-label" for="sc_search_cache_duration">{$lang->cmd_supercache_search_cache_duration}</label>
+			<div class="x_controls">
+				<input name="sc_search_cache_duration" id="sc_search_cache_duration" type="number" value="{intval($sc_config->search_cache_duration) ?: 600}" style="width:100px" />
+				<p class="x_help-block">
+					{$lang->cmd_supercache_search_cache_duration_help}
+				</p>
+			</div>
+		</div>
+		
+		<div class="x_control-group">
+			<label class="x_control-label">{$lang->cmd_supercache_search_cache_document_action}</label>
+			<div class="x_controls">
+				<label for="sc_search_cache_document_action_refresh_module" class="x_inline">
+					<input name="sc_search_cache_document_action[]" id="sc_search_cache_document_action_refresh_module" type="radio" value="refresh_module" checked="checked"|cond="isset($sc_config->search_cache_document_action['refresh_module'])" />
+					{$lang->cmd_yes}
+				</label>
+				<label for="sc_search_cache_document_action_none" class="x_inline">
+					<input name="sc_search_cache_document_action[]" id="sc_search_cache_document_action_none" type="radio" value="none" checked="checked"|cond="!isset($sc_config->search_cache_document_action['refresh_module'])" />
+					{$lang->cmd_no}
+				</label>
+				<p class="x_help-block">
+					{$lang->cmd_supercache_search_cache_document_action_help}
+				</p>
+			</div>
+		</div>
+		
+		<div class="x_control-group">
+			<label class="x_control-label">{$lang->cmd_supercache_search_cache_comment_action}</label>
+			<div class="x_controls">
+				<label for="sc_search_cache_comment_action_refresh_module" class="x_inline">
+					<input name="sc_search_cache_comment_action[]" id="sc_search_cache_comment_action_refresh_module" type="radio" value="refresh_module" checked="checked"|cond="isset($sc_config->search_cache_comment_action['refresh_module'])" />
+					{$lang->cmd_yes}
+				</label>
+				<label for="sc_search_cache_comment_action_none" class="x_inline">
+					<input name="sc_search_cache_comment_action[]" id="sc_search_cache_comment_action_none" type="radio" value="none" checked="checked"|cond="!isset($sc_config->search_cache_comment_action['refresh_module'])" />
+					{$lang->cmd_no}
+				</label>
+				<p class="x_help-block">
+					{$lang->cmd_supercache_search_cache_comment_action_help}
+				</p>
+			</div>
+		</div>
+		
+		<div class="x_control-group">
+			<label class="x_control-label">{$lang->cmd_supercache_search_cache_exclude_modules}</label>
+			<div class="x_controls">
+				<div loop="$sc_modules => $sc_module">
+					<label for="sc_search_cache_exclude_modules_{$sc_module->module_srl}" class="checkbox_wrapper x_inline">
+						<input name="sc_search_cache_exclude_modules[]" id="sc_search_cache_exclude_modules_{$sc_module->module_srl}" type="checkbox" value="{$sc_module->module_srl}" checked="checked"|cond="isset($sc_config->search_cache_exclude_modules[$sc_module->module_srl])" />
+						{$sc_module->browser_title}
+					</label>
+					<span class="mid">({$sc_module->mid})</span>
+				</div>
+				<p class="x_help-block more_margin">
+					{$lang->cmd_supercache_search_cache_exclude_modules_help}
+				</p>
+			</div>
+		</div>
+	
+	</section>
+	
+	<div class="btnArea x_clearfix">
+		<button type="submit" class="x_btn x_btn-primary x_pull-right">{$lang->cmd_registration}</button>
+	</div>
+	
+</form>

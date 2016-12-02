@@ -1,0 +1,276 @@
+<include target="./_header.html" />
+<load target="css/config.css" />
+<load target="js/config.js" />
+
+<form class="x_form-horizontal" action="./" method="post" id="supercache_config">
+	<input type="hidden" name="module" value="supercache" />
+	<input type="hidden" name="act" value="procSupercacheAdminInsertFullCache" />
+	<input type="hidden" name="success_return_url" value="{getRequestUriByServerEnviroment()}" />
+	<div cond="$XE_VALIDATOR_MESSAGE" class="message {$XE_VALIDATOR_MESSAGE_TYPE}">
+		<p>{$XE_VALIDATOR_MESSAGE}</p>
+	</div>
+	
+	<div class="supercache_help">
+		{$lang->cmd_supercache_config_full_cache_help}
+	</div>
+	
+	<section class="section">
+	
+		<h2>{$lang->cmd_supercache_full_cache_basic}</h2>
+		
+		<div class="x_control-group">
+			<label class="x_control-label"><span class="important_block">★</span> {$lang->cmd_supercache_full_cache_use}</label>
+			<div class="x_controls">
+				<label for="sc_full_cache_pc" class="x_inline">
+					<input name="sc_full_cache[]" id="sc_full_cache_pc" type="checkbox" value="pc" checked="checked"|cond="isset($sc_config->full_cache['pc'])" />
+					{$lang->cmd_supercache_full_cache_use_pc}
+				</label>
+				<label for="sc_full_cache_mobile" class="x_inline">
+					<input name="sc_full_cache[]" id="sc_full_cache_mobile" type="checkbox" value="mobile" checked="checked"|cond="isset($sc_config->full_cache['mobile'])" />
+					{$lang->cmd_supercache_full_cache_use_mobile}
+				</label>
+				<label for="sc_full_cache_pushapp" class="x_inline">
+					<input name="sc_full_cache[]" id="sc_full_cache_pushapp" type="checkbox" value="pushapp" checked="checked"|cond="isset($sc_config->full_cache['pushapp'])" />
+					{$lang->cmd_supercache_full_cache_use_pushapp}
+				</label>
+				<label for="sc_full_cache_robot" class="x_inline">
+					<input name="sc_full_cache[]" id="sc_full_cache_robot" type="checkbox" value="robot" checked="checked"|cond="isset($sc_config->full_cache['robot'])" />
+					{$lang->cmd_supercache_full_cache_use_robot}
+				</label>
+				<p class="x_help-block">
+					{$lang->cmd_supercache_full_cache_use_help}
+				</p>
+			</div>
+		</div>
+		
+		<div class="x_control-group">
+			<label class="x_control-label"><span class="important_block">★</span> {$lang->cmd_supercache_full_cache_type}</label>
+			<div class="x_controls">
+				<label for="sc_full_cache_type_module" class="checkbox_wrapper">
+					<input name="sc_full_cache_type[]" id="sc_full_cache_type_module" type="checkbox" value="module" checked="checked"|cond="isset($sc_config->full_cache_type['module'])" />
+					{$lang->cmd_supercache_full_cache_type_module}
+				</label>
+				<label for="sc_full_cache_type_document" class="checkbox_wrapper">
+					<input name="sc_full_cache_type[]" id="sc_full_cache_type_document" type="checkbox" value="document" checked="checked"|cond="isset($sc_config->full_cache_type['document'])" />
+					{$lang->cmd_supercache_full_cache_type_document}
+				</label>
+				<label for="sc_full_cache_type_other" class="checkbox_wrapper">
+					<input name="sc_full_cache_type[]" id="sc_full_cache_type_other" type="checkbox" value="other" checked="checked"|cond="isset($sc_config->full_cache_type['other'])" disabled="disabled"|cond="!isset($sc_config->full_cache_type['other'])" />
+					{$lang->cmd_supercache_full_cache_type_other}
+				</label>
+				<p class="x_help-block more_margin">
+					{$lang->cmd_supercache_full_cache_type_help}
+				</p>
+			</div>
+		</div>
+		
+		<div class="x_control-group">
+			<label class="x_control-label" for="sc_full_cache_duration">{$lang->cmd_supercache_full_cache_duration}</label>
+			<div class="x_controls">
+				<input name="sc_full_cache_duration" id="sc_full_cache_duration" type="number" value="{intval($sc_config->full_cache_duration) ?: 300}" style="width:100px" />
+				<p class="x_help-block">
+					{$lang->cmd_supercache_full_cache_duration_help}
+				</p>
+			</div>
+		</div>
+		
+		<div class="x_control-group">
+			<label class="x_control-label">{$lang->cmd_supercache_full_cache_document_action}</label>
+			<div class="x_controls">
+				<label for="sc_full_cache_document_action_refresh_document" class="checkbox_wrapper">
+					<input name="sc_full_cache_document_action[]" id="sc_full_cache_document_action_refresh_document" type="checkbox" value="refresh_document" checked="checked"|cond="isset($sc_config->full_cache_document_action['refresh_document']) || !isset($sc_config->full_cache_document_action)" />
+					{$lang->cmd_supercache_full_cache_document_action_refresh_document}
+				</label>
+				<label for="sc_full_cache_document_action_refresh_module" class="checkbox_wrapper">
+					<input name="sc_full_cache_document_action[]" id="sc_full_cache_document_action_refresh_module" type="checkbox" value="refresh_module" checked="checked"|cond="isset($sc_config->full_cache_document_action['refresh_module'])" />
+					{$lang->cmd_supercache_full_cache_document_action_refresh_module}
+				</label>
+				<label for="sc_full_cache_document_action_refresh_index" class="checkbox_wrapper">
+					<input name="sc_full_cache_document_action[]" id="sc_full_cache_document_action_refresh_index" type="checkbox" value="refresh_index" checked="checked"|cond="isset($sc_config->full_cache_document_action['refresh_index'])" />
+					{$lang->cmd_supercache_full_cache_document_action_refresh_index}
+				</label>
+				<p class="x_help-block more_margin">
+					{$lang->cmd_supercache_full_cache_document_action_help}
+				</p>
+			</div>
+		</div>
+		
+		<div class="x_control-group">
+			<label class="x_control-label">{$lang->cmd_supercache_full_cache_comment_action}</label>
+			<div class="x_controls">
+				<label for="sc_full_cache_comment_action_refresh_document" class="checkbox_wrapper">
+					<input name="sc_full_cache_comment_action[]" id="sc_full_cache_comment_action_refresh_document" type="checkbox" value="refresh_document" checked="checked"|cond="isset($sc_config->full_cache_comment_action['refresh_document']) || !isset($sc_config->full_cache_comment_action)" />
+					{$lang->cmd_supercache_full_cache_document_action_refresh_document}
+				</label>
+				<label for="sc_full_cache_comment_action_refresh_module" class="checkbox_wrapper">
+					<input name="sc_full_cache_comment_action[]" id="sc_full_cache_comment_action_refresh_module" type="checkbox" value="refresh_module" checked="checked"|cond="isset($sc_config->full_cache_comment_action['refresh_module'])" />
+					{$lang->cmd_supercache_full_cache_document_action_refresh_module}
+				</label>
+				<label for="sc_full_cache_comment_action_refresh_index" class="checkbox_wrapper">
+					<input name="sc_full_cache_comment_action[]" id="sc_full_cache_comment_action_refresh_index" type="checkbox" value="refresh_index" checked="checked"|cond="isset($sc_config->full_cache_comment_action['refresh_index'])" />
+					{$lang->cmd_supercache_full_cache_document_action_refresh_index}
+				</label>
+				<p class="x_help-block more_margin">
+					{$lang->cmd_supercache_full_cache_comment_action_help}
+				</p>
+			</div>
+		</div>
+	
+	</section>
+	
+	<section class="section">
+	
+		<h2>{$lang->cmd_supercache_full_cache_advanced}</h2>
+		
+		<div class="x_control-group">
+			<label class="x_control-label">{$lang->cmd_supercache_full_cache_stampede_protection}</label>
+			<div class="x_controls">
+				<label for="sc_full_cache_stampede_protection_y" class="x_inline">
+					<input name="sc_full_cache_stampede_protection" id="sc_full_cache_stampede_protection_y" type="radio" value="Y" checked="checked"|cond="$sc_config->full_cache_stampede_protection !== false" />
+					{$lang->cmd_yes}
+				</label>
+				<label for="sc_full_cache_stampede_protection_n" class="x_inline">
+					<input name="sc_full_cache_stampede_protection" id="sc_full_cache_stampede_protection_n" type="radio" value="N" checked="checked"|cond="$sc_config->full_cache_stampede_protection === false" />
+					{$lang->cmd_no}
+				</label>
+				<p class="x_help-block">
+					{$lang->cmd_supercache_full_cache_stampede_protection_help}
+				</p>
+			</div>
+		</div>
+		
+		<div class="x_control-group">
+			<label class="x_control-label">{$lang->cmd_supercache_full_cache_delay_trigger}</label>
+			<div class="x_controls">
+				<label for="sc_full_cache_delay_trigger_y" class="x_inline">
+					<input name="sc_full_cache_delay_trigger" id="sc_full_cache_delay_trigger_y" type="radio" value="Y" checked="checked"|cond="$sc_config->full_cache_delay_trigger" />
+					{$lang->cmd_yes}
+				</label>
+				<label for="sc_full_cache_delay_trigger_n" class="x_inline">
+					<input name="sc_full_cache_delay_trigger" id="sc_full_cache_delay_trigger_n" type="radio" value="N" checked="checked"|cond="!$sc_config->full_cache_delay_trigger" />
+					{$lang->cmd_no}
+				</label>
+				<p class="x_help-block">
+					{$lang->cmd_supercache_full_cache_delay_trigger_help}
+				</p>
+			</div>
+		</div>
+		
+		<div class="x_control-group">
+			<label class="x_control-label">{$lang->cmd_supercache_full_cache_include_404}</label>
+			<div class="x_controls">
+				<label for="sc_full_cache_include_404_y" class="x_inline">
+					<input name="sc_full_cache_include_404" id="sc_full_cache_include_404_y" type="radio" value="Y" checked="checked"|cond="$sc_config->full_cache_include_404" />
+					{$lang->cmd_yes}
+				</label>
+				<label for="sc_full_cache_include_404_n" class="x_inline">
+					<input name="sc_full_cache_include_404" id="sc_full_cache_include_404_n" type="radio" value="N" checked="checked"|cond="!$sc_config->full_cache_include_404" />
+					{$lang->cmd_no}
+				</label>
+				<p class="x_help-block">
+					{$lang->cmd_supercache_full_cache_include_404_help}
+				</p>
+			</div>
+		</div>
+		
+		<div class="x_control-group">
+			<label class="x_control-label">{$lang->cmd_supercache_full_cache_incr_view_count}</label>
+			<div class="x_controls">
+				<label for="sc_full_cache_incr_view_count_y" class="x_inline">
+					<input name="sc_full_cache_incr_view_count" id="sc_full_cache_incr_view_count_y" type="radio" value="Y" checked="checked"|cond="$sc_config->full_cache_incr_view_count" />
+					{$lang->cmd_yes}
+				</label>
+				<label for="sc_full_cache_incr_view_count_n" class="x_inline">
+					<input name="sc_full_cache_incr_view_count" id="sc_full_cache_incr_view_count_n" type="radio" value="N" checked="checked"|cond="!$sc_config->full_cache_incr_view_count" />
+					{$lang->cmd_no}
+				</label>
+				<p class="x_help-block">
+					{$lang->cmd_supercache_full_cache_incr_view_count_help}
+				</p>
+				<label for="sc_full_cache_incr_view_count_probabilistic">
+					<input name="sc_full_cache_incr_view_count_probabilistic" id="sc_full_cache_incr_view_count_probabilistic" type="checkbox" value="Y" checked="checked"|cond="$sc_config->full_cache_incr_view_count_probabilistic" />
+					{$lang->cmd_supercache_full_cache_incr_view_count_probabilistic}
+				</label>
+				<p class="x_help-block">
+					{$lang->cmd_supercache_full_cache_incr_view_count_probabilistic_help}
+				</p>
+			</div>
+		</div>
+	
+		<div class="x_control-group">
+			<label class="x_control-label">{$lang->cmd_supercache_full_cache_use_headers}</label>
+			<div class="x_controls">
+				<label for="sc_full_cache_use_headers_y" class="x_inline">
+					<input name="sc_full_cache_use_headers" id="sc_full_cache_use_headers_y" type="radio" value="Y" checked="checked"|cond="$sc_config->full_cache_use_headers" />
+					{$lang->cmd_yes}
+				</label>
+				<label for="sc_full_cache_use_headers_n" class="x_inline">
+					<input name="sc_full_cache_use_headers" id="sc_full_cache_use_headers_n" type="radio" value="N" checked="checked"|cond="!$sc_config->full_cache_use_headers" />
+					{$lang->cmd_no}
+				</label>
+				<p class="x_help-block">
+					{$lang->cmd_supercache_full_cache_use_headers_help}
+				</p>
+				<label for="sc_full_cache_use_headers_proxy_too">
+					<input name="sc_full_cache_use_headers_proxy_too" id="sc_full_cache_use_headers_proxy_too" type="checkbox" value="Y" checked="checked"|cond="$sc_config->full_cache_use_headers_proxy_too" />
+					{$lang->cmd_supercache_full_cache_use_headers_proxy_too}
+				</label>
+				<p class="x_help-block">
+					{$lang->cmd_supercache_full_cache_use_headers_proxy_too_help}
+				</p>
+			</div>
+		</div>
+		
+		<div class="x_control-group">
+			<label class="x_control-label"><span class="important_block">★</span> {$lang->cmd_supercache_full_cache_exclude_modules}</label>
+			<div class="x_controls">
+				<div loop="$sc_modules => $sc_module">
+					<label for="sc_full_cache_exclude_modules_{$sc_module->module_srl}" class="checkbox_wrapper x_inline">
+						<input name="sc_full_cache_exclude_modules[]" id="sc_full_cache_exclude_modules_{$sc_module->module_srl}" type="checkbox" value="{$sc_module->module_srl}" checked="checked"|cond="isset($sc_config->full_cache_exclude_modules[$sc_module->module_srl])" />
+						{$sc_module->browser_title}
+					</label>
+					<span class="mid">({$sc_module->mid})</span>
+				</div>
+				<p class="x_help-block more_margin">
+					{$lang->cmd_supercache_full_cache_exclude_modules_help}
+				</p>
+			</div>
+		</div>
+		
+		<div class="x_control-group">
+			<label class="x_control-label" for="sc_full_cache_exclude_acts">{$lang->cmd_supercache_full_cache_exclude_acts}</label>
+			<div class="x_controls">
+				<textarea name="sc_full_cache_exclude_acts" id="sc_full_cache_exclude_acts" class="console_font full_width">{htmlspecialchars(implode("\n", $sc_config->full_cache_exclude_acts ? array_keys($sc_config->full_cache_exclude_acts) : array()))}</textarea>
+				<p class="x_help-block more_margin">
+					{$lang->cmd_supercache_full_cache_exclude_acts_help}
+				</p>
+			</div>
+		</div>
+		
+		<div class="x_control-group">
+			<label class="x_control-label" for="sc_full_cache_exclude_cookies">{$lang->cmd_supercache_full_cache_exclude_cookies}</label>
+			<div class="x_controls">
+				<textarea name="sc_full_cache_exclude_cookies" id="sc_full_cache_exclude_cookies" class="console_font full_width">{htmlspecialchars(implode("\n", $sc_config->full_cache_exclude_cookies ? array_keys($sc_config->full_cache_exclude_cookies) : array()))}</textarea>
+				<p class="x_help-block more_margin">
+					{$lang->cmd_supercache_full_cache_exclude_cookies_help}
+				</p>
+			</div>
+		</div>
+		
+		<div class="x_control-group">
+			<label class="x_control-label" for="sc_full_cache_separate_cookies">{$lang->cmd_supercache_full_cache_separate_cookies}</label>
+			<div class="x_controls">
+				<textarea name="sc_full_cache_separate_cookies" id="sc_full_cache_separate_cookies" class="console_font full_width">{htmlspecialchars(implode("\n", $sc_config->full_cache_separate_cookies ? array_keys($sc_config->full_cache_separate_cookies) : array()))}</textarea>
+				<p class="x_help-block more_margin">
+					{$lang->cmd_supercache_full_cache_separate_cookies_help}
+				</p>
+			</div>
+		</div>
+		
+	</section>
+	
+	<div class="btnArea x_clearfix">
+		<button type="submit" class="x_btn x_btn-primary x_pull-right">{$lang->cmd_registration}</button>
+	</div>
+	
+</form>

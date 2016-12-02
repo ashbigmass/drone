@@ -1,0 +1,575 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lang>
+	<item name="cmd_supercache_module_name">
+		<value xml:lang="ko"><![CDATA[슈퍼 캐시]]></value>
+		<value xml:lang="en"><![CDATA[Super Cache]]></value>
+	</item>
+	<item name="cmd_supercache_config_basic">
+		<value xml:lang="ko"><![CDATA[캐시 방식 설정]]></value>
+		<value xml:lang="en"><![CDATA[Cache Method]]></value>
+	</item>
+	<item name="cmd_supercache_config_basic_help">
+		<value xml:lang="ko"><![CDATA[슈퍼 캐시 모듈은 다량의 임시 데이터를 생성합니다. 이 데이터를 어디에 저장할지 선택하시기 바랍니다.<br>별도로 설정하지 않을 경우 XE 설치 경로 아래 <span class="console_font">files/supercache</span> 폴더에 저장합니다.]]></value>
+		<value xml:lang="en"><![CDATA[Super Cache produces a large amount of temporary data. Please select where this data should be stored.<br>Unless otherwise configured, cache files will be stored in the <span class="console_font">files/supercache</span> folder.]]></value>
+	</item>
+	<item name="cmd_supercache_config_basic_rhymix_help">
+		<value xml:lang="ko"><![CDATA[라이믹스 사용자는 <a href="./index.php?module=admin&amp;act=dispAdminConfigAdvanced">[시스템 설정 / 고급 설정]</a> 메뉴에서 캐시 방식을 변경하실 수 있습니다.]]></value>
+		<value xml:lang="en"><![CDATA[Rhymix users can go to <a href="./index.php?module=admin&amp;act=dispAdminConfigAdvanced">[Systm Settings / Advanced Settings]</a> to change the cache method.]]></value>
+	</item>
+	<item name="cmd_supercache_core_object_cache">
+		<value xml:lang="ko"><![CDATA[캐시 방식 설정]]></value>
+		<value xml:lang="en"><![CDATA[Cache Method]]></value>
+	</item>
+	<item name="cmd_supercache_flush_cache">
+		<value xml:lang="ko"><![CDATA[캐시 비우기]]></value>
+		<value xml:lang="en"><![CDATA[Flush Cache]]></value>
+	</item>
+	<item name="cmd_supercache_flush_cache_help">
+		<value xml:lang="ko"><![CDATA[시스템 설정, 모듈 설정, 스킨 등을 변경한 후 문제가 발생한다면 위의 단추를 클릭해 주십시오.<br>주의: 문제가 있을 때만 클릭하세요. 평상시에 자주 사용하면 캐시 효율이 떨어질 수 있습니다.]]></value>
+		<value xml:lang="en"><![CDATA[Please click the button above if you experience problems after changing system settings, module settings, etc.<br>Caution: Only click if there are problems. Overuse may redeuce cache effectiveness.]]></value>
+	</item>
+	<item name="cmd_supercache_config_full_cache">
+		<value xml:lang="ko"><![CDATA[전체화면 캐시]]></value>
+		<value xml:lang="en"><![CDATA[Full Page Cache]]></value>
+	</item>
+	<item name="cmd_supercache_config_full_cache_help">
+		<value xml:lang="ko"><![CDATA[웹 페이지 전체를 캐시에 저장해 두었다가 다른 방문자들에게도 똑같이 뿌려 주는 기능입니다.<br>로그인하지 않은 방문자가 대부분인 블로그, 단순 홍보성 사이트 등에서 큰 효과를 얻을 수 있습니다.<br><span class="warning">회원들의 활동이 많은 커뮤니티 사이트에서 사용할 경우 주의가 필요합니다.</span>]]></value>
+		<value xml:lang="en"><![CDATA[The full page cache stores entire web pages and displays identical content to every visitor.<br>It is effective in blogs and informational sites where most visitors are not logged in.<br><span class="warning">It should be used cautiously in sites with many active members.</span>]]></value>
+	</item>
+	<item name="cmd_supercache_full_cache_basic">
+		<value xml:lang="ko"><![CDATA[기본 설정]]></value>
+		<value xml:lang="en"><![CDATA[Basic Configuration]]></value>
+	</item>
+	<item name="cmd_supercache_full_cache_use">
+		<value xml:lang="ko"><![CDATA[전체화면 캐시 사용]]></value>
+		<value xml:lang="en"><![CDATA[Use Full Page Cache]]></value>
+	</item>
+	<item name="cmd_supercache_full_cache_use_pc">
+		<value xml:lang="ko"><![CDATA[PC]]></value>
+		<value xml:lang="en"><![CDATA[Desktop]]></value>
+	</item>
+	<item name="cmd_supercache_full_cache_use_mobile">
+		<value xml:lang="ko"><![CDATA[모바일]]></value>
+		<value xml:lang="en"><![CDATA[Mobile]]></value>
+	</item>
+	<item name="cmd_supercache_full_cache_use_pushapp">
+		<value xml:lang="ko"><![CDATA[푸시앱]]></value>
+		<value xml:lang="en"><![CDATA[Push App]]></value>
+	</item>
+	<item name="cmd_supercache_full_cache_use_robot">
+		<value xml:lang="ko"><![CDATA[로봇]]></value>
+		<value xml:lang="en"><![CDATA[Robot]]></value>
+	</item>
+	<item name="cmd_supercache_full_cache_use_help">
+		<value xml:lang="ko"><![CDATA[선택한 종류의 방문자 중 로그인하지 않은 방문자에게는 캐시된 화면을 표시합니다.<br>새로 등록된 글과 댓글, 스킨 및 레이아웃 수정 내역 등이 즉시 반영되지 않을 수도 있습니다.]]></value>
+		<value xml:lang="en"><![CDATA[Display cached content for selected types of visitors who are not logged in.<br>They will not see the latest posts or recent changes to the design of your site.]]></value>
+	</item>
+	<item name="cmd_supercache_full_cache_type">
+		<value xml:lang="ko"><![CDATA[전체화면 캐시 대상]]></value>
+		<value xml:lang="en"><![CDATA[Types of Pages to Cache]]></value>
+	</item>
+	<item name="cmd_supercache_full_cache_type_module">
+		<value xml:lang="ko"><![CDATA[모듈(게시판) 초기화면 및 목록 페이지]]></value>
+		<value xml:lang="en"><![CDATA[Main page and list pages of each module (board)]]></value>
+	</item>
+	<item name="cmd_supercache_full_cache_type_document">
+		<value xml:lang="ko"><![CDATA[문서(글읽기) 페이지]]></value>
+		<value xml:lang="en"><![CDATA[Individual documents]]></value>
+	</item>
+	<item name="cmd_supercache_full_cache_type_other">
+		<value xml:lang="ko"><![CDATA[기타 화면]]></value>
+		<value xml:lang="en"><![CDATA[Other pages]]></value>
+	</item>
+	<item name="cmd_supercache_full_cache_type_help">
+		<value xml:lang="ko"><![CDATA[선택한 종류의 페이지에 전체화면 캐시가 적용됩니다. 사이트 특성에 따라 조절하십시오.<br><span class="warning">경고: &quot;기타 화면&quot; 선택시 오류가 발생할 가능성이 높으므로 불가피한 경우 외에는 권장하지 않습니다.</span><br>위의 경고에도 불구하고 &quot;기타 화면&quot; 옵션을 활성화하려면 <a href="#" class="sc_enable_other_pages">여기</a>를 클릭하십시오.]]></value>
+		<value xml:lang="en"><![CDATA[The selected types of pages will be stored in the full-page cache. Please adjust according to your site's needs.<br><span class="warning">Warning: Caching &quot;other pages&quot; is likely to cause issues, so it is not recommended unless absolutely necessary.</span><br>To enable caching &quot;other pages&quot; anyway, please click <a href="#" class="sc_enable_other_pages">here</a> at your own risk.]]></value>
+	</item>
+	<item name="cmd_supercache_full_cache_exclude_modules">
+		<value xml:lang="ko"><![CDATA[캐시 예외 모듈]]></value>
+		<value xml:lang="en"><![CDATA[Modules to Exclude]]></value>
+	</item>
+	<item name="cmd_supercache_full_cache_exclude_modules_help">
+		<value xml:lang="ko"><![CDATA[선택한 모듈(게시판)에는 전체화면 캐시를 적용하지 않습니다. 캐시 사용시 문제가 발생하는 모듈은 제외하시기 바랍니다.]]></value>
+		<value xml:lang="en"><![CDATA[The selected modules (boards) will be excluded from the full page cache. Please check all modules that cause a problem when cached.]]></value>
+	</item>
+	<item name="cmd_supercache_full_cache_exclude_acts">
+		<value xml:lang="ko"><![CDATA[캐시 예외 액션]]></value>
+		<value xml:lang="en"><![CDATA[Actions to Exclude]]></value>
+	</item>
+	<item name="cmd_supercache_full_cache_exclude_acts_help">
+		<value xml:lang="ko"><![CDATA[여기에 나열한 액션(act)은 캐시에서 제외합니다. 쉼표, 공백, 줄바꿈 등으로 구분하여 작성할 수 있습니다.<br>주의: 위에서 &quot;기타 화면&quot;을 선택한 경우에만 적용됩니다.]]></value>
+		<value xml:lang="en"><![CDATA[Actions listed here will be excluded from the full page cache. Please separate actions using commas, spaces, or newlines.<br>Caution: This setting is only effective when &quot;Other pages&quot; is selected above.]]></value>
+	</item>
+	<item name="cmd_supercache_full_cache_exclude_cookies">
+		<value xml:lang="ko"><![CDATA[캐시 예외 쿠키]]></value>
+		<value xml:lang="en"><![CDATA[Cookies to Exclude]]></value>
+	</item>
+	<item name="cmd_supercache_full_cache_exclude_cookies_help">
+		<value xml:lang="ko"><![CDATA[여기에 나열한 쿠키가 있는 방문자는 로그인한 방문자와 마찬가지로 취급하여 전체화면 캐시에서 제외합니다.<br>쉼표, 공백, 줄바꿈 등으로 구분하여 작성할 수 있습니다.]]></value>
+		<value xml:lang="en"><![CDATA[Visitors with cookies listed above will be excluded from the full page cache.<br>Please separate actions using commas, spaces, or newlines.]]></value>
+	</item>
+	<item name="cmd_supercache_full_cache_separate_cookies">
+		<value xml:lang="ko"><![CDATA[별도로 캐시할 쿠키]]></value>
+		<value xml:lang="en"><![CDATA[Cookies to Cache Separately]]></value>
+	</item>
+	<item name="cmd_supercache_full_cache_separate_cookies_help">
+		<value xml:lang="ko"><![CDATA[여기에 나열한 쿠키가 있는 방문자는 각 쿠키의 값에 따라 별도의 캐시를 적용합니다.<br>쉼표, 공백, 줄바꿈 등으로 구분하여 작성할 수 있습니다.]]></value>
+		<value xml:lang="en"><![CDATA[Visitors with cookies listed above will be cached separately based on the value of each cookie.<br>Please separate actions using commas, spaces, or newlines.]]></value>
+	</item>
+	<item name="cmd_supercache_full_cache_document_action">
+		<value xml:lang="ko"><![CDATA[문서 작성시 자동 갱신]]></value>
+		<value xml:lang="en"><![CDATA[Action on Document Change]]></value>
+	</item>
+	<item name="cmd_supercache_full_cache_document_action_help">
+		<value xml:lang="ko"><![CDATA[새 글 작성, 수정, 삭제 등이 일어나면 선택한 전체 화면 캐시를 자동으로 갱신합니다.<br>주의: 회원들의 활동이 많은 사이트에서는 캐시 효율이 낮아질 수 있습니다.]]></value>
+		<value xml:lang="en"><![CDATA[Automatically regenerate the selected cache entries when new document is created, edited, or deleted.<br>Caution: This can reduce cache effectiveness in a site with frequent activity.]]></value>
+	</item>
+	<item name="cmd_supercache_full_cache_document_action_refresh_document">
+		<value xml:lang="ko"><![CDATA[해당 문서(글읽기) 페이지]]></value>
+		<value xml:lang="en"><![CDATA[Document where the change took place]]></value>
+	</item>
+	<item name="cmd_supercache_full_cache_document_action_refresh_module">
+		<value xml:lang="ko"><![CDATA[해당 모듈(게시판) 목록 페이지]]></value>
+		<value xml:lang="en"><![CDATA[Board where the change took place]]></value>
+	</item>
+	<item name="cmd_supercache_full_cache_document_action_refresh_index">
+		<value xml:lang="ko"><![CDATA[사이트 메인 화면]]></value>
+		<value xml:lang="en"><![CDATA[Index page of your site]]></value>
+	</item>
+	<item name="cmd_supercache_full_cache_comment_action">
+		<value xml:lang="ko"><![CDATA[댓글 작성시 자동 갱신]]></value>
+		<value xml:lang="en"><![CDATA[Action on Comment Change]]></value>
+	</item>
+	<item name="cmd_supercache_full_cache_comment_action_help">
+		<value xml:lang="ko"><![CDATA[새 댓글 작성, 수정, 삭제 등이 일어나면 선택한 전체 화면 캐시를 자동으로 갱신합니다.<br>주의: 회원들의 활동이 많은 사이트에서는 캐시 효율이 낮아질 수 있습니다.]]></value>
+		<value xml:lang="en"><![CDATA[Automatically regenerate the selected cache entries when new comment is created, edited, or deleted.<br>Caution: This can reduce cache effectiveness in a site with frequent activity.]]></value>
+	</item>
+	<item name="cmd_supercache_full_cache_duration">
+		<value xml:lang="ko"><![CDATA[캐시 갱신 주기]]></value>
+		<value xml:lang="en"><![CDATA[Cache Expiry]]></value>
+	</item>
+	<item name="cmd_supercache_full_cache_duration_help">
+		<value xml:lang="ko"><![CDATA[위의 기간이 지나면 전체화면 캐시를 다시 생성합니다. 단위는 '초'입니다.]]></value>
+		<value xml:lang="en"><![CDATA[Regenerate the full page after the above number of seconds have elapsed.]]></value>
+	</item>
+	<item name="cmd_supercache_full_cache_advanced">
+		<value xml:lang="ko"><![CDATA[고급 설정]]></value>
+		<value xml:lang="en"><![CDATA[Advanced Configuration]]></value>
+	</item>
+	<item name="cmd_supercache_full_cache_stampede_protection">
+		<value xml:lang="ko"><![CDATA[스탬피드 방지 기능]]></value>
+		<value xml:lang="en"><![CDATA[Stampede Protection]]></value>
+	</item>
+	<item name="cmd_supercache_full_cache_stampede_protection_help">
+		<value xml:lang="ko"><![CDATA[캐시 기간이 만료되자마자 동시 요청이 한꺼번에 몰리는 현상을 방지합니다.<br>참고 문서: <a href="https://en.wikipedia.org/wiki/Cache_stampede" target="_blank">Cache Stampede</a>]]></value>
+		<value xml:lang="en"><![CDATA[Prevent surges in simultaneous requests as soon as a cached page expires.<br>See: <a href="https://en.wikipedia.org/wiki/Cache_stampede" target="_blank">Cache Stampede</a>]]></value>
+	</item>
+	<item name="cmd_supercache_full_cache_delay_trigger">
+		<value xml:lang="ko"><![CDATA[전체화면 캐시 처리 지연]]></value>
+		<value xml:lang="en"><![CDATA[Delay Cache Processing]]></value>
+	</item>
+	<item name="cmd_supercache_full_cache_delay_trigger_help">
+		<value xml:lang="ko"><![CDATA[전체화면 캐시 처리를 다소 지연시켜 <span class="console_font">before_module_init</span> 시점에 애드온이 실행될 수 있도록 합니다.<br>주의: 설치된 애드온에 따라 성능이 크게 나빠질 수도 있습니다.]]></value>
+		<value xml:lang="en"><![CDATA[Delay cache processing so that add-ons can execute at the <span class="console_font">before_module_init</span> point.<br>Caution: Depending on installed add-ons, this may result in significant loss of performance.]]></value>
+	</item>
+	<item name="cmd_supercache_full_cache_use_headers">
+		<value xml:lang="ko"><![CDATA[Cache-Control 헤더 사용]]></value>
+		<value xml:lang="en"><![CDATA[Use Cache-Control Headers]]></value>
+	</item>
+	<item name="cmd_supercache_full_cache_use_headers_help">
+		<value xml:lang="ko"><![CDATA[Cache-Control 헤더를 사용하여 캐싱된 페이지에 대한 반복 요청을 차단합니다.<br><span class="warning">경고: 로그인 후에도 캐싱된 페이지가 표시될 수 있으니 회원 제도가 없는 단순 정보성 사이트에서만 사용하십시오.</span>]]></value>
+		<value xml:lang="en"><![CDATA[Use Cache-Control headers to prevent repeat requests.<br><span class="warning">Warning: Visitors may see cached pages even after logging in. Only recommended for informational sites without membership.</span>]]></value>
+	</item>
+	<item name="cmd_supercache_full_cache_use_headers_proxy_too">
+		<value xml:lang="ko"><![CDATA[CDN 또는 프록시 사용시에도 적용]]></value>
+		<value xml:lang="en"><![CDATA[Also use Cache-Control headers when a CDN or proxy is used]]></value>
+	</item>
+	<item name="cmd_supercache_full_cache_use_headers_proxy_too_help">
+		<value xml:lang="ko"><![CDATA[클라우드플레어 등의 CDN, Varnish 등의 캐싱 프록시 사용시 이 옵션을 선택하면 서버 부하를 더욱 낮출 수 있습니다.<br><span class="warning">경고: 로그인한 사용자와 로그인하지 않은 사용자를 구분하지 못하게 될 수 있습니다.</span>]]></value>
+		<value xml:lang="en"><![CDATA[Using this option with a CDN like CloudFlare or a caching proxy like Varnish may help reduce server load even further.<br><span class="warning">Warning: This may leave your site unable to distinguish between guests and members.</span>]]></value>
+	</item>
+	<item name="cmd_supercache_full_cache_include_404">
+		<value xml:lang="ko"><![CDATA[404 에러 화면 캐시]]></value>
+		<value xml:lang="en"><![CDATA[Also Cache 404 Errors]]></value>
+	</item>
+	<item name="cmd_supercache_full_cache_include_404_help">
+		<value xml:lang="ko"><![CDATA[존재하지 않는 주소를 요청하는 방문자가 많은 경우, 404 에러 화면을 캐시하면 서버 부하를 낮추는 데 도움이 될 수 있습니다.<br>주의: 없던 주소가 새로 생기는 경우 한동안 계속 404 에러 화면이 나타날 수 있습니다.]]></value>
+		<value xml:lang="en"><![CDATA[Caching 404 error pages can help reduce server load if you have many visitors trying to open nonexistent URLs.<br>Caution: if a previously nonexistent URL becomes valid, it may continue to show 404 error pages for a while.]]></value>
+	</item>
+	<item name="cmd_supercache_full_cache_incr_view_count">
+		<value xml:lang="ko"><![CDATA[캐시된 문서 조회수 증가]]></value>
+		<value xml:lang="en"><![CDATA[Increment View Count of Cached Document]]></value>
+	</item>
+	<item name="cmd_supercache_full_cache_incr_view_count_help">
+		<value xml:lang="ko"><![CDATA[캐시된 페이지를 조회하면 XE의 처리 과정을 대부분 건너뛰기 때문에 조회수가 증가하지 않습니다.<br>이 옵션을 선택하면 캐시된 페이지에서도 조회수를 증가시키지만, 캐시 효율이 떨어질 수 있으니 주의하십시오.]]></value>
+		<value xml:lang="en"><![CDATA[Cached pages bypass most of XE's internal processing, so they normally don't count towards a document's view count.<br>This option allows the view count to be incremented even on cached pages, but at a significant cost to performance.]]></value>
+	</item>
+	<item name="cmd_supercache_full_cache_incr_view_count_probabilistic">
+		<value xml:lang="ko"><![CDATA[확률적 추정치 사용]]></value>
+		<value xml:lang="en"><![CDATA[Use probabilistic estimate]]></value>
+	</item>
+	<item name="cmd_supercache_full_cache_incr_view_count_probabilistic_help">
+		<value xml:lang="ko"><![CDATA[매번 조회수를 증가시키지 않고, 일정한 확률로 한꺼번에 업데이트하여 캐시 효율에 미치는 영향을 최소화합니다.<br>주의: 방문자가 많지 않은 사이트에서는 조회수에 어느 정도 오차가 발생할 수 있습니다.]]></value>
+		<value xml:lang="en"><![CDATA[Batch-update view counts according to a probabilistic estimate in order to minimize the performance cost of the above option.<br>Caution: This may produce inaccurate view counts if your site doesn't get many visitors.]]></value>
+	</item>
+	<item name="cmd_supercache_config_board_cache">
+		<value xml:lang="ko"><![CDATA[게시판 캐시]]></value>
+		<value xml:lang="en"><![CDATA[Board Cache]]></value>
+	</item>
+	<item name="cmd_supercache_config_board_cache_help">
+		<value xml:lang="ko"><![CDATA[게시판의 글 수가 많아지면 검색, 페이징, 목록 처리 등의 쿼리 소요시간이 전체 로딩 시간의 상당 부분을 차지하게 됩니다.<br>이 문제를 덜어 주는 페이징 캐시 기능은 대형 게시판을 사용하는 커뮤니티 사이트에 적합합니다.<br><span class="warning">XE 및 라이믹스 최신 버전에서만 지원되며, 구 버전에서는 패치가 필요합니다.</span>]]></value>
+		<value xml:lang="en"><![CDATA[The pagination cache speeds up your site by caching the most time-consuming query in XE boards: search, pagination, listing, etc.<br>It is effective in community sites with large boards.<br><span class="warning">This feature is only compatible with the latest versions of XE and Rhymix.</span>]]></value>
+	</item>
+	<item name="cmd_supercache_paging_cache_supported">
+		<value xml:lang="ko"><![CDATA[페이징 캐시 지원]]></value>
+		<value xml:lang="en"><![CDATA[Pagination Cache Supported]]></value>
+	</item>
+	<item name="cmd_supercache_paging_cache_supported_list_replace">
+		<value xml:lang="ko"><![CDATA[페이징 캐시를 사용할 수 있습니다.]]></value>
+		<value xml:lang="en"><![CDATA[Pagination cache is supported on this site.]]></value>
+	</item>
+	<item name="cmd_supercache_paging_cache_supported_list_replace_x">
+		<value xml:lang="ko"><![CDATA[페이징 캐시를 사용할 수 없습니다. <a href="https://github.com/xpressengine/xe-core/pull/1957" target="_blank">패치</a>]]></value>
+		<value xml:lang="en"><![CDATA[Pagination cache is not supported on this site. <a href="https://github.com/xpressengine/xe-core/pull/1957" target="_blank">Patch</a>]]></value>
+	</item>
+	<item name="cmd_supercache_paging_cache_supported_offset_query">
+		<value xml:lang="ko"><![CDATA[오프셋 쿼리를 사용할 수 있습니다.]]></value>
+		<value xml:lang="en"><![CDATA[Offset queries are supported on this site.]]></value>
+	</item>
+	<item name="cmd_supercache_paging_cache_supported_offset_query_x">
+		<value xml:lang="ko"><![CDATA[오프셋 쿼리를 사용할 수 없습니다. <a href="https://github.com/xpressengine/xe-core/pull/1959" target="_blank">패치</a>]]></value>
+		<value xml:lang="en"><![CDATA[Offset queries are not supported on this site. <a href="https://github.com/xpressengine/xe-core/pull/1959" target="_blank">Patch</a>]]></value>
+	</item>
+	<item name="cmd_supercache_paging_cache">
+		<value xml:lang="ko"><![CDATA[페이징 캐시]]></value>
+		<value xml:lang="en"><![CDATA[Pagination Cache]]></value>
+	</item>
+	<item name="cmd_supercache_paging_cache_use">
+		<value xml:lang="ko"><![CDATA[페이징 캐시 사용]]></value>
+		<value xml:lang="en"><![CDATA[Use Pagination Cache]]></value>
+	</item>
+	<item name="cmd_supercache_paging_cache_use_help">
+		<value xml:lang="ko"><![CDATA[게시판의 글 수와 페이지 수 등을 캐시하여 불필요한 쿼리를 실행하지 않도록 합니다.<br>화면에 표시되는 글 수와 페이지 수에 약간의 오차가 발생할 수 있습니다.]]></value>
+		<value xml:lang="en"><![CDATA[Prevent unnecessary queries by caching the document count and page count of boards.<br>You may see slightly incorrect counts from time to time.]]></value>
+	</item>
+	<item name="cmd_supercache_paging_cache_use_offset_query">
+		<value xml:lang="ko"><![CDATA[오프셋 쿼리 사용]]></value>
+		<value xml:lang="en"><![CDATA[Use Offset Queries]]></value>
+	</item>
+	<item name="cmd_supercache_paging_cache_use_offset_query_help">
+		<value xml:lang="ko"><![CDATA[모든 페이지에 페이징 캐시를 적용합니다. 사용하지 않을 경우 각 게시판의 1페이지에만 적용됩니다.<br>2페이지 이후의 게시판 목록이 잘못 표시될 경우 이 기능을 사용하지 마십시오.]]></value>
+		<value xml:lang="en"><![CDATA[Enable the pagination cache on all pages of a board. Without offset queries, it will only be enabled on the first page.<br>Please disable this feature if you see any errors on page 2 or higher.]]></value>
+	</item>
+	<item name="cmd_supercache_paging_cache_exclude_modules">
+		<value xml:lang="ko"><![CDATA[페이징 캐시 예외 모듈]]></value>
+		<value xml:lang="en"><![CDATA[Boards to Exclude from Pagination Cache]]></value>
+	</item>
+	<item name="cmd_supercache_paging_cache_exclude_modules_help">
+		<value xml:lang="ko"><![CDATA[선택한 모듈(게시판)에는 페이징 캐시를 적용하지 않습니다. 캐시 사용시 문제가 발생하는 게시판은 제외하시기 바랍니다.<br>위의 &quot;페이징 캐시 사용 조건&quot; 설정을 통해서도 게시판 예외 처리가 가능합니다.]]></value>
+		<value xml:lang="en"><![CDATA[The selected modules (boards) will be excluded from the pagination cache. Please check all boards that cause a problem when cached.<br>You can also exclude boards using the &quot;Pagination Cache Threshold&quot; setting above.]]></value>
+	</item>
+	<item name="cmd_supercache_paging_cache_threshold">
+		<value xml:lang="ko"><![CDATA[페이징 캐시 사용 조건]]></value>
+		<value xml:lang="en"><![CDATA[Pagination Cache Threshold]]></value>
+	</item>
+	<item name="cmd_supercache_paging_cache_threshold_help">
+		<value xml:lang="ko"><![CDATA[게시판의 글 수가 위의 숫자보다 많을 때만 페이징 캐시를 사용합니다.<br>사용량이 적은 게시판에서 불필요한 캐시 요쳥을 방지할 수 있습니다.]]></value>
+		<value xml:lang="en"><![CDATA[Use pagination cache only if a board has more documents than the above threshold.<br>You can use this option to prevent unnecessary cache lookups in small boards.]]></value>
+	</item>
+	<item name="cmd_supercache_paging_cache_duration">
+		<value xml:lang="ko"><![CDATA[페이징 캐시 갱신 주기]]></value>
+		<value xml:lang="en"><![CDATA[Pagination Cache Expiry]]></value>
+	</item>
+	<item name="cmd_supercache_paging_cache_duration_help">
+		<value xml:lang="ko"><![CDATA[위의 기간이 지나면 페이징 캐시를 삭제하고 다시 계산합니다. 단위는 '초'입니다.<br>기간이 지나지 않아도 새 글을 등록하거나 글을 삭제하면 자동으로 반영되니, 큰 문제가 없다면 가능한 길게 설정하시기 바랍니다.]]></value>
+		<value xml:lang="en"><![CDATA[Recalculate the pagination cache after the above number of seconds have elapsed.<br>The cached value is automatically adjusted with new or deleted documents. Keep this value as large as possible unless there are problems.]]></value>
+	</item>
+	<item name="cmd_supercache_paging_cache_auto_refresh">
+		<value xml:lang="ko"><![CDATA[페이징 캐시 자동 갱신]]></value>
+		<value xml:lang="en"><![CDATA[Auto-Refresh Pagination Cache]]></value>
+	</item>
+	<item name="cmd_supercache_paging_cache_auto_refresh_help">
+		<value xml:lang="ko"><![CDATA[위의 기간과 무관하게, 요청 수가 많아지면 일정한 확률로 캐시를 갱신하여 오차 범위를 줄입니다.<br>예: 2400으로 지정한 경우 약 2400회 요청마다 캐시가 갱신됩니다.]]></value>
+		<value xml:lang="en"><![CDATA[Recalculate the pagination cache at a random interval in order to reduce the margin of error.<br>The cache will be recalculated approximately every X requests, using the given value of X.]]></value>
+	</item>
+	<item name="cmd_supercache_search_cache">
+		<value xml:lang="ko"><![CDATA[검색 결과 캐시]]></value>
+		<value xml:lang="en"><![CDATA[Search Result Cache]]></value>
+	</item>
+	<item name="cmd_supercache_search_cache_use">
+		<value xml:lang="ko"><![CDATA[검색 결과 캐시 사용]]></value>
+		<value xml:lang="en"><![CDATA[Use Search Result Cache]]></value>
+	</item>
+	<item name="cmd_supercache_search_cache_use_help">
+		<value xml:lang="ko"><![CDATA[시간이 오래 걸리고 서버에 부담을 많이 주는 게시판 검색 결과를 캐시합니다.<br>사용자가 검색 목록과 검색 결과 사이를 왔다갔다하더라도 동일한 검색을 다시 수행하지 않게 됩니다.]]></value>
+		<value xml:lang="en"><![CDATA[Cache the results of time-consuming board search operations.<br>This will prevent the same search from being performed again when a user navigates back and forth between the list and each result.]]></value>
+	</item>
+	<item name="cmd_supercache_search_cache_supported_list_replace">
+		<value xml:lang="ko"><![CDATA[검색 결과 캐시를 사용할 수 있습니다.]]></value>
+		<value xml:lang="en"><![CDATA[Search result cache is supported on this site.]]></value>
+	</item>
+	<item name="cmd_supercache_search_cache_supported_list_replace_x">
+		<value xml:lang="ko"><![CDATA[검색 결과 캐시를 사용할 수 없습니다. <a href="https://github.com/xpressengine/xe-core/pull/1957" target="_blank">패치</a>]]></value>
+		<value xml:lang="en"><![CDATA[Search result cache is not supported on this site. <a href="https://github.com/xpressengine/xe-core/pull/1957" target="_blank">Patch</a>]]></value>
+	</item>
+	<item name="cmd_supercache_search_cache_duration">
+		<value xml:lang="ko"><![CDATA[검색 결과 캐시 갱신 주기]]></value>
+		<value xml:lang="en"><![CDATA[Search Result Cache Expiry]]></value>
+	</item>
+	<item name="cmd_supercache_search_cache_duration_help">
+		<value xml:lang="ko"><![CDATA[위의 기간이 지나면 검색 결과 캐시를 삭제하고 다시 계산합니다. 단위는 '초'입니다.]]></value>
+		<value xml:lang="en"><![CDATA[Recalculate the search result cache after the above number of seconds have elapsed.]]></value>
+	</item>
+	<item name="cmd_supercache_search_cache_document_action">
+		<value xml:lang="ko"><![CDATA[문서 작성시 자동 갱신]]></value>
+		<value xml:lang="en"><![CDATA[Refresh on Document Change]]></value>
+	</item>
+	<item name="cmd_supercache_search_cache_document_action_help">
+		<value xml:lang="ko"><![CDATA[새 글 작성, 수정, 삭제 등이 일어나면 해당 게시판의 검색 결과 캐시를 자동으로 갱신합니다.<br>주의: 회원들의 활동이 많은 사이트에서는 캐시 효율이 낮아질 수 있습니다.]]></value>
+		<value xml:lang="en"><![CDATA[Automatically regenerate the search result cache when new document is created, edited, or deleted.<br>Caution: This can reduce cache effectiveness in a site with frequent activity.]]></value>
+	</item>
+	<item name="cmd_supercache_search_cache_comment_action">
+		<value xml:lang="ko"><![CDATA[댓글 작성시 자동 갱신]]></value>
+		<value xml:lang="en"><![CDATA[Refresh on Comment Change]]></value>
+	</item>
+	<item name="cmd_supercache_search_cache_comment_action_help">
+		<value xml:lang="ko"><![CDATA[새 댓글 작성, 수정, 삭제 등이 일어나면 해당 게시판의 검색 결과 캐시를 자동으로 갱신합니다.<br>주의: 회원들의 활동이 많은 사이트에서는 캐시 효율이 낮아질 수 있습니다.]]></value>
+		<value xml:lang="en"><![CDATA[Automatically regenerate the search result cache when new comment is created, edited, or deleted.<br>Caution: This can reduce cache effectiveness in a site with frequent activity.]]></value>
+	</item>
+	<item name="cmd_supercache_search_cache_exclude_modules">
+		<value xml:lang="ko"><![CDATA[검색 결과 캐시 예외 모듈]]></value>
+		<value xml:lang="en"><![CDATA[Boards to Exclude from Search Result Cache]]></value>
+	</item>
+	<item name="cmd_supercache_search_cache_exclude_modules_help">
+		<value xml:lang="ko"><![CDATA[선택한 모듈(게시판)에는 검색 결과 캐시를 적용하지 않습니다. 검색 결과가 실시간으로 갱신되어야 하는 게시판은 제외하시기 바랍니다.<br>검색 기능을 변형 또는 대체하는 다른 모듈을 사용하는 경우 호환되지 않을 수 있으니 예외처리하십시오.]]></value>
+		<value xml:lang="en"><![CDATA[The selected boards will be excluded from the search result cache. Please check all boards that require real-time update of search results.<br>Please consider excluding boards where you use other features that may affects the search behavior.]]></value>
+	</item>
+	<item name="cmd_supercache_config_widget_cache">
+		<value xml:lang="ko"><![CDATA[위젯 캐시]]></value>
+		<value xml:lang="en"><![CDATA[Widget Cache]]></value>
+	</item>
+	<item name="cmd_supercache_config_widget_cache_help">
+		<value xml:lang="ko"><![CDATA[캐시를 설정하지 않았거나 0분으로 설정한 위젯에도 모두 캐시를 적용하는 기능입니다.<br>위젯이 많은 화면의 로딩 속도와 DB 부하를 크게 줄일 수 있으며, 로그인 사용자가 많은 사이트에서도 효과는 동일합니다.<br><span class="warning">사용자에 따라 내용이 달라져야 하는 위젯은 캐시를 적용하지 않거나 그룹별로 구분하도록 설정해 주십시오.</span>]]></value>
+		<value xml:lang="en"><![CDATA[Enable caching of all widgets even if they have not enabled caching.<br>This helps increase speed and reduce server load for pages that contain a lot of widgets, both for guest and logged-in users.<br><span class="warning">If a widget must vary by user, it must be either excluded from caching or separated by group.</span>]]></value>
+	</item>
+	<item name="cmd_supercache_widget_cache_basic">
+		<value xml:lang="ko"><![CDATA[기본 설정]]></value>
+		<value xml:lang="en"><![CDATA[Basic Configuration]]></value>
+	</item>
+	<item name="cmd_supercache_widget_cache_use">
+		<value xml:lang="ko"><![CDATA[위젯 캐시 사용]]></value>
+		<value xml:lang="en"><![CDATA[Use Widget Cache]]></value>
+	</item>
+	<item name="cmd_supercache_widget_cache_use_help">
+		<value xml:lang="ko"><![CDATA[XE의 위젯 캐시를 슈퍼 캐시로 대체하고, 모든 위젯에 강제로 캐시를 적용합니다.<br>캐시를 적용할 위젯의 종류는 아래에서 자세히 선택할 수 있습니다.]]></value>
+		<value xml:lang="en"><![CDATA[Replace XE's widget cache with Super Cache, and cache all widgets that don't have their own cache setting.<br>You can select the types of widgets to cache below.]]></value>
+	</item>
+	<item name="cmd_supercache_widget_cache_supported">
+		<value xml:lang="ko"><![CDATA[위젯 캐시를 사용할 수 있습니다.]]></value>
+		<value xml:lang="en"><![CDATA[Widget cache is supported on this site.]]></value>
+	</item>
+	<item name="cmd_supercache_widget_cache_not_supported">
+		<value xml:lang="ko"><![CDATA[위젯 캐시를 사용할 수 없습니다. SimpleXML을 설치하여 주십시오.]]></value>
+		<value xml:lang="en"><![CDATA[Widget cache is NOT supported on this site. Please install SimpleXML.]]></value>
+	</item>
+	<item name="cmd_supercache_widget_autoinvalidate_document">
+		<value xml:lang="ko"><![CDATA[문서 작성시 자동 갱신]]></value>
+		<value xml:lang="en"><![CDATA[Refresh on Document Change]]></value>
+	</item>
+	<item name="cmd_supercache_widget_autoinvalidate_document_help">
+		<value xml:lang="ko"><![CDATA[새 글 작성, 수정, 삭제 등이 일어나면 해당 게시판을 참조하는 위젯을 자동으로 갱신합니다.<br>주의: 회원들의 활동이 많은 사이트에서는 캐시 효율이 낮아질 수 있습니다.]]></value>
+		<value xml:lang="en"><![CDATA[If a document is created, edited, or deleted in a board, automatically refresh widgets referencing it.<br>Caution: This can reduce cache effectiveness in a site with frequent activity.]]></value>
+	</item>
+	<item name="cmd_supercache_widget_autoinvalidate_comment">
+		<value xml:lang="ko"><![CDATA[댓글 작성시 자동 갱신]]></value>
+		<value xml:lang="en"><![CDATA[Refresh on Comment Change]]></value>
+	</item>
+	<item name="cmd_supercache_widget_autoinvalidate_comment_help">
+		<value xml:lang="ko"><![CDATA[새 댓글 작성, 수정, 삭제 등이 일어나면 해당 게시판을 참조하는 위젯을 자동으로 갱신합니다.<br>주의: 회원들의 활동이 많은 사이트에서는 캐시 효율이 낮아질 수 있습니다.]]></value>
+		<value xml:lang="en"><![CDATA[If a comment is created, edited, or deleted in a board, automatically refresh widgets referencing it.<br>Caution: This can reduce cache effectiveness in a site with frequent activity.]]></value>
+	</item>
+	<item name="cmd_supercache_widget_cache_per_widget">
+		<value xml:lang="ko"><![CDATA[위젯별 설정]]></value>
+		<value xml:lang="en"><![CDATA[Per-Widget Configuration]]></value>
+	</item>
+	<item name="cmd_supercache_widget_cache_duration">
+		<value xml:lang="ko"><![CDATA[캐시 기간 (초)]]></value>
+		<value xml:lang="en"><![CDATA[Duration (seconds)]]></value>
+	</item>
+	<item name="cmd_supercache_widget_cache_duration_default">
+		<value xml:lang="ko"><![CDATA[기본 캐시 기간]]></value>
+		<value xml:lang="en"><![CDATA[Default Cache Duration]]></value>
+	</item>
+	<item name="cmd_supercache_widget_cache_duration_help">
+		<value xml:lang="ko"><![CDATA[단위는 '초'입니다. 아래에서 별도로 설정한 위젯은 아래의 설정을 따릅니다.]]></value>
+		<value xml:lang="en"><![CDATA[Please enter the number of seconds to use as the default cache duration. You can override this with per-widget configuration below.]]></value>
+	</item>
+	<item name="cmd_supercache_widget_cache_duration_force">
+		<value xml:lang="ko"><![CDATA[일괄 적용]]></value>
+		<value xml:lang="en"><![CDATA[Force Apply]]></value>
+	</item>
+	<item name="cmd_supercache_widget_cache_duration_force_help">
+		<value xml:lang="ko"><![CDATA[&quot;일괄 적용&quot;을 선택하면 이미 캐시 기간이 따로 지정되어 있는 위젯에도 위에서 설정한 캐시 기간을 강제로 적용합니다.]]></value>
+		<value xml:lang="en"><![CDATA[If &quot;Force Apply&quot; is selected, the cache duration set above will be applied even to widgets that already have their own cache duration.]]></value>
+	</item>
+	<item name="cmd_supercache_widget_cache_group">
+		<value xml:lang="ko"><![CDATA[회원 그룹별 구분]]></value>
+		<value xml:lang="en"><![CDATA[Separate by Group]]></value>
+	</item>
+	<item name="cmd_supercache_widget_cache_group_help">
+		<value xml:lang="ko"><![CDATA[&quot;회원 그룹별 구분&quot;을 선택하면 소속 그룹이 같은 회원들끼리 모아서 각각 따로 캐시 처리합니다. 권한에 따라 위젯 내용이 달라져야 하는 경우 유용하나, 캐시 효율이 다소 떨어질 수 있습니다.]]></value>
+		<value xml:lang="en"><![CDATA[If &quot;Separate by Group&quot; is selected, widgets will be cached separately for members who belong to different groups. This may reduce cache efficiency.]]></value>
+	</item>
+	<item name="cmd_supercache_widget_cache_exclude_modules">
+		<value xml:lang="ko"><![CDATA[위젯 캐시 예외 모듈]]></value>
+		<value xml:lang="en"><![CDATA[Modules to Exclude]]></value>
+	</item>
+	<item name="cmd_supercache_widget_cache_exclude_modules_help">
+		<value xml:lang="ko"><![CDATA[선택한 모듈(게시판)에서는 위젯 캐시를 사용하지 않습니다. 캐시 사용시 문제가 발생하는 모듈은 제외하시기 바랍니다.]]></value>
+		<value xml:lang="en"><![CDATA[The widget cache will be turned off in the selected modules (boards). Please check all modules that cause a problem when cached.]]></value>
+	</item>
+	<item name="cmd_supercache_widget_cache_duration_per_widget_help">
+		<value xml:lang="ko"><![CDATA[&quot;캐시 기간&quot;을 비워 두면 위에서 설정한 기본 캐시 기간이 적용됩니다.]]></value>
+		<value xml:lang="en"><![CDATA[If &quot;Duration&quot; is empty, the default duration set above will apply.]]></value>
+	</item>
+	<item name="cmd_supercache_config_thumbnail_cache">
+		<value xml:lang="ko"><![CDATA[섬네일 캐시]]></value>
+		<value xml:lang="en"><![CDATA[Thumbnail Cache]]></value>
+	</item>
+	<item name="cmd_supercache_config_other">
+		<value xml:lang="ko"><![CDATA[기타 설정]]></value>
+		<value xml:lang="en"><![CDATA[Other Settings]]></value>
+	</item>
+	<item name="cmd_supercache_config_other_help">
+		<value xml:lang="ko"><![CDATA[사이트 성능 개선에 도움을 줄 수 있는 여러 가지 설정들을 모아 놓은 화면입니다.]]></value>
+		<value xml:lang="en"><![CDATA[This page contains miscellaneous options that may help improve your site's responsiveness.]]></value>
+	</item>
+	<item name="cmd_supercache_disable_post_search">
+		<value xml:lang="ko"><![CDATA[POST 이중 검색 차단]]></value>
+		<value xml:lang="en"><![CDATA[Block Duplicate Search via POST]]></value>
+	</item>
+	<item name="cmd_supercache_disable_post_search_help">
+		<value xml:lang="ko"><![CDATA[스케치북 등 일부 게시판 스킨에서 동일한 검색을 POST와 GET으로 2번 요청하는 버그를 우회합니다.<br>POST 요청으로 게시판 검색 시도시 실제 검색을 수행하지 않고 건너뜁니다.]]></value>
+		<value xml:lang="en"><![CDATA[Some board skins have a bug that causes them to request the same search twice, once via POST and once via GET.<br>This option works around this bug by skipping the actual search step in the POST request.]]></value>
+	</item>
+	<item name="cmd_supercache_block_css_request">
+		<value xml:lang="ko"><![CDATA[잘못된 CSS 요청 차단]]></value>
+		<value xml:lang="en"><![CDATA[Block Erroneous CSS Request]]></value>
+	</item>
+	<item name="cmd_supercache_block_css_request_help">
+		<value xml:lang="ko"><![CDATA[일부 레이아웃과 스킨에서 <span class="console_font">&lt;link&gt;</span> 태그의 속성이 잘못되어 페이지 전체를 CSS로 다시 로딩하려고 시도하는 버그를 우회합니다.<br>이렇게 잘못된 요청이 감지되면 즉시 실행을 종료하여 서버 자원을 절약합니다.]]></value>
+		<value xml:lang="en"><![CDATA[Some layouts and skins have a bug that causes them to reload the current page in a CSS <span class="console_font">&lt;link&gt;</span> tag.<br>This option works around this bug by immediately terminating the erroneous request.]]></value>
+	</item>
+	<item name="cmd_supercache_block_img_request">
+		<value xml:lang="ko"><![CDATA[잘못된 이미지 요청 차단]]></value>
+		<value xml:lang="en"><![CDATA[Block Erroneous Image Request]]></value>
+	</item>
+	<item name="cmd_supercache_block_img_request_help">
+		<value xml:lang="ko"><![CDATA[위와 같은 기능이나, 페이지 전체를 <span class="console_font">&lt;img&gt;</span> 태그로 다시 로딩하려고 시도하는 버그를 우회합니다.<br>주의: 이미지를 사용한 CSRF 공격 방지에 도움이 될 수 있으나, 일부 IE 구버전에서 오류가 발생한다는 제보가 있습니다.]]></value>
+		<value xml:lang="en"><![CDATA[Same as above, but blocks erroneous attempts to reload the current page in an <span class="console_font">&lt;img&gt;</span> tag.<br>Caution: This option may help defend against image-based CSRF attacks, but there are reports that it malfunctions under some versions of IE.]]></value>
+	</item>
+	<item name="cmd_supercache_auto_purge_cache_files">
+		<value xml:lang="ko"><![CDATA[캐시 파일 자동 정리]]></value>
+		<value xml:lang="en"><![CDATA[Auto-Purge Cache Files]]></value>
+	</item>
+	<item name="cmd_supercache_auto_purge_cache_files_help">
+		<value xml:lang="ko"><![CDATA[기본값 또는 파일 캐시 사용시 <span class="console_font">files/supercache</span> 폴더의 용량이 지나치게 커지지 않도록 오래된 파일을 자동 정리합니다.<br>주의: 글이나 댓글을 작성할 때 지나치게 오래 걸리거나 오류가 발생한다면 이 옵션을 해제하십시오.]]></value>
+		<value xml:lang="en"><![CDATA[When using the default or file cache method, keep the size of the <span class="console_font">files/supercache</span> folder in check by automatically purging outdated files.<br>Caution: This might cause timeouts or errors when new posts are submitted.]]></value>
+	</item>
+	<item name="cmd_supercache_redirect_to_default_url">
+		<value xml:lang="ko"><![CDATA[항상 기본 URL로 리다이렉트]]></value>
+		<value xml:lang="en"><![CDATA[Always Redirect to Default URL]]></value>
+	</item>
+	<item name="cmd_supercache_redirect_to_default_url_help">
+		<value xml:lang="ko"><![CDATA[서로 다른 여러 도메인으로 사이트에 접속하면 전체화면 캐시의 효율이 떨어질 수 있습니다.<br>기본 URL 이외의 도메인으로 접속하거나 IP 주소로 직접 접속한 경우 기본 URL로 자동 리다이렉트합니다.]]></value>
+		<value xml:lang="en"><![CDATA[The full page cache will be less effective if your serve the same content on multiple domains.<br>This option redirects all visitors to the default URL if they try to access your site on another domain or IP address.]]></value>
+	</item>
+	<item name="cmd_supercache_redirect_to_default_url_help_current_url">
+		<value xml:lang="ko"><![CDATA[현재 설정된 기본 URL은 <span class="console_font">%s</span>입니다.]]></value>
+		<value xml:lang="en"><![CDATA[The currently configured default URL is as follows: <span class="console_font">%s</span>]]></value>
+	</item>
+	<item name="cmd_supercache_use_gzip">
+		<value xml:lang="ko"><![CDATA[Gzip 압축 사용]]></value>
+		<value xml:lang="en"><![CDATA[Use Gzip Compression]]></value>
+	</item>
+	<item name="cmd_supercache_use_gzip_default">
+		<value xml:lang="ko"><![CDATA[기본값]]></value>
+		<value xml:lang="en"><![CDATA[Default]]></value>
+	</item>
+	<item name="cmd_supercache_use_gzip_always">
+		<value xml:lang="ko"><![CDATA[항상 사용]]></value>
+		<value xml:lang="en"><![CDATA[Always]]></value>
+	</item>
+	<item name="cmd_supercache_use_gzip_except_robots">
+		<value xml:lang="ko"><![CDATA[로봇 제외]]></value>
+		<value xml:lang="en"><![CDATA[Except robots]]></value>
+	</item>
+	<item name="cmd_supercache_use_gzip_except_naver">
+		<value xml:lang="ko"><![CDATA[네이버 로봇만 제외]]></value>
+		<value xml:lang="en"><![CDATA[Except Naver robot]]></value>
+	</item>
+	<item name="cmd_supercache_use_gzip_none">
+		<value xml:lang="ko"><![CDATA[사용하지 않음]]></value>
+		<value xml:lang="en"><![CDATA[Do not use]]></value>
+	</item>
+	<item name="cmd_supercache_use_gzip_help">
+		<value xml:lang="ko"><![CDATA[Gzip 압축 기능은 속도 개선 및 트래픽 절약 효과가 있으나, 일부 로봇이 접근하지 못하는 문제가 생길 수도 있습니다.<br>문제가 있는 경우 특정 로봇만 제외하고 사용하시기 바랍니다.<br>웹서버 자체에서 자동 압축 기능을 제공하는 경우 이 기능이 필요하지 않습니다.]]></value>
+		<value xml:lang="en"><![CDATA[Gzip compression makes your site faster and saves bandwidth, but it may be incompatible with poorly written search robots.<br>If you encounter problems, please consider excluding certain robots.<br>This feature is not necessary if your web server provides automatic compression.]]></value>
+	</item>
+	<item name="cmd_supercache_use_gzip_help_constant">
+		<value xml:lang="ko"><![CDATA[이 설정을 변경하려면 <span class="console_font">config.inc.php</span> 파일에서 <span class="console_font">__OB_GZHANDLER_ENABLE__</span> 상수를 <span class="console_font">1</span>로 지정해야 합니다.]]></value>
+		<value xml:lang="en"><![CDATA[To change this setting, you need to set the <span class="console_font">__OB_GZHANDLER_ENABLE__</span> constant to <span class="console_font">1</span> in the <span class="console_font">config.inc.php</span> file.]]></value>
+	</item>
+	<item name="msg_supercache_rhymix_no_cache">
+		<value xml:lang="ko"><![CDATA[라이믹스에서는 이 화면에서 캐시 설정을 변경할 수 없습니다.]]></value>
+		<value xml:lang="en"><![CDATA[You cannot change cache settings on this page when you use Rhymix.]]></value>
+	</item>
+	<item name="msg_supercache_memcached_not_supported">
+		<value xml:lang="ko"><![CDATA[서버에 Memcache 또는 Memcached 확장 모듈이 설치되어 있지 않습니다.]]></value>
+		<value xml:lang="en"><![CDATA[The Memcache or Memcached extension is not installed on this server.]]></value>
+	</item>
+	<item name="msg_supercache_apc_not_supported">
+		<value xml:lang="ko"><![CDATA[서버에 APC 확장 모듈이 설치되어 있지 않습니다.]]></value>
+		<value xml:lang="en"><![CDATA[The APC extension is not installed on this server.]]></value>
+	</item>
+	<item name="msg_supercache_wincache_not_supported">
+		<value xml:lang="ko"><![CDATA[서버에 WinCache 확장 모듈이 설치되어 있지 않습니다.]]></value>
+		<value xml:lang="en"><![CDATA[The WinCache extension is not installed on this server.]]></value>
+	</item>
+	<item name="msg_supercache_list_replacement_not_supported">
+		<value xml:lang="ko"><![CDATA[이 사이트에서는 페이징 캐시를 사용할 수 없습니다.]]></value>
+		<value xml:lang="en"><![CDATA[Pagination cache is not supported on this site.]]></value>
+	</item>
+	<item name="msg_supercache_offset_query_not_supported">
+		<value xml:lang="ko"><![CDATA[이 사이트에서는 오프셋 쿼리를 사용할 수 없습니다.]]></value>
+		<value xml:lang="en"><![CDATA[Offset queries are not supported on this site.]]></value>
+	</item>
+	<item name="msg_supercache_search_cache_requires_paging_cache">
+		<value xml:lang="ko"><![CDATA[검색 결과 캐시를 사용하려면 페이징 캐시가 필요합니다.]]></value>
+		<value xml:lang="en"><![CDATA[Search result cache requires the paging cache to be enabled.]]></value>
+	</item>
+	<item name="msg_supercache_config_save_failed">
+		<value xml:lang="ko"><![CDATA[설정 파일 저장에 실패했습니다.]]></value>
+		<value xml:lang="en"><![CDATA[Failed to save configuration file.]]></value>
+	</item>
+	<item name="msg_supercache_not_available">
+		<value xml:lang="ko"><![CDATA[사용할 수 없음]]></value>
+		<value xml:lang="en"><![CDATA[Not Available]]></value>
+	</item>
+	<item name="msg_supercache_core_object_cache_is_disabled">
+		<value xml:lang="ko"><![CDATA[이 서버에서 사용할 수 없는 캐시 방식입니다.]]></value>
+		<value xml:lang="en"><![CDATA[The selected cache method is not available on this server.]]></value>
+	</item>
+	<item name="msg_supercache_flush_cache_ok">
+		<value xml:lang="ko"><![CDATA[캐시를 비웠습니다.]]></value>
+		<value xml:lang="en"><![CDATA[The cache has been flushed.]]></value>
+	</item>
+	<item name="msg_supercache_flush_cache_error">
+		<value xml:lang="ko"><![CDATA[캐시를 비우는 데 실패했습니다. 캐시 폴더를 직접 삭제하거나 캐시 서비스를 재시작해 주십시오.]]></value>
+		<value xml:lang="en"><![CDATA[The flush has been unsuccessful. Please delete the cache folder or restart the cache service manually.]]></value>
+	</item>
+	<item name="msg_supercache_flush_cache_fast">
+		<value xml:lang="ko"><![CDATA[참 빠르죠? ㅎㅎ]]></value>
+		<value xml:lang="en"><![CDATA[Ain't that fast?]]></value>
+	</item>
+</lang>
