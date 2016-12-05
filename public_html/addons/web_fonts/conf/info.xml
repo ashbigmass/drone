@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<addon version="0.2">
+	<title xml:lang="ko">Web Fonts 애드온</title>
+	<description>Web에서 제공하는 아이콘폰트를 불러옵니다</description>
+	<version>1.1</version>
+	<date>2016-04-22</date>
+	<author email_address="mbg1346@naver.com" link="https://moonhouse.co.kr">
+		<name>80san</name>
+	</author>
+	<extra_vars>
+		<var name="xeicon" type="select">
+			<title>Xeicon 사용</title>
+			<description>Xeicon 사용 http://xpressengine.github.io/XEIcon/library_common.html</description>
+			<options value="disable">
+				<title>적용 안함(기본)</title>
+			</options>
+			<options value="enable">
+				<title>적용하기</title>
+			</options>
+		</var>
+		<var name="awesome_use" type="select">
+			<title>Font Awesome 사용</title>
+			<description>Font Awesome 사용 http://fortawesome.github.io/Font-Awesome/icons</description>
+			<options value="disable">
+				<title>적용 안함(기본)</title>
+			</options>
+			<options value="enable">
+				<title>적용하기</title>
+			</options>
+		</var>
+		<var name="google_use" type="select">
+			<title>Google Material Icons 사용</title>
+			<description>Google Material Icons 사용 https://design.google.com/icons/</description>
+			<options value="disable">
+				<title>적용 안함(기본)</title>
+			</options>
+			<options value="enable">
+				<title>적용하기</title>
+			</options>
+		</var>
+		<var name="nanumgothic_use" type="select">
+			<title>NanumGothic 사용</title>
+			<description>NanumGothic 사용 </description>
+			<options value="disable">
+				<title>적용 안함(기본)</title>
+			</options>
+			<options value="enable">
+				<title>적용하기</title>
+			</options>
+		</var>
+		<var name="button_use" type="select">
+			<title>Sexy Button 사용</title>
+			<description>Sexy Button 사용 http://moonhouse.co.kr/xe/395931</description>
+			<options value="disable">
+				<title>적용 안함(기본)</title>
+			</options>
+			<options value="enable">
+				<title>적용하기</title>
+			</options>
+		</var>
+	</extra_vars>
+</addon> 

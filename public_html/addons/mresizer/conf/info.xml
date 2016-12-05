@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<addon version="0.2">
+    <title xml:lang="ko">이미지 리사이즈 애드온</title>
+    <title xml:lang="en">Resizer Addon</title>
+    <description>
+        모바일에서도 잘 동작합니다.
+    </description>
+    <version>1.6</version>
+    <date>2013-01-03</date>
+	<link>http://xenon.teamatde.co.kr/</link>
+
+    <author email_address="hyung778@gmail.com" link="http://teamatde.co.kr/">
+        <name>LI-NA</name>
+    </author>
+   
+   	<extra_vars>
+		<var name="type" type="select">
+            <title>리사이즈 타입</title>
+			<options value="a">
+				<title>JS CSS max-width=100%</title>
+			</options>
+			<options value="b">
+				<title>JS CSS max-width=컨텐츠부분의 넓이</title>
+			</options>
+			<options value="c">
+				<title>Only CSS</title>
+			</options>
+			<options value="d">
+				<title>jQuery CSS</title>
+			</options>
+			<options value="e">
+				<title>JS 비율계산</title>
+			</options>
+			<description>
+				뭐든지 적용은 잘 되겠지만 혹시나 해서 5개를 만들어 봅니다.
+			</description>
+		</var>
+   	</extra_vars>
+</addon>
