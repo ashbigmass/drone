@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget version="2.0">
+    <title xml:lang="ko">MoonChat</title>
+    <description xml:lang="ko">
+        문챗(MoonChat) 채팅방 생성위젯 beta! (채팅방 생성은 http://moonchat.co.kr 을 참고하세요.)
+    </description>
+    <version>2.0.2</version>
+    <date>2015-08-17</date>
+    <author email_address="admin@mooncp.net" link="http://moonchat.co.kr">
+        <name xml:lang="ko">MoonChat</name>
+    </author>
+
+    <extra_vars>
+        <group>
+            <var id="channel_name">
+                <type>text</type>
+                <name xml:lang="ko">채널명</name>
+                <description xml:lang="ko">문챗 채팅방 생성시 설정했던 채널명을 입력 해 주세요.</description>
+            </var>
+          <var id="chat_width">
+                <type>text</type>
+                <name xml:lang="ko">가로길이</name>
+                <description xml:lang="ko">100 이하인경우 %, 100 초과인경우 px 단위입니다.</description>
+            </var>
+          <var id="chat_height">
+                <type>text</type>
+                <name xml:lang="ko">세로길이</name>
+                <description xml:lang="ko">px 단위입니다.</description>
+            </var>
+            <var id="chat_skin">
+                <type>select</type>
+                <name xml:lang="ko">채팅방 형태</name>
+                <options>
+                    <value>1</value>
+                    <name xml:lang="ko">가로형</name>
+                </options>
+                <options>
+                    <value>2</value>
+                    <name xml:lang="ko">세로형</name>
+                </options>
+            </var>
+            <var id="connect_win">
+                <type>select</type>
+                <name xml:lang="ko">접속자 창</name>
+				<description xml:lang="ko">세로형 채팅방에만 적용가능한 접속자 창 관련 설정입니다.</description>
+                <options>
+                    <value>off</value>
+                    <name xml:lang="ko">접음</name>
+                </options>
+                <options>
+                    <value>on</value>
+                    <name xml:lang="ko">펼침</name>
+                </options>
+            </var>
+			            <var id="icon_type">
+                <type>select</type>
+                <name xml:lang="ko">아이콘 연동</name>
+                <options>
+                    <value>0</value>
+                    <name xml:lang="ko">안함</name>
+                </options>
+                <options>
+                    <value>1</value>
+                    <name xml:lang="ko">레벨아이콘</name>
+                </options>
+                <options>
+                    <value>2</value>
+                    <name xml:lang="ko">그룹아이콘</name>
+                </options>
+                <options>
+                    <value>3</value>
+                    <name xml:lang="ko">아이콘샵</name>
+                </options>
+                <options>
+                    <value>4</value>
+                    <name xml:lang="ko">회원아이콘</name>
+                </options>
+            </var>
+        </group>
+	</extra_vars>
+</widget>
