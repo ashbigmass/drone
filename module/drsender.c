@@ -24,8 +24,8 @@ struct Args {
 #define MAX_LONGITUDE	180
 #define MAX_LATITUDE	90
 #define KNOTS_TO_KM		1.852
-#define DELIMITER		"," 
- 
+#define DELIMITER		","
+
 void tokenize(char *sentence, char *oneline, FILE *fileName);
 float convertFromNmeaSentenceToDecimalCoord(float coordinates, const char *val);
 float convertFromKnotsToKmHour(float knots);
@@ -33,7 +33,7 @@ void timer_handler(void);
 
 int var=0;
 
-int main(int argc, char **argv) { 
+int main(int argc, char **argv) {
 	struct Args args;
 	if(start_timer(1000, &timer_handler)) {
 		printf("\n timer error\n");
@@ -44,8 +44,8 @@ int main(int argc, char **argv) {
 	stop_timer();
 	return(0);
 }
-  
-void timer_handler(void) {	
+
+void timer_handler(void) {
 	char line[80];
 	static const char fileSource[] = "gps.txt";
 	static const char fileOutput[] = "output.json";
@@ -54,7 +54,7 @@ void timer_handler(void) {
 	FILE *out = fopen(fileOutput, "w");
 	if (in != NULL) {
 		fprintf(out, "%s\n","data = [" );
-		while (fscanf (in, "%79[^\n]\n", line) == 1) { 
+		while (fscanf (in, "%79[^\n]\n", line) == 1) {
 			if (strstr(line, "$GPRMC")) {
 				tokenize("$GPRMC", line, out);
 				fprintf(out, "%s\n","," );
@@ -64,7 +64,7 @@ void timer_handler(void) {
 		fclose(out);
 	} else {
 		perror(fileSource);
-	}	
+	}
 }
 
 void tokenize(char *sentence, char *oneline, FILE *fileName) {
@@ -73,28 +73,28 @@ void tokenize(char *sentence, char *oneline, FILE *fileName) {
 	int counter = 0;
 	token = strtok(oneline, delimiter);
 	float ltemp;
-	while( token != NULL ) { 
+	while( token != NULL ) {
 		if(counter == 1){
-			ltemp = atof(token); 
+			ltemp = atof(token);
 			fprintf(fileName,"%s", "{sentence: ");
 			fprintf(fileName,"%s, ", sentence );
 			fprintf(fileName,"%s", "time: ");
 			fprintf(fileName,"%f, ", ltemp );
 		}
 		if(counter == 3){
-			ltemp = atof(token); 
-			ltemp = convertFromNmeaSentenceToDecimalCoord(ltemp,"m"); //"m" for meridian
-		} 
+			ltemp = atof(token);
+			ltemp = convertFromNmeaSentenceToDecimalCoord(ltemp,"m");
+		}
 		if (counter == 4){
 			if (*token == 'S') ltemp *= ( -1 );
 			fprintf(fileName,"%s", "latitude: ");
 			fprintf(fileName,"%f, ", ltemp );
-		} 
-		if(counter == 5){
-			ltemp = atof(token); 
-			ltemp = convertFromNmeaSentenceToDecimalCoord(ltemp, "p"); //"p" for parallel
 		}
-		if (counter == 6){/*convert the 4th token latitude*/
+		if(counter == 5){
+			ltemp = atof(token);
+			ltemp = convertFromNmeaSentenceToDecimalCoord(ltemp, "p");
+		}
+		if (counter == 6){
 			if (*token == 'W') ltemp *= ( -1 );
 			fprintf(fileName, "%s", "longitude: " );
 			fprintf(fileName,"%f, ", ltemp );
@@ -105,7 +105,7 @@ void tokenize(char *sentence, char *oneline, FILE *fileName) {
 			fprintf(fileName, "speed: %0.1f, ", ltemp);
 		}
 		if(counter == 8) {
-			ltemp = atof(token); 
+			ltemp = atof(token);
 			fprintf(fileName,"%s", "head: ");
 			fprintf(fileName,"%f} ", ltemp );
 		}
@@ -115,14 +115,14 @@ void tokenize(char *sentence, char *oneline, FILE *fileName) {
 }
 
 float convertFromNmeaSentenceToDecimalCoord(float coordinates, const char *val) {
-    if ((*val == 'm') && (coordinates < 0.0 && coordinates > MAX_LATITUDE)) return 0;     
+    if ((*val == 'm') && (coordinates < 0.0 && coordinates > MAX_LATITUDE)) return 0;
     if (*val == 'p' && (coordinates < 0.0 && coordinates > MAX_LONGITUDE)) return 0;
-	int b;//to store the degrees
-	float c; //to store de decimal
-	b = coordinates/100; // 51 degrees
-	c= (coordinates/100 - b)*100 ; //(51.536605 - 51)* 100 = 53.6605
-	c /= 60; // 53.6605 / 60 = 0.8943417
-	c += b; // 0.8943417 + 51 = 51.8943417
+	int b;
+	float c;
+	b = coordinates/100;
+	c= (coordinates/100 - b)*100 ;
+	c /= 60;
+	c += b;
 	return c;
 }
 
