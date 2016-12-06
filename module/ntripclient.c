@@ -35,7 +35,7 @@
 
 #define AGENTSTRING "NTRIP NtripClientPOSIX"
 #define TIME_RESOLUTION 125
-#define MAXDATASIZE 1000 /* max number of bytes we can get at once */
+#define MAXDATASIZE 1000
 static char revisionstr[] = "$Revision: 1.51 $";
 static char datestr[]     = "$Date: 2009/09/11 09:49:19 $";
 enum MODE { HTTP = 1, RTSP = 2, NTRIP1 = 3, AUTO = 4, UDP = 5, END };
@@ -51,7 +51,6 @@ struct Args {
 	const char *data;
 	int         bitrate;
 	int         mode;
-
 	int         udpport;
 	int         initudp;
 	enum SerialBaud baud;
@@ -99,8 +98,7 @@ int stop = 0;
 #ifndef WINDOWSVERSION
 	int sigstop = 0;
 	#ifdef __GNUC__
-		static __attribute__ ((noreturn)) void sighandler_alarm(
-		int sig __attribute__((__unused__)))
+		static __attribute__ ((noreturn)) void sighandler_alarm(int sig __attribute__((__unused__)))
 	#else
 		static void sighandler_alarm(int sig)
 	#endif
@@ -112,9 +110,9 @@ int stop = 0;
 
 	#ifdef __GNUC__
 		static void sighandler_int(int sig __attribute__((__unused__)))
-	#else 
+	#else
 		static void sighandler_alarm(int sig)
-	#endif 
+	#endif
 	{
 		sigstop = 1;
 		alarm(2);
@@ -127,10 +125,8 @@ static const char *encodeurl(const char *req) {
 	static char buf[128];
 	char *urlenc = buf;
 	char *bufend = buf + sizeof(buf) - 3;
-
 	while(*req && urlenc < bufend) {
-		if(isalnum(*req) || *req == '-' || *req == '_' || *req == '.')
-			*urlenc++ = *req++;
+		if(isalnum(*req) || *req == '-' || *req == '_' || *req == '.') *urlenc++ = *req++;
 		else {
 			*urlenc++ = '%';
 			*urlenc++ = h[*req >> 4];
@@ -148,7 +144,7 @@ static const char *geturl(const char *url, struct Args *args) {
 	static char *Bufend = buf+sizeof(buf);
 	char *h = "0123456789abcdef";
 	if(strncmp("ntrip:", url, 6)) return "URL must start with 'ntrip:'.";
-	url += 6; /* skip ntrip: */
+	url += 6;
 	if(*url != '@' && *url != '/') {
 		args->data = Buffer;
 		if(*url != '?') {
@@ -249,7 +245,6 @@ static int getargs(int argc, char **argv, struct Args *args) {
 	args->serdevice = 0;
 	args->serlogfile = 0;
 	help = 0;
-
 	do {
 		#ifdef NO_LONG_OPTS
 			switch((getoptr = getopt(argc, argv, ARGOPT)))
@@ -261,7 +256,7 @@ static int getargs(int argc, char **argv, struct Args *args) {
 			case 'u': args->user = optarg; break;
 			case 'p': args->password = optarg; break;
 			case 'd': fprintf(stderr, "Option -d or --data is deprecated. Use -m instead.\n"); break;
-			case 'm': 
+			case 'm':
 				if(optarg && *optarg == '?') args->data = encodeurl(optarg);
 				else args->data = optarg;
 			break;
@@ -370,7 +365,6 @@ static int getargs(int argc, char **argv, struct Args *args) {
 	datestr[9] = datestr[16];
 	datestr[4] = datestr[7] = '-';
 	datestr[10] = 0;
-
 	if(!res || help) {
 		fprintf(stderr, "Version %s (%s) GPL" COMPILEDATE "\nUsage:\n%s -s server -u user ...\n"
 		" -m " LONG_OPT("--mountpoint ") "the requested data set or sourcetable filtering criteria\n"
@@ -410,7 +404,7 @@ static int getargs(int argc, char **argv, struct Args *args) {
 static const char encodingTable [64] = {
 	'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
 	'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',
-		'0','1','2','3','4','5','6','7','8','9','+','/'
+	'0','1','2','3','4','5','6','7','8','9','+','/'
 };
 
 static int encode(char *buf, int size, const char *user, const char *pwd) {
@@ -441,7 +435,6 @@ static int encode(char *buf, int size, const char *user, const char *pwd) {
 
 int main(int argc, char **argv) {
 	struct Args args;
-
 	setbuf(stdout, 0);
 	setbuf(stdin, 0);
 	setbuf(stderr, 0);
@@ -460,7 +453,7 @@ int main(int argc, char **argv) {
 	if(getargs(argc, argv, &args)) {
 		struct serial sx;
 		FILE *ser = 0;
-		char nmeabuffer[200] = "$GPGGA,"; /* our start string */
+		char nmeabuffer[200] = "$GPGGA,";
 		size_t nmeabufpos = 0;
 		size_t nmeastarpos = 0;
 		int sleeptime = 0;
@@ -550,7 +543,7 @@ int main(int argc, char **argv) {
 					int tim, seq, init;
 					char rtpbuf[1526];
 					int i=12, j;
-					
+
 					init = time(0);
 					srand(init);
 					session = rand();
@@ -569,8 +562,7 @@ int main(int argc, char **argv) {
 					rtpbuf[10] = (session>>8)&0xFF;
 					rtpbuf[11] = (session)&0xFF;
 					++seq;
-				
-					j = snprintf(rtpbuf+i, sizeof(rtpbuf)-i-40, 
+					j = snprintf(rtpbuf+i, sizeof(rtpbuf)-i-40,
 						"GET /%s HTTP/1.1\r\n"
 						"Host: %s\r\n"
 						"Ntrip-Version: Ntrip/2.0\r\n"
@@ -593,18 +585,15 @@ int main(int argc, char **argv) {
 						} else {
 							struct sockaddr_in local;
 							socklen_t len;
-							
 							rtpbuf[i++] = '\r';
 							rtpbuf[i++] = '\n';
 							rtpbuf[i++] = '\r';
 							rtpbuf[i++] = '\n';
-
 							memset(&local, 0, sizeof(local));
 							local.sin_family = AF_INET;
 							local.sin_port = htons(args.udpport);
 							local.sin_addr.s_addr = htonl(INADDR_ANY);
 							len = sizeof(local);
-
 							if((bind(sockfd, (struct sockaddr *)&local, len)) < 0) {
 								myperror("bind");
 								error = 1;
@@ -807,7 +796,7 @@ int main(int argc, char **argv) {
 							localport = ntohs(local.sin_port);
 						}
 						if(!stop && !error) {
-							i=snprintf(buf, MAXDATASIZE-40, 
+							i=snprintf(buf, MAXDATASIZE-40,
 								"SETUP rtsp://%s%s%s/%s RTSP/1.0\r\n"
 								"CSeq: %d\r\n"
 								"Ntrip-Version: Ntrip/2.0\r\n"
@@ -902,7 +891,7 @@ int main(int argc, char **argv) {
 										casterRTP.sin_port   = htons(serverport);
 										casterRTP.sin_addr   = *((struct in_addr *)he->h_addr);
 
-										if((i = sendto(sockudp, rtpbuffer, 12, 0, 
+										if((i = sendto(sockudp, rtpbuffer, 12, 0,
 											(struct sockaddr *) &casterRTP, sizeof(casterRTP))) != 12)
 												myperror("WARNING: could not send initial UDP packet");
 									}
@@ -935,7 +924,7 @@ int main(int argc, char **argv) {
 													fprintf(stderr, "Could not set nonblocking mode\n");
 													error = 1;
 												}
-												
+
 											memset(&addrRTP, 0, sizeof(addrRTP));
 											addrRTP.sin_family = AF_INET;
 											addrRTP.sin_port   = htons(serverport);
@@ -1070,7 +1059,7 @@ int main(int argc, char **argv) {
 								"Connection: close%s"
 								, proxyserver ? "http://" : "", proxyserver ? proxyserver : "", proxyserver ? ":" : "", proxyserver ? proxyport : "",
 									args.data, args.server, args.mode == NTRIP1 ? "" : "Ntrip-Version: Ntrip/2.0\r\n", AGENTSTRING, revisionstr,
-									nmeahead ? "Ntrip-GGA: " : "", nmeahead ? nmeahead : "", nmeahead ? "\r\n" : "", 
+									nmeahead ? "Ntrip-GGA: " : "", nmeahead ? nmeahead : "", nmeahead ? "\r\n" : "",
 									(*args.user || *args.password) ? "\r\nAuthorization: Basic " : "");
 							if(i > MAXDATASIZE-40 || i < 0) {
 								fprintf(stderr, "Requested data too long\n");
@@ -1086,7 +1075,7 @@ int main(int argc, char **argv) {
 									buf[i++] = '\r';
 									buf[i++] = '\n';
 									if(args.nmea && !nmeahead) {
-										int j = snprintf(buf+i, MAXDATASIZE-i, "%s\r\n", args.nmea); 
+										int j = snprintf(buf+i, MAXDATASIZE-i, "%s\r\n", args.nmea);
 										if(j >= 0 && j < MAXDATASIZE-i) i += j;
 										else {
 											fprintf(stderr, "NMEA string too long\n");
@@ -1219,7 +1208,7 @@ int main(int argc, char **argv) {
 								}
 								fflush(stdout);
 
-								printf("\n----------------------------------------------\n");	
+								printf("\n----------------------------------------------\n");
 								printf("recv = %d bytes\n", numbytes);
 								printf("----------------------------------------------\n");
 								printBits(sizeof(buf), buf);
@@ -1307,7 +1296,7 @@ int main(int argc, char **argv) {
 (byte & 0x08 ? '1' : '0'), \
 (byte & 0x04 ? '1' : '0'), \
 (byte & 0x02 ? '1' : '0'), \
-(byte & 0x01 ? '1' : '0') 
+(byte & 0x01 ? '1' : '0')
 
 const char *byte_to_binary(int x) {
 	static char b[9];
@@ -1357,13 +1346,11 @@ void printBits(size_t const size, void const * const ptr) {
 	ssize = 0;
 	for (; ;) {
 		strcpy(stemp, "");
-		for (i = 0; i < 8; i++) {
-			stemp[i] = res[ssize++];
-		}
+		for (i = 0; i < 8; i++) stemp[i] = res[ssize++];
 		stemp[i] = '\0';
 		if (strcmp(subString(stemp, 0, 8), "01100110") == 0) {
 			printf("%d : %s", ssize, stemp);
-			for (i = 0; i < 6; i++) {}	
+			for (i = 0; i < 6; i++) {}
 			stemp[i] = '\0';
 			printf(", Message type : %d, %s\n", fromBinary(stemp), stemp);
 		}
