@@ -1,4 +1,5 @@
-<?php if(!defined("__XE__")) exit();
+<?php
+if(!defined("__XE__")) exit();
 $whiteUrlList = array (
   6 => 'http://api.v.daum.net/',
   24 => 'http://blogdoc.nate.com/flash/blogdoc_widget_reco.swf',

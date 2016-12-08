@@ -1,4 +1,6 @@
-<?php if(!defined("__XE__")) exit(); $layout_info = new stdClass;
+<?php
+if(!defined("__XE__")) exit();
+$layout_info = new stdClass;
 $layout_info->site_srl = "0";
 $layout_info->layout = "xedition";
 $layout_info->type = "";

@@ -97,7 +97,7 @@ class boardAdminController extends board {
 		$module_info = $oModuleModel->getModuleInfoByModuleSrl($module_srl);
 		if($module_info->mid != $mid) return new Object(-1, 'msg_invalid_request');
 		$module_info->hide_category = Context::get('hide_category') == 'Y' ? 'Y' : 'N';
-		$oModuleController = getController('module'); /* @var $oModuleController moduleController */
+		$oModuleController = getController('module');
 		$output = $oModuleController->updateModule($module_info);
 		if(!$output->toBool()) return $output;
 		$this->setMessage('success_updated');

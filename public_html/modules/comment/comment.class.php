@@ -1,22 +1,15 @@
 <?php
-/* Copyright (C) NAVER <http://www.navercorp.com> */
-
 require_once(_XE_PATH_ . 'modules/comment/comment.item.php');
 
-class comment extends ModuleObject {
-
+class comment extends ModuleObject
+{
 	function moduleInstall() {
 		$oDB = DB::getInstance();
 		$oModuleController = getController('module');
-
-		$oDB->addIndex(
-				"comments", "idx_module_list_order", array("module_srl", "list_order"), TRUE
-		);
-
+		$oDB->addIndex("comments", "idx_module_list_order", array("module_srl", "list_order"), TRUE);
 		$oModuleController->insertTrigger('document.deleteDocument', 'comment', 'controller', 'triggerDeleteDocumentComments', 'after');
 		$oModuleController->insertTrigger('module.deleteModule', 'comment', 'controller', 'triggerDeleteModuleComments', 'after');
 		$oModuleController->insertTrigger('module.dispAdditionSetup', 'comment', 'view', 'triggerDispCommentAdditionSetup', 'before');
-
 		if(!is_dir('./files/cache/tmp')) FileHandler::makeDir('./files/cache/tmp');
 		return new Object();
 	}
@@ -50,7 +43,6 @@ class comment extends ModuleObject {
 			$oDB->addColumn("comments", "voted_count", "number", "11");
 			$oDB->addIndex("comments", "idx_voted_count", array("voted_count"));
 		}
-
 		if(!$oDB->isColumnExists("comments", "notify_message")) $oDB->addColumn("comments", "notify_message", "char", "1");
 		if(!$oModuleModel->getTrigger('module.dispAdditionSetup', 'comment', 'view', 'triggerDispCommentAdditionSetup', 'before'))
 			$oModuleController->insertTrigger('module.dispAdditionSetup', 'comment', 'view', 'triggerDispCommentAdditionSetup', 'before');
@@ -76,8 +68,6 @@ class comment extends ModuleObject {
 	}
 
 	function recompileCache() {
-		if(!is_dir('./files/cache/tmp')) {
-			FileHandler::makeDir('./files/cache/tmp');
-		}
+		if(!is_dir('./files/cache/tmp')) FileHandler::makeDir('./files/cache/tmp');
 	}
 }

@@ -3,11 +3,8 @@ class commentAdminController extends comment {
 	function init() {	}
 	function procCommentAdminChangePublishedStatusChecked() {
 		$basket = Context::get('basket');
-		if(!is_array($basket)) {
-			$comment_srl_list = explode('|@|', $basket);
-		} else {
-			$comment_srl_list = $basket;
-		}
+		if(!is_array($basket)) $comment_srl_list = explode('|@|', $basket);
+		else $comment_srl_list = $basket;
 		$this->procCommentAdminChangeStatus();
 		$returnUrl = Context::get('success_return_url') ? Context::get('success_return_url') : getNotEncodedUrl('', 'module', 'admin', 'act', 'dispCommentAdminList', 'search_keyword', '');
 		$this->setRedirectUrl($returnUrl);
@@ -17,12 +14,8 @@ class commentAdminController extends comment {
 		$will_publish = Context::get('will_publish');
 		$basket = Context::get('basket');
 		if(!$basket) return $this->stop('msg_basket_is_null');
-		if(!is_array($basket)) {
-			$comment_srl_list = explode('|@|', $basket);
-		} else {
-			$comment_srl_list = $basket;
-		}
-
+		if(!is_array($basket)) $comment_srl_list = explode('|@|', $basket);
+		else $comment_srl_list = $basket;
 		$args = new stdClass();
 		$args->status = $will_publish;
 		$args->comment_srls_list = $comment_srl_list;
@@ -84,33 +77,21 @@ class commentAdminController extends comment {
 		}
 
 		$message_content = Context::get('message_content');
-		if($message_content) {
-			$message_content = nl2br($message_content);
-		}
-
-		if($message_content) {
-			$this->_sendMessageForComment($message_content, $comment_srl_list);
-		}
+		if($message_content) $message_content = nl2br($message_content);
+		if($message_content) $this->_sendMessageForComment($message_content, $comment_srl_list);
 	}
 
 	function procCommentAdminDeleteChecked() {
 		$isTrash = Context::get('is_trash');
 		$basket = Context::get('basket');
 		if(!$basket) return $this->stop('msg_basket_is_null');
-		if(!is_array($basket)) {
-			$comment_srl_list = explode('|@|', $basket);
-		} else {
-			$comment_srl_list = $basket;
-		}
+		if(!is_array($basket)) $comment_srl_list = explode('|@|', $basket);
+		else $comment_srl_list = $basket;
 		$comment_count = count($comment_srl_list);
-		if(!$comment_count) {
-			return $this->stop('msg_basket_is_null');
-		}
-
+		if(!$comment_count) return $this->stop('msg_basket_is_null');
 		$oCommentController = getController('comment');
 		$oDB = DB::getInstance();
 		$oDB->begin();
-
 		$message_content = Context::get('message_content');
 		if($message_content) $message_content = nl2br($message_content);
 		if($message_content) $this->_sendMessageForComment($message_content, $comment_srl_list);
@@ -126,20 +107,14 @@ class commentAdminController extends comment {
 			}
 			$deleted_count++;
 		}
-
 		$oDB->commit();
-
 		$msgCode = '';
-		if($isTrash == 'true') {
-			$msgCode = 'success_trashed';
-		} else {
-			$msgCode = 'success_deleted';
-		}
+		if($isTrash == 'true') $msgCode = 'success_trashed';
+		else $msgCode = 'success_deleted';
 		$this->setMessage($msgCode, 'info');
 		$search_keyword = Context::get('search_keyword');
 		$search_target = Context::get('search_target');
 		$page = Context::get('page');
-
 		$returnUrl = Context::get('success_return_url') ? Context::get('success_return_url') : getNotEncodedUrl('', 'module', 'admin', 'act', 'dispCommentAdminList', 'search_keyword', $search_keyword, 'search_target', $search_target, 'page', $page);
 		$this->setRedirectUrl($returnUrl);
 	}
@@ -147,12 +122,9 @@ class commentAdminController extends comment {
 	private function _sendMessageForComment($message_content, $comment_srl_list) {
 		$oCommunicationController = getController('communication');
 		$oCommentModel = getModel('comment');
-
 		$logged_info = Context::get('logged_info');
-
 		$title = cut_str($message_content, 10, '...');
 		$sender_member_srl = $logged_info->member_srl;
-
 		$comment_count = count($comment_srl_list);
 		for($i = 0; $i < $comment_count; $i++) {
 			$comment_srl = $comment_srl_list[$i];
@@ -165,13 +137,11 @@ class commentAdminController extends comment {
 
 	function _moveCommentToTrash($commentSrlList, &$oCommentController, &$oDB, $message_content = NULL) {
 		require_once(_XE_PATH_ . 'modules/trash/model/TrashVO.php');
-
 		if(is_array($commentSrlList)) {
 			$logged_info = Context::get('logged_info');
 			$oCommentModel = getModel('comment');
 			$commentItemList = $oCommentModel->getComments($commentSrlList);
 			$oTrashAdminController = getAdminController('trash');
-
 			foreach($commentItemList AS $key => $oComment) {
 				$oTrashVO = new TrashVO();
 				$oTrashVO->setTrashSrl(getNextSequence());
@@ -179,7 +149,6 @@ class commentAdminController extends comment {
 				$oTrashVO->setOriginModule('comment');
 				$oTrashVO->setSerializedObject(serialize($oComment->variables));
 				$oTrashVO->setDescription($message_content);
-
 				$output = $oTrashAdminController->insertTrash($oTrashVO);
 				if(!$output->toBool()) {
 					$oDB->rollback();
@@ -192,29 +161,22 @@ class commentAdminController extends comment {
 	function procCommentAdminMoveToTrash() {
 		$oDB = DB::getInstance();
 		$oDB->begin();
-
 		$comment_srl = Context::get('comment_srl');
 		$oCommentModel = getModel('comment');
 		$oCommentController = getController('comment');
 		$oComment = $oCommentModel->getComment($comment_srl, false);
-
 		if(!$oComment->isGranted()) return $this->stop('msg_not_permitted');
-
 		$message_content = "";
 		$this->_moveCommentToTrash(array($comment_srl), $oCommentController, $oDB, $message_content);
-
 		$isTrash = true;
 		$output = $oCommentController->deleteComment($comment_srl, TRUE, $isTrash);
-
 		$oDB->commit();
-
 		$returnUrl = Context::get('cur_url');
 		$this->add('redirect_url', $returnUrl);
 	}
 
 	function procCommentAdminCancelDeclare() {
 		$comment_srl = trim(Context::get('comment_srl'));
-
 		if($comment_srl) {
 			$args = new stdClass();
 			$args->comment_srl = $comment_srl;
@@ -225,13 +187,10 @@ class commentAdminController extends comment {
 
 	function procCommentAdminAddbasket() {
 		$comment_srl = (int) Context::get('comment_srl');
-
 		$oCommentModel = getModel('comment');
 		$columnList = array('comment_srl');
 		$commentSrlList = array($comment_srl);
-
 		$output = $oCommentModel->getComments($commentSrlList);
-
 		if(is_array($output)) {
 			foreach($output AS $key => $value) {
 				if($_SESSION['comment_management'][$key]) unset($_SESSION['comment_management'][$key]);
@@ -246,7 +205,6 @@ class commentAdminController extends comment {
 		$output = executeQuery('comment.deleteModuleComments', $args);
 		if(!$output->toBool()) return $output;
 		$output = executeQuery('comment.deleteModuleCommentsList', $args);
-
 		$oCacheHandler = CacheHandler::getInstance('object');
 		if($oCacheHandler->isSupport()) $oCacheHandler->invalidateGroupKey('newestCommentsList');
 		return $output;
@@ -254,7 +212,6 @@ class commentAdminController extends comment {
 
 	function restoreTrash($originObject) {
 		if(is_array($originObject)) $originObject = (object) $originObject;
-
 		$obj = new stdClass();
 		$obj->document_srl = $originObject->document_srl;
 		$obj->comment_srl = $originObject->comment_srl;
@@ -268,10 +225,8 @@ class commentAdminController extends comment {
 		$obj->is_secret = $originObject->is_secret;
 		$obj->notify_message = $originObject->notify_message;
 		$obj->module_srl = $originObject->module_srl;
-
 		$oCommentController = getController('comment');
 		$output = $oCommentController->insertComment($obj, true);
-
 		return $output;
 	}
 
@@ -286,5 +241,4 @@ class commentAdminController extends comment {
 		$output = $oCommentController->deleteCommentLog($args);
 		return $output;
 	}
-
 }

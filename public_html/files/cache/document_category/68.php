@@ -1,1 +1,2 @@
-<?php if(!defined("__XE__")) exit(); ?>
+<?php
+if(!defined("__XE__")) exit();

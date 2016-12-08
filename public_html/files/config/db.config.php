@@ -1,4 +1,5 @@
-<?php if(!defined("__XE__")) exit();
+<?php
+if(!defined("__XE__")) exit();
 $db_info = (object)array (
   'master_db' =>
 	  array ('db_type' => 'mysqli', 'db_port' => '3306', 'db_hostname' => '192.168.100.12', 'db_userid' => 'drcsdb', 'db_password' => 'drcsdbwjdqjf', 'db_database' => 'drcsdb', 'db_table_prefix' => 'drcs_',
