@@ -1,27 +1,20 @@
 <?php
-/* Copyright (C) NAVER <http://www.navercorp.com> */
-
-/**
- * @class ModuleObject
- * @author NAVER (developers@xpressengine.com)
- * base class of ModuleHandler
- * */
-class ModuleObject extends Object {
-
-	var $mid = NULL; ///< string to represent run-time instance of Module (XE Module)
-	var $module = NULL; ///< Class name of Xe Module that is identified by mid
-	var $module_srl = NULL; ///< integer value to represent a run-time instance of Module (XE Module)
-	var $module_info = NULL; ///< an object containing the module information
+class ModuleObject extends Object
+{
+	var $mid = NULL;
+	var $module = NULL;
+	var $module_srl = NULL;
+	var $module_info = NULL;
 	var $origin_module_info = NULL;
-	var $xml_info = NULL; ///< an object containing the module description extracted from XML file
-	var $module_path = NULL; ///< a path to directory where module source code resides
-	var $act = NULL; ///< a string value to contain the action name
-	var $template_path = NULL; ///< a path of directory where template files reside
-	var $template_file = NULL; ///< name of template file
-	var $layout_path = ''; ///< a path of directory where layout files reside
-	var $layout_file = ''; ///< name of layout file
-	var $edited_layout_file = ''; ///< name of temporary layout files that is modified in an admin mode
-	var $stop_proc = FALSE; ///< a flag to indicating whether to stop the execution of code.
+	var $xml_info = NULL;
+	var $module_path = NULL;
+	var $act = NULL;
+	var $template_path = NULL;
+	var $template_file = NULL;
+	var $layout_path = '';
+	var $layout_file = '';
+	var $edited_layout_file = '';
+	var $stop_proc = FALSE;
 	var $module_config = NULL;
 	var $ajaxRequestMethod = array('XMLRPC', 'JSON');
 	var $gzhandler_enable = TRUE;
@@ -31,17 +24,13 @@ class ModuleObject extends Object {
 	}
 
 	function setModulePath($path) {
-		if(substr_compare($path, '/', -1) !== 0) {
-			$path.='/';
-		}
+		if(substr_compare($path, '/', -1) !== 0) $path.='/';
 		$this->module_path = $path;
 	}
 
 	function setRedirectUrl($url = './', $output = NULL) 	{
 		$ajaxRequestMethod = array_flip($this->ajaxRequestMethod);
-		if(!isset($ajaxRequestMethod[Context::getRequestMethod()])) {
-			$this->add('redirect_url', $url);
-		}
+		if(!isset($ajaxRequestMethod[Context::getRequestMethod()])) $this->add('redirect_url', $url);
 		if($output !== NULL && is_object($output)) return $output;
 	}
 
@@ -89,15 +78,13 @@ class ModuleObject extends Object {
 			if(!$permission_target && substr_count($this->act, 'Admin')) $permission_target = 'manager';
 			switch($permission_target) {
 				case 'root' :
-				case 'manager' :
-					$this->stop('msg_is_not_administrator');
-					return;
+				case 'manager' : $this->stop('msg_is_not_administrator'); return;
 				case 'member' :
 					if(!$is_logged) {
 						$this->stop('msg_not_permitted_act');
 						return;
 					}
-					break;
+				break;
 			}
 		}
 		$this->grant = $grant;
@@ -179,12 +166,9 @@ class ModuleObject extends Object {
 					$this->module_info->{$valueName} = $skinName;
 				} else {
 					$isTemplatPath = (strpos($this->getTemplatePath(), '/tpl/') !== FALSE);
-					if(!$isTemplatPath) {
-						$this->setTemplatePath(sprintf('%s%s/%s/', $this->module_path, $dir, $skinName));
-					}
+					if(!$isTemplatPath) $this->setTemplatePath(sprintf('%s%s/%s/', $this->module_path, $dir, $skinName));
 				}
 			}
-
 			$oModuleModel = getModel('module');
 			$oModuleModel->syncSkinInfoToModuleInfo($this->module_info);
 			Context::set('module_info', $this->module_info);
@@ -202,11 +186,9 @@ class ModuleObject extends Object {
 		$oAddonController = getController('addon');
 		$addon_file = $oAddonController->getCacheFilePath(Mobile::isFromMobilePhone() ? "mobile" : "pc");
 		if(FileHandler::exists($addon_file)) include($addon_file);
-
 		if(is_a($output, 'Object') || is_subclass_of($output, 'Object')) {
 			$this->setError($output->getError());
 			$this->setMessage($output->getMessage());
-
 			if(!$output->toBool()) return FALSE;
 		}
 		if($this->module_info->module_type == 'view') {
@@ -217,5 +199,4 @@ class ModuleObject extends Object {
 		}
 		return TRUE;
 	}
-
 }

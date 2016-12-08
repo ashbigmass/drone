@@ -1,16 +1,7 @@
 <?php
-/* Copyright (C) NAVER <http://www.navercorp.com> */
-
 class JSCallbackDisplayHandler
 {
-
-	/**
-	 * Produce JSCallback compliant content given a module object.\n
-	 * @param ModuleObject $oModule the module object
-	 * @return string
-	 */
-	function toDoc(&$oModule)
-	{
+	function toDoc(&$oModule) {
 		$variables = $oModule->getVariables();
 		$variables['error'] = $oModule->getError();
 		$variables['message'] = $oModule->getMessage();
@@ -21,7 +12,4 @@ class JSCallbackDisplayHandler
 //]]>
 </script>', Context::getJSCallbackFunc(), $json);
 	}
-
 }
-/* End of file JSCallback.class.php */
-/* Location: ./classes/display/JSCallback.class.php */
