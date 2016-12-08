@@ -14,7 +14,7 @@ class adminAdminModel extends admin {
 		FileHandler::writeFile('./files/cache/ftp_check', $pin);
 		$xe_path = _XE_PATH_;
 		$path_info = array_reverse(explode('/', _XE_PATH_));
-		array_pop($path_info); // remove last '/'
+		array_pop($path_info);
 		$path_candidate = array();
 		$temp = '';
 		foreach($path_info as $path) {

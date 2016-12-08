@@ -388,7 +388,7 @@ class Context {
 		if(substr_compare($path, '/', -1) !== 0) $path .= '/';
 		$path_tpl = $path . '%s.lang.php';
 		$file = sprintf($path_tpl, $this->lang_type);
-		$langs = array('ko', 'en'); // this will be configurable.
+		$langs = array('ko', 'en');
 		while(!is_readable($file) && $langs[0]) {
 			$file = sprintf($path_tpl, array_shift($langs));
 		}
@@ -486,324 +486,136 @@ class Context {
 
 	function getResponseMethod() {
 		$self = self::getInstance();
-
-		if($self->response_method)
-		{
-			return $self->response_method;
-		}
-
+		if($self->response_method) return $self->response_method;
 		$method = $self->getRequestMethod();
 		$methods = array('HTML' => 1, 'XMLRPC' => 1, 'JSON' => 1, 'JS_CALLBACK' => 1);
-
 		return isset($methods[$method]) ? $method : 'HTML';
 	}
 
-	/**
-	 * Determine request method
-	 *
-	 * @param string $type Request method. (Optional - GET|POST|XMLRPC|JSON)
-	 * @return void
-	 */
-	function setRequestMethod($type = '')
-	{
+	function setRequestMethod($type = '') {
 		$self = self::getInstance();
-
 		$self->js_callback_func = $self->getJSCallbackFunc();
-
 		($type && $self->request_method = $type) or
-				((strpos($_SERVER['CONTENT_TYPE'], 'json') || strpos($_SERVER['HTTP_CONTENT_TYPE'], 'json')) && $self->request_method = 'JSON') or
-				($GLOBALS['HTTP_RAW_POST_DATA'] && $self->request_method = 'XMLRPC') or
-				($self->js_callback_func && $self->request_method = 'JS_CALLBACK') or
-				($self->request_method = $_SERVER['REQUEST_METHOD']);
+			((strpos($_SERVER['CONTENT_TYPE'], 'json') || strpos($_SERVER['HTTP_CONTENT_TYPE'], 'json')) && $self->request_method = 'JSON') or
+			($GLOBALS['HTTP_RAW_POST_DATA'] && $self->request_method = 'XMLRPC') or
+			($self->js_callback_func && $self->request_method = 'JS_CALLBACK') or
+			($self->request_method = $_SERVER['REQUEST_METHOD']);
 	}
 
-	/**
-	 * handle global arguments
-	 *
-	 * @return void
-	 */
-	function _checkGlobalVars()
-	{
+	function _checkGlobalVars() {
 		$this->_recursiveCheckVar($_SERVER['HTTP_HOST']);
-
 		$pattern = "/[\,\"\'\{\}\[\]\(\);$]/";
-		if(preg_match($pattern, $_SERVER['HTTP_HOST']))
-		{
-			$this->isSuccessInit = FALSE;
-		}
+		if(preg_match($pattern, $_SERVER['HTTP_HOST'])) $this->isSuccessInit = FALSE;
 	}
 
-	/**
-	 * handle request arguments for GET/POST
-	 *
-	 * @return void
-	 */
-	function _setRequestArgument()
-	{
-		if(!count($_REQUEST))
-		{
-			return;
-		}
-
+	function _setRequestArgument() {
+		if(!count($_REQUEST)) return;
 		$requestMethod = $this->getRequestMethod();
-		foreach($_REQUEST as $key => $val)
-		{
-			if($val === '' || self::get($key))
-			{
-				continue;
-			}
+		foreach($_REQUEST as $key => $val) {
+			if($val === '' || self::get($key)) continue;
 			$key = htmlentities($key);
 			$val = $this->_filterRequestVar($key, $val);
-
-			if($requestMethod == 'GET' && isset($_GET[$key]))
-			{
-				$set_to_vars = TRUE;
-			}
-			elseif($requestMethod == 'POST' && isset($_POST[$key]))
-			{
-				$set_to_vars = TRUE;
-			}
-			elseif($requestMethod == 'JS_CALLBACK' && (isset($_GET[$key]) || isset($_POST[$key])))
-			{
-				$set_to_vars = TRUE;
-			}
-			else
-			{
-				$set_to_vars = FALSE;
-			}
-
-			if($set_to_vars)
-			{
-				$this->_recursiveCheckVar($val);
-			}
-
+			if($requestMethod == 'GET' && isset($_GET[$key])) $set_to_vars = TRUE;
+			elseif($requestMethod == 'POST' && isset($_POST[$key])) $set_to_vars = TRUE;
+			elseif($requestMethod == 'JS_CALLBACK' && (isset($_GET[$key]) || isset($_POST[$key]))) $set_to_vars = TRUE;
+			else $set_to_vars = FALSE;
+			if($set_to_vars) $this->_recursiveCheckVar($val);
 			$this->set($key, $val, $set_to_vars);
 		}
 	}
 
-	function _recursiveCheckVar($val)
-	{
-		if(is_string($val))
-		{
-			foreach($this->patterns as $pattern)
-			{
-				if(preg_match($pattern, $val))
-				{
+	function _recursiveCheckVar($val) {
+		if(is_string($val)) {
+			foreach($this->patterns as $pattern) {
+				if(preg_match($pattern, $val)) {
 					$this->isSuccessInit = FALSE;
 					return;
 				}
 			}
-		}
-		else if(is_array($val))
-		{
-			foreach($val as $val2)
-			{
-				$this->_recursiveCheckVar($val2);
-			}
+		} else if(is_array($val)) {
+			foreach($val as $val2) $this->_recursiveCheckVar($val2);
 		}
 	}
 
-	/**
-	 * Handle request arguments for JSON
-	 *
-	 * @return void
-	 */
-	function _setJSONRequestArgument()
-	{
-		if($this->getRequestMethod() != 'JSON')
-		{
-			return;
-		}
-
+	function _setJSONRequestArgument() {
+		if($this->getRequestMethod() != 'JSON') return;
 		$params = array();
 		parse_str($GLOBALS['HTTP_RAW_POST_DATA'], $params);
-
-		foreach($params as $key => $val)
-		{
-			$this->set($key, $this->_filterRequestVar($key, $val, 1), TRUE);
-		}
+		foreach($params as $key => $val) $this->set($key, $this->_filterRequestVar($key, $val, 1), TRUE);
 	}
 
-	/**
-	 * Handle request arguments for XML RPC
-	 *
-	 * @return void
-	 */
-	function _setXmlRpcArgument()
-	{
-		if($this->getRequestMethod() != 'XMLRPC')
-		{
-			return;
-		}
-
+	function _setXmlRpcArgument() {
+		if($this->getRequestMethod() != 'XMLRPC') return;
 		$xml = $GLOBALS['HTTP_RAW_POST_DATA'];
-		if(Security::detectingXEE($xml))
-		{
+		if(Security::detectingXEE($xml)) {
 			header("HTTP/1.0 400 Bad Request");
 			exit;
 		}
-
 		$oXml = new XmlParser();
 		$xml_obj = $oXml->parse($xml);
-
 		$params = $xml_obj->methodcall->params;
 		unset($params->node_name, $params->attrs, $params->body);
-
-		if(!count(get_object_vars($params)))
-		{
-			return;
-		}
-
-		foreach($params as $key => $val)
-		{
-			$this->set($key, $this->_filterXmlVars($key, $val), TRUE);
-		}
+		if(!count(get_object_vars($params))) return;
+		foreach($params as $key => $val) $this->set($key, $this->_filterXmlVars($key, $val), TRUE);
 	}
 
-	/**
-	 * Filter xml variables
-	 *
-	 * @param string $key Variable key
-	 * @param object $val Variable value
-	 * @return mixed filtered value
-	 */
-	function _filterXmlVars($key, $val)
-	{
-		if(is_array($val))
-		{
+	function _filterXmlVars($key, $val) {
+		if(is_array($val)) {
 			$stack = array();
-			foreach($val as $k => $v)
-			{
-				$stack[$k] = $this->_filterXmlVars($k, $v);
-			}
-
+			foreach($val as $k => $v) $stack[$k] = $this->_filterXmlVars($k, $v);
 			return $stack;
 		}
-
 		$body = $val->body;
 		unset($val->node_name, $val->attrs, $val->body);
-		if(!count(get_object_vars($val)))
-		{
-			return $this->_filterRequestVar($key, $body, 0);
-		}
-
+		if(!count(get_object_vars($val))) return $this->_filterRequestVar($key, $body, 0);
 		$stack = new stdClass();
-		foreach($val as $k => $v)
-		{
+		foreach($val as $k => $v) {
 			$output = $this->_filterXmlVars($k, $v);
-			if(is_object($v) && $v->attrs->type == 'array')
-			{
-				$output = array($output);
-			}
-			if($k == 'value' && (is_array($v) || $v->attrs->type == 'array'))
-			{
-				return $output;
-			}
-
+			if(is_object($v) && $v->attrs->type == 'array') $output = array($output);
+			if($k == 'value' && (is_array($v) || $v->attrs->type == 'array')) return $output;
 			$stack->{$k} = $output;
 		}
-
-		if(!count(get_object_vars($stack)))
-		{
-			return NULL;
-		}
-
+		if(!count(get_object_vars($stack))) return NULL;
 		return $stack;
 	}
 
-	/**
-	 * Filter request variable
-	 *
-	 * @see Cast variables, such as _srl, page, and cpage, into interger
-	 * @param string $key Variable key
-	 * @param string $val Variable value
-	 * @param string $do_stripslashes Whether to strip slashes
-	 * @return mixed filtered value. Type are string or array
-	 */
-	function _filterRequestVar($key, $val, $do_stripslashes = 1)
-	{
-		if(!($isArray = is_array($val)))
-		{
-			$val = array($val);
-		}
-
+	function _filterRequestVar($key, $val, $do_stripslashes = 1) {
+		if(!($isArray = is_array($val))) $val = array($val);
 		$result = array();
-		foreach($val as $k => $v)
-		{
+		foreach($val as $k => $v) {
 			$k = htmlentities($k);
-			if($key === 'page' || $key === 'cpage' || substr_compare($key, 'srl', -3) === 0)
-			{
+			if($key === 'page' || $key === 'cpage' || substr_compare($key, 'srl', -3) === 0) {
 				$result[$k] = !preg_match('/^[0-9,]+$/', $v) ? (int) $v : $v;
-			}
-			elseif($key === 'mid' || $key === 'search_keyword')
-			{
+			} elseif($key === 'mid' || $key === 'search_keyword') {
 				$result[$k] = htmlspecialchars($v, ENT_COMPAT | ENT_HTML401, 'UTF-8', FALSE);
-			}
-			elseif($key === 'vid')
-			{
+			} elseif($key === 'vid') {
 				$result[$k] = urlencode($v);
-			}
-			else
-			{
+			} else {
 				$result[$k] = $v;
-
-				if($do_stripslashes && version_compare(PHP_VERSION, '5.4.0', '<') && get_magic_quotes_gpc())
-				{
-					$result[$k] = stripslashes($result[$k]);
-				}
-
-				if(!is_array($result[$k]))
-				{
-					$result[$k] = trim($result[$k]);
-				}
+				if($do_stripslashes && version_compare(PHP_VERSION, '5.4.0', '<') && get_magic_quotes_gpc()) $result[$k] = stripslashes($result[$k]);
+				if(!is_array($result[$k])) $result[$k] = trim($result[$k]);
 			}
 		}
-
 		return $isArray ? $result : $result[0];
 	}
 
-	/**
-	 * Check if there exists uploaded file
-	 *
-	 * @return bool True: exists, False: otherwise
-	 */
-	function isUploaded()
-	{
+	function isUploaded() {
 		$self = self::getInstance();
 		return $self->is_uploaded;
 	}
 
-	/**
-	 * Handle uploaded file
-	 *
-	 * @return void
-	 */
-	function _setUploadedArgument()
-	{
-		if($_SERVER['REQUEST_METHOD'] != 'POST' || !$_FILES || (stripos($_SERVER['CONTENT_TYPE'], 'multipart/form-data') === FALSE && stripos($_SERVER['HTTP_CONTENT_TYPE'], 'multipart/form-data') === FALSE))
-		{
-			return;
-		}
-
-		foreach($_FILES as $key => $val)
-		{
+	function _setUploadedArgument() {
+		if($_SERVER['REQUEST_METHOD'] != 'POST' || !$_FILES || (stripos($_SERVER['CONTENT_TYPE'], 'multipart/form-data') === FALSE && stripos($_SERVER['HTTP_CONTENT_TYPE'], 'multipart/form-data') === FALSE)) return;
+		foreach($_FILES as $key => $val) {
 			$tmp_name = $val['tmp_name'];
-			if(!is_array($tmp_name))
-			{
-				if(!$tmp_name || !is_uploaded_file($tmp_name))
-				{
-					continue;
-				}
+			if(!is_array($tmp_name)) {
+				if(!$tmp_name || !is_uploaded_file($tmp_name)) continue;
 				$val['name'] = htmlspecialchars($val['name'], ENT_COMPAT | ENT_HTML401, 'UTF-8', FALSE);
 				$this->set($key, $val, TRUE);
 				$this->is_uploaded = TRUE;
-			}
-			else
-			{
-				for($i = 0, $c = count($tmp_name); $i < $c; $i++)
-				{
-					if($val['size'][$i] > 0)
-					{
+			} else {
+				for($i = 0, $c = count($tmp_name); $i < $c; $i++) {
+					if($val['size'][$i] > 0) {
 						$file['name'] = $val['name'][$i];
 						$file['type'] = $val['type'][$i];
 						$file['tmp_name'] = $val['tmp_name'][$i];
@@ -817,167 +629,76 @@ class Context {
 		}
 	}
 
-	/**
-	 * Return request method
-	 * @return string Request method type. (Optional - GET|POST|XMLRPC|JSON)
-	 */
-	function getRequestMethod()
-	{
+	function getRequestMethod() {
 		$self = self::getInstance();
 		return $self->request_method;
 	}
 
-	/**
-	 * Return request URL
-	 * @return string request URL
-	 */
-	function getRequestUrl()
-	{
+	function getRequestUrl() {
 		static $url = null;
-		if(is_null($url))
-		{
+		if(is_null($url)) {
 			$url = self::getRequestUri();
-			if(count($_GET) > 0)
-			{
-				foreach($_GET as $key => $val)
-				{
-					$vars[] = $key . '=' . ($val ? urlencode(self::convertEncodingStr($val)) : '');
-				}
+			if(count($_GET) > 0) {
+				foreach($_GET as $key => $val) $vars[] = $key . '=' . ($val ? urlencode(self::convertEncodingStr($val)) : '');
 				$url .= '?' . join('&', $vars);
 			}
 		}
 		return $url;
 	}
 
-	/**
-	 * Return js callback func.
-	 * @return string callback func.
-	 */
-	function getJSCallbackFunc()
-	{
+	function getJSCallbackFunc() {
 		$self = self::getInstance();
 		$js_callback_func = isset($_GET['xe_js_callback']) ? $_GET['xe_js_callback'] : $_POST['xe_js_callback'];
-
-		if(!preg_match('/^[a-z0-9\.]+$/i', $js_callback_func))
-		{
+		if(!preg_match('/^[a-z0-9\.]+$/i', $js_callback_func)) {
 			unset($js_callback_func);
 			unset($_GET['xe_js_callback']);
 			unset($_POST['xe_js_callback']);
 		}
-
 		return $js_callback_func;
 	}
 
-	/**
-	 * Make URL with args_list upon request URL
-	 *
-	 * @param int $num_args Arguments nums
-	 * @param array $args_list Argument list for set url
-	 * @param string $domain Domain
-	 * @param bool $encode If TRUE, use url encode.
-	 * @param bool $autoEncode If TRUE, url encode automatically, detailed. Use this option, $encode value should be TRUE
-	 * @return string URL
-	 */
-	function getUrl($num_args = 0, $args_list = array(), $domain = null, $encode = TRUE, $autoEncode = FALSE)
-	{
+	function getUrl($num_args = 0, $args_list = array(), $domain = null, $encode = TRUE, $autoEncode = FALSE) {
 		static $site_module_info = null;
 		static $current_info = null;
-
 		$self = self::getInstance();
-
-		// retrieve virtual site information
-		if(is_null($site_module_info))
-		{
-			$site_module_info = self::get('site_module_info');
-		}
-
-		// If $domain is set, handle it (if $domain is vid type, remove $domain and handle with $vid)
-		if($domain && isSiteID($domain))
-		{
+		if(is_null($site_module_info)) $site_module_info = self::get('site_module_info');
+		if($domain && isSiteID($domain)) {
 			$vid = $domain;
 			$domain = '';
 		}
-
-		// If $domain, $vid are not set, use current site information
-		if(!$domain && !$vid)
-		{
-			if($site_module_info->domain && isSiteID($site_module_info->domain))
-			{
-				$vid = $site_module_info->domain;
-			}
-			else
-			{
-				$domain = $site_module_info->domain;
-			}
+		if(!$domain && !$vid) {
+			if($site_module_info->domain && isSiteID($site_module_info->domain)) $vid = $site_module_info->domain;
+			else $domain = $site_module_info->domain;
 		}
-
-		// if $domain is set, compare current URL. If they are same, remove the domain, otherwise link to the domain.
-		if($domain)
-		{
+		if($domain) {
 			$domain_info = parse_url($domain);
 			if(is_null($current_info))
-			{
 				$current_info = parse_url(($_SERVER['HTTPS'] == 'on' ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . getScriptPath());
-			}
-			if($domain_info['host'] . $domain_info['path'] == $current_info['host'] . $current_info['path'])
-			{
+			if($domain_info['host'] . $domain_info['path'] == $current_info['host'] . $current_info['path']) {
 				unset($domain);
-			}
-			else
-			{
+			} else {
 				$domain = preg_replace('/^(http|https):\/\//i', '', trim($domain));
-				if(substr_compare($domain, '/', -1) !== 0)
-				{
-					$domain .= '/';
-				}
+				if(substr_compare($domain, '/', -1) !== 0) $domain .= '/';
 			}
 		}
-
 		$get_vars = array();
-
-		// If there is no GET variables or first argument is '' to reset variables
-		if(!$self->get_vars || $args_list[0] == '')
-		{
-			// rearrange args_list
-			if(is_array($args_list) && $args_list[0] == '')
-			{
-				array_shift($args_list);
-			}
-		}
-		else
-		{
-			// Otherwise, make GET variables into array
+		if(!$self->get_vars || $args_list[0] == '') {
+			if(is_array($args_list) && $args_list[0] == '') array_shift($args_list);
+		} else {
 			$get_vars = get_object_vars($self->get_vars);
 		}
-
-		// arrange args_list
-		for($i = 0, $c = count($args_list); $i < $c; $i += 2)
-		{
+		for($i = 0, $c = count($args_list); $i < $c; $i += 2) {
 			$key = $args_list[$i];
 			$val = trim($args_list[$i + 1]);
-
-			// If value is not set, remove the key
-			if(!isset($val) || !strlen($val))
-			{
+			if(!isset($val) || !strlen($val)) {
 				unset($get_vars[$key]);
 				continue;
 			}
-			// set new variables
 			$get_vars[$key] = $val;
 		}
-
-		// remove vid, rnd
 		unset($get_vars['rnd']);
-		if($vid)
-		{
-			$get_vars['vid'] = $vid;
-		}
-		else
-		{
-			unset($get_vars['vid']);
-		}
-
-		// for compatibility to lower versions
+		if($vid) $get_vars['vid'] = $vid;
+		else unset($get_vars['vid']);
 		$act = $get_vars['act'];
 		$act_alias = array(
 			'dispMemberFriend' => 'dispCommunicationFriend',
@@ -985,32 +706,20 @@ class Context {
 			'dispDocumentAdminManageDocument' => 'dispDocumentManageDocument',
 			'dispModuleAdminSelectList' => 'dispModuleSelectList'
 		);
-		if($act_alias[$act])
-		{
-			$get_vars['act'] = $act_alias[$act];
-		}
-
-		// organize URL
+		if($act_alias[$act]) $get_vars['act'] = $act_alias[$act];
 		$query = '';
-		if(count($get_vars) > 0)
-		{
-			// if using rewrite mod
-			if($self->allow_rewrite)
-			{
+		if(count($get_vars) > 0) {
+			if($self->allow_rewrite) {
 				$var_keys = array_keys($get_vars);
 				sort($var_keys);
-
 				$target = join('.', $var_keys);
-
 				$act = $get_vars['act'];
 				$vid = $get_vars['vid'];
 				$mid = $get_vars['mid'];
 				$key = $get_vars['key'];
 				$srl = $get_vars['document_srl'];
-
 				$tmpArray = array('rss' => 1, 'atom' => 1, 'api' => 1);
 				$is_feed = isset($tmpArray[$act]);
-
 				$target_map = array(
 					'vid' => $vid,
 					'mid' => $mid,
@@ -1029,326 +738,138 @@ class Context {
 					'act.document_srl.key.vid' => ($act == 'trackback') ? "$vid/$srl/$key/$act" : '',
 					'act.document_srl.key.mid.vid' => ($act == 'trackback') ? "$vid/$mid/$srl/$key/$act" : ''
 				);
-
 				$query = $target_map[$target];
 			}
-
-			if(!$query)
-			{
+			if(!$query) {
 				$queries = array();
-				foreach($get_vars as $key => $val)
-				{
-					if(is_array($val) && count($val) > 0)
-					{
-						foreach($val as $k => $v)
-						{
-							$queries[] = $key . '[' . $k . ']=' . urlencode($v);
-						}
-					}
-					elseif(!is_array($val))
-					{
+				foreach($get_vars as $key => $val) {
+					if(is_array($val) && count($val) > 0) {
+						foreach($val as $k => $v) $queries[] = $key . '[' . $k . ']=' . urlencode($v);
+					} elseif(!is_array($val)) {
 						$queries[] = $key . '=' . urlencode($val);
 					}
 				}
-				if(count($queries) > 0)
-				{
-					$query = 'index.php?' . join('&', $queries);
-				}
+				if(count($queries) > 0) $query = 'index.php?' . join('&', $queries);
 			}
 		}
-
-		// If using SSL always
 		$_use_ssl = $self->get('_use_ssl');
-		if($_use_ssl == 'always')
-		{
+		if($_use_ssl == 'always') {
 			$query = $self->getRequestUri(ENFORCE_SSL, $domain) . $query;
-			// optional SSL use
-		}
-		elseif($_use_ssl == 'optional')
-		{
+		} elseif($_use_ssl == 'optional') {
 			$ssl_mode = (($self->get('module') === 'admin') || ($get_vars['module'] === 'admin') || (isset($get_vars['act']) && $self->isExistsSSLAction($get_vars['act']))) ? ENFORCE_SSL : RELEASE_SSL;
 			$query = $self->getRequestUri($ssl_mode, $domain) . $query;
-			// no SSL
+		} else {
+			if($_SERVER['HTTPS'] == 'on') $query = $self->getRequestUri(ENFORCE_SSL, $domain) . $query;
+			else if($domain) $query = $self->getRequestUri(FOLLOW_REQUEST_SSL, $domain) . $query;
+			else $query = getScriptPath() . $query;
 		}
-		else
-		{
-			// currently on SSL but target is not based on SSL
-			if($_SERVER['HTTPS'] == 'on')
-			{
-				$query = $self->getRequestUri(ENFORCE_SSL, $domain) . $query;
-			}
-			else if($domain) // if $domain is set
-			{
-				$query = $self->getRequestUri(FOLLOW_REQUEST_SSL, $domain) . $query;
-			}
-			else
-			{
-				$query = getScriptPath() . $query;
-			}
-		}
-
-		if(!$encode)
-		{
-			return $query;
-		}
-
-		if(!$autoEncode)
-		{
-			return htmlspecialchars($query, ENT_COMPAT | ENT_HTML401, 'UTF-8', FALSE);
-		}
-
+		if(!$encode) return $query;
+		if(!$autoEncode) return htmlspecialchars($query, ENT_COMPAT | ENT_HTML401, 'UTF-8', FALSE);
 		$output = array();
 		$encode_queries = array();
 		$parsedUrl = parse_url($query);
 		parse_str($parsedUrl['query'], $output);
-		foreach($output as $key => $value)
-		{
-			if(preg_match('/&([a-z]{2,}|#\d+);/', urldecode($value)))
-			{
-				$value = urlencode(htmlspecialchars_decode(urldecode($value)));
-			}
+		foreach($output as $key => $value) {
+			if(preg_match('/&([a-z]{2,}|#\d+);/', urldecode($value))) $value = urlencode(htmlspecialchars_decode(urldecode($value)));
 			$encode_queries[] = $key . '=' . $value;
 		}
-
 		return htmlspecialchars($parsedUrl['path'] . '?' . join('&', $encode_queries), ENT_COMPAT | ENT_HTML401, 'UTF-8', FALSE);
 	}
 
-	/**
-	 * Return after removing an argument on the requested URL
-	 *
-	 * @param string $ssl_mode SSL mode
-	 * @param string $domain Domain
-	 * @retrun string converted URL
-	 */
-	function getRequestUri($ssl_mode = FOLLOW_REQUEST_SSL, $domain = null)
-	{
+	function getRequestUri($ssl_mode = FOLLOW_REQUEST_SSL, $domain = null) {
 		static $url = array();
-
-		// Check HTTP Request
-		if(!isset($_SERVER['SERVER_PROTOCOL']))
-		{
-			return;
-		}
-
-		if(self::get('_use_ssl') == 'always')
-		{
-			$ssl_mode = ENFORCE_SSL;
-		}
-
-		if($domain)
-		{
-			$domain_key = md5($domain);
-		}
-		else
-		{
-			$domain_key = 'default';
-		}
-
-		if(isset($url[$ssl_mode][$domain_key]))
-		{
-			return $url[$ssl_mode][$domain_key];
-		}
-
+		if(!isset($_SERVER['SERVER_PROTOCOL'])) return;
+		if(self::get('_use_ssl') == 'always') $ssl_mode = ENFORCE_SSL;
+		if($domain) $domain_key = md5($domain);
+		else $domain_key = 'default';
+		if(isset($url[$ssl_mode][$domain_key])) return $url[$ssl_mode][$domain_key];
 		$current_use_ssl = ($_SERVER['HTTPS'] == 'on');
-
-		switch($ssl_mode)
-		{
-			case FOLLOW_REQUEST_SSL: $use_ssl = $current_use_ssl;
-				break;
-			case ENFORCE_SSL: $use_ssl = TRUE;
-				break;
-			case RELEASE_SSL: $use_ssl = FALSE;
-				break;
+		switch($ssl_mode) {
+			case FOLLOW_REQUEST_SSL: $use_ssl = $current_use_ssl; break;
+			case ENFORCE_SSL: $use_ssl = TRUE; break;
+			case RELEASE_SSL: $use_ssl = FALSE; break;
 		}
-
-		if($domain)
-		{
+		if($domain) {
 			$target_url = trim($domain);
-			if(substr_compare($target_url, '/', -1) !== 0)
-			{
-				$target_url.= '/';
-			}
-		}
-		else
-		{
+			if(substr_compare($target_url, '/', -1) !== 0) $target_url.= '/';
+		} else {
 			$target_url = $_SERVER['HTTP_HOST'] . getScriptPath();
 		}
-
 		$url_info = parse_url('http://' . $target_url);
-
-		if($current_use_ssl != $use_ssl)
-		{
-			unset($url_info['port']);
-		}
-
-		if($use_ssl)
-		{
+		if($current_use_ssl != $use_ssl) unset($url_info['port']);
+		if($use_ssl) {
 			$port = self::get('_https_port');
-			if($port && $port != 443)
-			{
-				$url_info['port'] = $port;
-			}
-			elseif($url_info['port'] == 443)
-			{
-				unset($url_info['port']);
-			}
-		}
-		else
-		{
+			if($port && $port != 443) $url_info['port'] = $port;
+			elseif($url_info['port'] == 443) unset($url_info['port']);
+		} else {
 			$port = self::get('_http_port');
-			if($port && $port != 80)
-			{
-				$url_info['port'] = $port;
-			}
-			elseif($url_info['port'] == 80)
-			{
-				unset($url_info['port']);
-			}
+			if($port && $port != 80) $url_info['port'] = $port;
+			elseif($url_info['port'] == 80) unset($url_info['port']);
 		}
-
 		$url[$ssl_mode][$domain_key] = sprintf('%s://%s%s%s', $use_ssl ? 'https' : $url_info['scheme'], $url_info['host'], $url_info['port'] && $url_info['port'] != 80 ? ':' . $url_info['port'] : '', $url_info['path']);
-
 		return $url[$ssl_mode][$domain_key];
 	}
 
-	/**
-	 * Set a context value with a key
-	 *
-	 * @param string $key Key
-	 * @param string $val Value
-	 * @param mixed $set_to_get_vars If not FALSE, Set to get vars.
-	 * @return void
-	 */
-	function set($key, $val, $set_to_get_vars = 0)
-	{
+	function set($key, $val, $set_to_get_vars = 0) {
 		$self = self::getInstance();
 		$self->context->{$key} = $val;
-		if($set_to_get_vars === FALSE)
-		{
-			return;
-		}
-		if($val === NULL || $val === '')
-		{
+		if($set_to_get_vars === FALSE) return;
+		if($val === NULL || $val === '') {
 			unset($self->get_vars->{$key});
 			return;
 		}
-		if($set_to_get_vars || $self->get_vars->{$key})
-		{
-			$self->get_vars->{$key} = $val;
-		}
+		if($set_to_get_vars || $self->get_vars->{$key}) $self->get_vars->{$key} = $val;
 	}
 
-	/**
-	 * Return key's value
-	 *
-	 * @param string $key Key
-	 * @return string Key
-	 */
-	function get($key)
-	{
+	function get($key) {
 		$self = self::getInstance();
-
-		if(!isset($self->context->{$key}))
-		{
-			return null;
-		}
+		if(!isset($self->context->{$key})) return null;
 		return $self->context->{$key};
 	}
 
-	/**
-	 * Get one more vars in object vars with given arguments(key1, key2, key3,...)
-	 *
-	 * @return object
-	 */
-	function gets()
-	{
+	function gets() {
 		$num_args = func_num_args();
-		if($num_args < 1)
-		{
-			return;
-		}
+		if($num_args < 1) return;
 		$self = self::getInstance();
-
 		$args_list = func_get_args();
 		$output = new stdClass();
-		foreach($args_list as $v)
-		{
-			$output->{$v} = $self->get($v);
-		}
+		foreach($args_list as $v) $output->{$v} = $self->get($v);
 		return $output;
 	}
 
-	/**
-	 * Return all data
-	 *
-	 * @return object All data
-	 */
-	function getAll()
-	{
+	function getAll() {
 		$self = self::getInstance();
 		return $self->context;
 	}
 
-	/**
-	 * Return values from the GET/POST/XMLRPC
-	 *
-	 * @return Object Request variables.
-	 */
-	function getRequestVars()
-	{
+	function getRequestVars() {
 		$self = self::getInstance();
-		if($self->get_vars)
-		{
-			return clone($self->get_vars);
-		}
+		if($self->get_vars) return clone($self->get_vars);
 		return new stdClass;
 	}
 
-	/**
-	 * Register if an action is to be encrypted by SSL. Those actions are sent to https in common/js/xml_handler.js
-	 *
-	 * @param string $action act name
-	 * @return void
-	 */
-	function addSSLAction($action)
-	{
+	function addSSLAction($action) {
 		$self = self::getInstance();
-
-		if(!is_readable($self->sslActionCacheFile))
-		{
+		if(!is_readable($self->sslActionCacheFile)) {
 			$buff = '<?php if(!defined("__XE__"))exit;';
 			FileHandler::writeFile($self->sslActionCacheFile, $buff);
 		}
-
-		if(!isset($self->ssl_actions[$action]))
-		{
+		if(!isset($self->ssl_actions[$action])) {
 			$self->ssl_actions[$action] = 1;
 			$sslActionCacheString = sprintf('$sslActions[\'%s\'] = 1;', $action);
 			FileHandler::writeFile($self->sslActionCacheFile, $sslActionCacheString, 'a');
 		}
 	}
 
-	/**
-	 * Register if actions are to be encrypted by SSL. Those actions are sent to https in common/js/xml_handler.js
-	 *
-	 * @param string $action act name
-	 * @return void
-	 */
-	function addSSLActions($action_array)
-	{
+	function addSSLActions($action_array) {
 		$self = self::getInstance();
-
-		if(!is_readable($self->sslActionCacheFile))
-		{
+		if(!is_readable($self->sslActionCacheFile)) {
 			unset($self->ssl_actions);
 			$buff = '<?php if(!defined("__XE__"))exit;';
 			FileHandler::writeFile($self->sslActionCacheFile, $buff);
 		}
-
-		foreach($action_array as $action)
-		{
-			if(!isset($self->ssl_actions[$action]))
-			{
+		foreach($action_array as $action) {
+			if(!isset($self->ssl_actions[$action])) {
 				$self->ssl_actions[$action] = 1;
 				$sslActionCacheString = sprintf('$sslActions[\'%s\'] = 1;', $action);
 				FileHandler::writeFile($self->sslActionCacheFile, $sslActionCacheString, 'a');
@@ -1356,18 +877,9 @@ class Context {
 		}
 	}
 
-	/**
-	 * Delete if action is registerd to be encrypted by SSL.
-	 *
-	 * @param string $action act name
-	 * @return void
-	 */
-	function subtractSSLAction($action)
-	{
+	function subtractSSLAction($action) {
 		$self = self::getInstance();
-
-		if($self->isExistsSSLAction($action))
-		{
+		if($self->isExistsSSLAction($action)) {
 			$sslActionCacheString = sprintf('$sslActions[\'%s\'] = 1;', $action);
 			$buff = FileHandler::readFile($self->sslActionCacheFile);
 			$buff = str_replace($sslActionCacheString, '', $buff);
@@ -1375,646 +887,254 @@ class Context {
 		}
 	}
 
-	/**
-	 * Get SSL Action
-	 *
-	 * @return string acts in array
-	 */
-	function getSSLActions()
-	{
+	function getSSLActions() {
 		$self = self::getInstance();
-		if($self->getSslStatus() == 'optional')
-		{
-			return $self->ssl_actions;
-		}
+		if($self->getSslStatus() == 'optional') return $self->ssl_actions;
 	}
 
-	/**
-	 * Check SSL action are existed
-	 *
-	 * @param string $action act name
-	 * @return bool If SSL exists, return TRUE.
-	 */
-	function isExistsSSLAction($action)
-	{
+	function isExistsSSLAction($action) {
 		$self = self::getInstance();
 		return isset($self->ssl_actions[$action]);
 	}
 
-	/**
-	 * Normalize file path
-	 *
-	 * @deprecated
-	 * @param string $file file path
-	 * @return string normalized file path
-	 */
-	function normalizeFilePath($file)
-	{
-		if($file{0} != '/' && $file{0} != '.' && strpos($file, '://') === FALSE)
-		{
-			$file = './' . $file;
-		}
+	function normalizeFilePath($file) {
+		if($file{0} != '/' && $file{0} != '.' && strpos($file, '://') === FALSE) $file = './' . $file;
 		$file = preg_replace('@/\./|(?<!:)\/\/@', '/', $file);
-		while(strpos($file, '/../') !== FALSE)
-		{
-			$file = preg_replace('/\/([^\/]+)\/\.\.\//s', '/', $file, 1);
-		}
-
+		while(strpos($file, '/../') !== FALSE) $file = preg_replace('/\/([^\/]+)\/\.\.\//s', '/', $file, 1);
 		return $file;
 	}
 
-	/**
-	 * Get abstract file url
-	 *
-	 * @deprecated
-	 * @param string $file file path
-	 * @return string Converted file path
-	 */
-	function getAbsFileUrl($file)
-	{
+	function getAbsFileUrl($file) {
 		$file = self::normalizeFilePath($file);
 		$script_path = getScriptPath();
-		if(strpos($file, './') === 0)
-		{
-			$file = $script_path . substr($file, 2);
-		}
-		elseif(strpos($file, '../') === 0)
-		{
-			$file = self::normalizeFilePath($script_path . $file);
-		}
-
+		if(strpos($file, './') === 0) $file = $script_path . substr($file, 2);
+		elseif(strpos($file, '../') === 0) $file = self::normalizeFilePath($script_path . $file);
 		return $file;
 	}
 
-	/**
-	 * Load front end file
-	 *
-	 * @param array $args array
-	 * case js :
-	 * 		$args[0]: file name,
-	 * 		$args[1]: type (head | body),
-	 * 		$args[2]: target IE,
-	 * 		$args[3]: index
-	 * case css :
-	 * 		$args[0]: file name,
-	 * 		$args[1]: media,
-	 * 		$args[2]: target IE,
-	 * 		$args[3]: index
-	 *
-	 */
-	function loadFile($args)
-	{
+	function loadFile($args) {
 		$self = self::getInstance();
-
 		$self->oFrontEndFileHandler->loadFile($args);
 	}
 
-	/**
-	 * Unload front end file
-	 *
-	 * @param string $file File name with path
-	 * @param string $targetIe Target IE
-	 * @param string $media Media query
-	 * @return void
-	 */
-	function unloadFile($file, $targetIe = '', $media = 'all')
-	{
+	function unloadFile($file, $targetIe = '', $media = 'all') {
 		$self = self::getInstance();
 		$self->oFrontEndFileHandler->unloadFile($file, $targetIe, $media);
 	}
 
-	/**
-	 * Unload front end file all
-	 *
-	 * @param string $type Unload target (optional - all|css|js)
-	 * @return void
-	 */
-	function unloadAllFiles($type = 'all')
-	{
+	function unloadAllFiles($type = 'all') {
 		$self = self::getInstance();
 		$self->oFrontEndFileHandler->unloadAllFiles($type);
 	}
 
-	/**
-	 * Add the js file
-	 *
-	 * @deprecated
-	 * @param string $file File name with path
-	 * @param string $optimized optimized (That seems to not use)
-	 * @param string $targetie target IE
-	 * @param string $index index
-	 * @param string $type Added position. (head:<head>..</head>, body:<body>..</body>)
-	 * @param bool $isRuleset Use ruleset
-	 * @param string $autoPath If path not readed, set the path automatically.
-	 * @return void
-	 */
-	function addJsFile($file, $optimized = FALSE, $targetie = '', $index = 0, $type = 'head', $isRuleset = FALSE, $autoPath = null)
-	{
-		if($isRuleset)
-		{
-			if(strpos($file, '#') !== FALSE)
-			{
+	function addJsFile($file, $optimized = FALSE, $targetie = '', $index = 0, $type = 'head', $isRuleset = FALSE, $autoPath = null) {
+		if($isRuleset) {
+			if(strpos($file, '#') !== FALSE) {
 				$file = str_replace('#', '', $file);
-				if(!is_readable($file))
-				{
-					$file = $autoPath;
-				}
+				if(!is_readable($file)) $file = $autoPath;
 			}
 			$validator = new Validator($file);
 			$validator->setCacheDir('files/cache');
 			$file = $validator->getJsPath();
 		}
-
 		$self = self::getInstance();
 		$self->oFrontEndFileHandler->loadFile(array($file, $type, $targetie, $index));
 	}
 
-	/**
-	 * Remove the js file
-	 *
-	 * @deprecated
-	 * @param string $file File name with path
-	 * @param string $optimized optimized (That seems to not use)
-	 * @param string $targetie target IE
-	 * @return void
-	 */
-	function unloadJsFile($file, $optimized = FALSE, $targetie = '')
-	{
+	function unloadJsFile($file, $optimized = FALSE, $targetie = '') {
 		$self = self::getInstance();
 		$self->oFrontEndFileHandler->unloadFile($file, $targetie);
 	}
 
-	/**
-	 * Unload all javascript files
-	 *
-	 * @return void
-	 */
-	function unloadAllJsFiles()
-	{
+	function unloadAllJsFiles() {
 		$self = self::getInstance();
 		$self->oFrontEndFileHandler->unloadAllFiles('js');
 	}
 
-	/**
-	 * Add javascript filter
-	 *
-	 * @param string $path File path
-	 * @param string $filename File name
-	 * @return void
-	 */
-	function addJsFilter($path, $filename)
-	{
+	function addJsFilter($path, $filename) {
 		$oXmlFilter = new XmlJSFilter($path, $filename);
 		$oXmlFilter->compile();
 	}
 
-	/**
-	 * Same as array_unique but works only for file subscript
-	 *
-	 * @deprecated
-	 * @param array $files File list
-	 * @return array File list
-	 */
-	function _getUniqueFileList($files)
-	{
+	function _getUniqueFileList($files) {
 		ksort($files);
 		$files = array_values($files);
 		$filenames = array();
-		for($i = 0, $c = count($files); $i < $c; ++$i)
-		{
-			if(in_array($files[$i]['file'], $filenames))
-			{
-				unset($files[$i]);
-			}
+		for($i = 0, $c = count($files); $i < $c; ++$i) {
+			if(in_array($files[$i]['file'], $filenames)) unset($files[$i]);
 			$filenames[] = $files[$i]['file'];
 		}
-
 		return $files;
 	}
 
-	/**
-	 * Returns the list of javascripts that matches the given type.
-	 *
-	 * @param string $type Added position. (head:<head>..</head>, body:<body>..</body>)
-	 * @return array Returns javascript file list. Array contains file, targetie.
-	 */
-	function getJsFile($type = 'head')
-	{
+	function getJsFile($type = 'head') {
 		$self = self::getInstance();
 		return $self->oFrontEndFileHandler->getJsFileList($type);
 	}
 
-	/**
-	 * Add CSS file
-	 *
-	 * @deprecated
-	 * @param string $file File name with path
-	 * @param string $optimized optimized (That seems to not use)
-	 * @param string $media Media query
-	 * @param string $targetie target IE
-	 * @param string $index index
-	 * @return void
-	 *
-	 */
-	function addCSSFile($file, $optimized = FALSE, $media = 'all', $targetie = '', $index = 0)
-	{
+	function addCSSFile($file, $optimized = FALSE, $media = 'all', $targetie = '', $index = 0) {
 		$self = self::getInstance();
 		$self->oFrontEndFileHandler->loadFile(array($file, $media, $targetie, $index));
 	}
 
-	/**
-	 * Remove css file
-	 *
-	 * @deprecated
-	 * @param string $file File name with path
-	 * @param string $optimized optimized (That seems to not use)
-	 * @param string $media Media query
-	 * @param string $targetie target IE
-	 * @return void
-	 */
-	function unloadCSSFile($file, $optimized = FALSE, $media = 'all', $targetie = '')
-	{
+	function unloadCSSFile($file, $optimized = FALSE, $media = 'all', $targetie = '') {
 		$self = self::getInstance();
 		$self->oFrontEndFileHandler->unloadFile($file, $targetie, $media);
 	}
 
-	/**
-	 * Unload all css files
-	 *
-	 * @return void
-	 */
-	function unloadAllCSSFiles()
-	{
+	function unloadAllCSSFiles() {
 		$self = self::getInstance();
 		$self->oFrontEndFileHandler->unloadAllFiles('css');
 	}
 
-	/**
-	 * Return a list of css files
-	 *
-	 * @return array Returns css file list. Array contains file, media, targetie.
-	 */
-	function getCSSFile()
-	{
+	function getCSSFile() {
 		$self = self::getInstance();
 		return $self->oFrontEndFileHandler->getCssFileList();
 	}
 
-	/**
-	 * Returns javascript plugin file info
-	 * @param string $pluginName
-	 * @return stdClass
-	 */
-	function getJavascriptPluginInfo($pluginName)
-	{
-		if($plugin_name == 'ui.datepicker')
-		{
-			$plugin_name = 'ui';
-		}
-
+	function getJavascriptPluginInfo($pluginName) {
+		if($plugin_name == 'ui.datepicker') $plugin_name = 'ui';
 		$plugin_path = './common/js/plugins/' . $pluginName . '/';
 		$info_file = $plugin_path . 'plugin.load';
-		if(!is_readable($info_file))
-		{
-			return;
-		}
-
+		if(!is_readable($info_file)) return;
 		$list = file($info_file);
 		$result = new stdClass();
 		$result->jsList = array();
 		$result->cssList = array();
-
-		foreach($list as $filename)
-		{
+		foreach($list as $filename) {
 			$filename = trim($filename);
-			if(!$filename)
-			{
-				continue;
-			}
-
-			if(strncasecmp('./', $filename, 2) === 0)
-			{
-				$filename = substr($filename, 2);
-			}
-
-			if(substr_compare($filename, '.js', -3) === 0)
-			{
-				$result->jsList[] = $plugin_path . $filename;
-			}
-			elseif(substr_compare($filename, '.css', -4) === 0)
-			{
-				$result->cssList[] = $plugin_path . $filename;
-			}
+			if(!$filename) continue;
+			if(strncasecmp('./', $filename, 2) === 0) $filename = substr($filename, 2);
+			if(substr_compare($filename, '.js', -3) === 0) $result->jsList[] = $plugin_path . $filename;
+			elseif(substr_compare($filename, '.css', -4) === 0) $result->cssList[] = $plugin_path . $filename;
 		}
-
-		if(is_dir($plugin_path . 'lang'))
-		{
-			$result->langPath = $plugin_path . 'lang';
-		}
-
+		if(is_dir($plugin_path . 'lang')) $result->langPath = $plugin_path . 'lang';
 		return $result;
 	}
-	/**
-	 * Load javascript plugin
-	 *
-	 * @param string $plugin_name plugin name
-	 * @return void
-	 */
-	function loadJavascriptPlugin($plugin_name)
-	{
+
+	function loadJavascriptPlugin($plugin_name) {
 		static $loaded_plugins = array();
-
 		$self = self::getInstance();
-		if($plugin_name == 'ui.datepicker')
-		{
-			$plugin_name = 'ui';
-		}
-
-		if($loaded_plugins[$plugin_name])
-		{
-			return;
-		}
+		if($plugin_name == 'ui.datepicker') $plugin_name = 'ui';
+		if($loaded_plugins[$plugin_name]) return;
 		$loaded_plugins[$plugin_name] = TRUE;
-
 		$plugin_path = './common/js/plugins/' . $plugin_name . '/';
 		$info_file = $plugin_path . 'plugin.load';
-		if(!is_readable($info_file))
-		{
-			return;
-		}
-
+		if(!is_readable($info_file)) return;
 		$list = file($info_file);
-		foreach($list as $filename)
-		{
+		foreach($list as $filename) {
 			$filename = trim($filename);
-			if(!$filename)
-			{
-				continue;
-			}
-
-			if(strncasecmp('./', $filename, 2) === 0)
-			{
-				$filename = substr($filename, 2);
-			}
-			if(substr_compare($filename, '.js', -3) === 0)
-			{
-				$self->loadFile(array($plugin_path . $filename, 'body', '', 0), TRUE);
-			}
-			if(substr_compare($filename, '.css', -4) === 0)
-			{
-				$self->loadFile(array($plugin_path . $filename, 'all', '', 0), TRUE);
-			}
+			if(!$filename) continue;
+			if(strncasecmp('./', $filename, 2) === 0) $filename = substr($filename, 2);
+			if(substr_compare($filename, '.js', -3) === 0) $self->loadFile(array($plugin_path . $filename, 'body', '', 0), TRUE);
+			if(substr_compare($filename, '.css', -4) === 0) $self->loadFile(array($plugin_path . $filename, 'all', '', 0), TRUE);
 		}
-
-		if(is_dir($plugin_path . 'lang'))
-		{
-			$self->loadLang($plugin_path . 'lang');
-		}
+		if(is_dir($plugin_path . 'lang')) $self->loadLang($plugin_path . 'lang');
 	}
 
-	/**
-	 * Add html code before </head>
-	 *
-	 * @param string $header add html code before </head>.
-	 * @return void
-	 */
-	function addHtmlHeader($header)
-	{
+	function addHtmlHeader($header) {
 		$self = self::getInstance();
 		$self->html_header .= "\n" . $header;
 	}
 
-	function clearHtmlHeader()
-	{
+	function clearHtmlHeader() {
 		$self = self::getInstance();
 		$self->html_header = '';
 	}
 
-	/**
-	 * Returns added html code by addHtmlHeader()
-	 *
-	 * @return string Added html code before </head>
-	 */
-	function getHtmlHeader()
-	{
+	function getHtmlHeader() {
 		$self = self::getInstance();
 		return $self->html_header;
 	}
 
-	/**
-	 * Add css class to Html Body
-	 *
-	 * @param string $class_name class name
-	 */
-	function addBodyClass($class_name)
-	{
+	function addBodyClass($class_name) {
 		$self = self::getInstance();
 		$self->body_class[] = $class_name;
 	}
 
-	/**
-	 * Return css class to Html Body
-	 *
-	 * @return string Return class to html body
-	 */
-	function getBodyClass()
-	{
+	function getBodyClass() {
 		$self = self::getInstance();
 		$self->body_class = array_unique($self->body_class);
-
 		return (count($self->body_class) > 0) ? sprintf(' class="%s"', join(' ', $self->body_class)) : '';
 	}
 
-	/**
-	 * Add html code after <body>
-	 *
-	 * @param string $header Add html code after <body>
-	 */
-	function addBodyHeader($header)
-	{
+	function addBodyHeader($header) {
 		$self = self::getInstance();
 		$self->body_header .= "\n" . $header;
 	}
 
-	/**
-	 * Returns added html code by addBodyHeader()
-	 *
-	 * @return string Added html code after <body>
-	 */
-	function getBodyHeader()
-	{
+	function getBodyHeader() {
 		$self = self::getInstance();
 		return $self->body_header;
 	}
 
-	/**
-	 * Add html code before </body>
-	 *
-	 * @param string $footer Add html code before </body>
-	 */
-	function addHtmlFooter($footer)
-	{
+	function addHtmlFooter($footer) {
 		$self = self::getInstance();
 		$self->html_footer .= ($self->Htmlfooter ? "\n" : '') . $footer;
 	}
 
-	/**
-	 * Returns added html code by addHtmlHeader()
-	 *
-	 * @return string Added html code before </body>
-	 */
-	function getHtmlFooter()
-	{
+	function getHtmlFooter() {
 		$self = self::getInstance();
 		return $self->html_footer;
 	}
 
-	/**
-	 * Get config file
-	 *
-	 * @retrun string The path of the config file that contains database settings
-	 */
-	function getConfigFile()
-	{
+	function getConfigFile() {
 		return _XE_PATH_ . 'files/config/db.config.php';
 	}
 
-	/**
-	 * Get FTP config file
-	 *
-	 * @return string The path of the config file that contains FTP settings
-	 */
-	function getFTPConfigFile()
-	{
+	function getFTPConfigFile() {
 		return _XE_PATH_ . 'files/config/ftp.config.php';
 	}
 
-	/**
-	 * Checks whether XE is installed
-	 *
-	 * @return bool True if the config file exists, otherwise FALSE.
-	 */
-	function isInstalled()
-	{
+	function isInstalled() {
 		return FileHandler::hasContent(self::getConfigFile());
 	}
 
-	/**
-	 * Transforms codes about widget or other features into the actual code, deprecatred
-	 *
-	 * @param string Transforms codes
-	 * @return string Transforms codes
-	 */
-	function transContent($content)
-	{
+	function transContent($content) {
 		return $content;
 	}
 
-	/**
-	 * Check whether it is allowed to use rewrite mod
-	 *
-	 * @return bool True if it is allowed to use rewrite mod, otherwise FALSE
-	 */
-	function isAllowRewrite()
-	{
+	function isAllowRewrite() {
 		$oContext = self::getInstance();
 		return $oContext->allow_rewrite;
 	}
 
-	/**
-	 * Converts a local path into an URL
-	 *
-	 * @param string $path URL path
-	 * @return string Converted path
-	 */
-	function pathToUrl($path)
-	{
+	function pathToUrl($path) {
 		$xe = _XE_PATH_;
 		$path = strtr($path, "\\", "/");
-
 		$base_url = preg_replace('@^https?://[^/]+/?@', '', self::getRequestUri());
-
 		$_xe = explode('/', $xe);
 		$_path = explode('/', $path);
 		$_base = explode('/', $base_url);
-
-		if(!$_base[count($_base) - 1])
-		{
-			array_pop($_base);
-		}
-
-		foreach($_xe as $idx => $dir)
-		{
-			if($_path[0] != $dir)
-			{
-				break;
-			}
+		if(!$_base[count($_base) - 1]) array_pop($_base);
+		foreach($_xe as $idx => $dir) {
+			if($_path[0] != $dir) break;
 			array_shift($_path);
 		}
-
 		$idx = count($_xe) - $idx - 1;
-		while($idx--)
-		{
-			if(count($_base) > 0)
-			{
-				array_shift($_base);
-			}
-			else
-			{
-				array_unshift($_base, '..');
-			}
+		while($idx--) {
+			if(count($_base) > 0) array_shift($_base);
+			else array_unshift($_base, '..');
 		}
-
-		if(count($_base) > 0)
-		{
-			array_unshift($_path, join('/', $_base));
-		}
-
+		if(count($_base) > 0) array_unshift($_path, join('/', $_base));
 		$path = '/' . join('/', $_path);
-		if(substr_compare($path, '/', -1) !== 0)
-		{
-			$path .= '/';
-		}
+		if(substr_compare($path, '/', -1) !== 0) $path .= '/';
 		return $path;
 	}
 
-	/**
-	 * Get meta tag
-	 * @return array The list of meta tags
-	 */
-	function getMetaTag()
-	{
+	function getMetaTag() {
 		$self = self::getInstance();
-
-		if(!is_array($self->meta_tags))
-		{
-			$self->meta_tags = array();
-		}
-
+		if(!is_array($self->meta_tags)) $self->meta_tags = array();
 		$ret = array();
-		foreach($self->meta_tags as $key => $val)
-		{
+		foreach($self->meta_tags as $key => $val) {
 			list($name, $is_http_equiv) = explode("\t", $key);
 			$ret[] = array('name' => $name, 'is_http_equiv' => $is_http_equiv, 'content' => $val);
 		}
-
 		return $ret;
 	}
 
-	/**
-	 * Add the meta tag
-	 *
-	 * @param string $name name of meta tag
-	 * @param string $content content of meta tag
-	 * @param mixed $is_http_equiv value of http_equiv
-	 * @return void
-	 */
-	function addMetaTag($name, $content, $is_http_equiv = FALSE)
-	{
+	function addMetaTag($name, $content, $is_http_equiv = FALSE) {
 		$self = self::getInstance();
 		$self->meta_tags[$name . "\t" . ($is_http_equiv ? '1' : '0')] = $content;
 	}
-
 }
-/* End of file Context.class.php */
-/* Location: ./classes/context/Context.class.php */

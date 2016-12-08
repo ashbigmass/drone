@@ -1,6 +1,7 @@
 <?php
-class DBMysql extends DB {
-	var $prefix = 'xe_'; // / <
+class DBMysql extends DB
+{
+	var $prefix = 'xe_';
 	var $comment_syntax = '/* %s */';
 	var $column_type = array( 'bignumber' => 'bigint', 'number' => 'bigint', 'varchar' => 'varchar', 'char' => 'char', 'text' => 'text', 'bigtext' => 'longtext', 'date' => 'varchar(14)', 'float' => 'float');
 
@@ -157,9 +158,7 @@ class DBMysql extends DB {
 		$output = $this->_fetch($result);
 		if(!$output) return;
 		if(!is_array($output)) $output = array($output);
-		for($i = 0; $i < count($output); $i++) {
-			if($output[$i]->Key_name == $index_name) return true;
-		}
+		for($i = 0; $i < count($output); $i++) if($output[$i]->Key_name == $index_name) return true;
 		return false;
 	}
 
@@ -283,7 +282,7 @@ class DBMysql extends DB {
 			$buff->total_page = 0;
 			$buff->page = 1;
 			$buff->data = array();
-			$buff->page_navigation = new PageHandler(/* $total_count */0, /* $total_page */1, /* $page */1, /* $page_count */10); //default page handler values
+			$buff->page_navigation = new PageHandler(0, 1, 1, 10);
 			return $buff;
 		} else {
 			return;
@@ -299,10 +298,10 @@ class DBMysql extends DB {
 		$uses_groupby = $queryObject->getGroupByString() != '';
 		if($uses_distinct || $uses_groupby) {
 			$count_query = sprintf('select %s %s %s %s'
-					, $temp_select == '*' ? '1' : $temp_select
-					, 'FROM ' . $queryObject->getFromString($with_values)
-					, ($temp_where === '' ? '' : ' WHERE ' . $temp_where)
-					, ($uses_groupby ? ' GROUP BY ' . $queryObject->getGroupByString() : '')
+				, $temp_select == '*' ? '1' : $temp_select
+				, 'FROM ' . $queryObject->getFromString($with_values)
+				, ($temp_where === '' ? '' : ' WHERE ' . $temp_where)
+				, ($uses_groupby ? ' GROUP BY ' . $queryObject->getGroupByString() : '')
 			);
 			$count_query = sprintf('select count(*) as "count" from (%s) xet', $count_query);
 		}
