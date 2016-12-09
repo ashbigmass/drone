@@ -11,19 +11,19 @@ class loginlogController extends loginlog
 			break;
 			case 'DAILY':
 				$str = '-'. $period. ' day';
-				$args->expire_date = date('Ymd000000', strtotime($str)); // -1 day
+				$args->expire_date = date('Ymd000000', strtotime($str));
 			break;
 			case 'WEEKLY':
 				$str = '-'. $period. ' week';
-				$args->expire_date = date('Ymd000000', strtotime($str)); // -1 week
+				$args->expire_date = date('Ymd000000', strtotime($str));
 			break;
 			case 'MONTHLY':
 				$str = '-'. $period. ' month';
-				$args->expire_date = date('Ymd000000', strtotime($str)); // -1 month
+				$args->expire_date = date('Ymd000000', strtotime($str));
 			break;
 			case 'YEARLY':
 				$str = '-'. $period. ' year';
-				$args->expire_date = date('Y00000000', strtotime($str)); // -1 year
+				$args->expire_date = date('Y00000000', strtotime($str));
 			break;
 		}
 		executeQuery('loginlog.initLoginlogs', $args);

@@ -1,144 +1,45 @@
 <?php
-/**
- * PHPExcel
- *
- * Copyright (c) 2006 - 2012 PHPExcel
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- *
- * @category   PHPExcel
- * @package    PHPExcel_CachedObjectStorage
- * @copyright  Copyright (c) 2006 - 2012 PHPExcel (http://www.codeplex.com/PHPExcel)
- * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt	LGPL
- * @version    ##VERSION##, ##DATE##
- */
-
-
-/**
- * PHPExcel_CachedObjectStorage_SQLite3
- *
- * @category   PHPExcel
- * @package    PHPExcel_CachedObjectStorage
- * @copyright  Copyright (c) 2006 - 2012 PHPExcel (http://www.codeplex.com/PHPExcel)
- */
-class PHPExcel_CachedObjectStorage_SQLite3 extends PHPExcel_CachedObjectStorage_CacheBase implements PHPExcel_CachedObjectStorage_ICache {
-
-	/**
-	 * Database table name
-	 *
-	 * @var string
-	 */
+class PHPExcel_CachedObjectStorage_SQLite3 extends PHPExcel_CachedObjectStorage_CacheBase implements PHPExcel_CachedObjectStorage_ICache
+{
 	private $_TableName = null;
-
-	/**
-	 * Database handle
-	 *
-	 * @var resource
-	 */
 	private $_DBHandle = null;
 
-    /**
-     * Store cell data in cache for the current cell object if it's "dirty",
-     *     and the 'nullify' the current cell object
-     *
-	 * @return	void
-     * @throws	Exception
-     */
 	private function _storeData() {
 		if ($this->_currentCellIsDirty) {
 			$this->_currentObject->detach();
-
 			$query = $this->_DBHandle->prepare("INSERT OR REPLACE INTO kvp_".$this->_TableName." VALUES(:id,:data)");
 			$query->bindValue('id',$this->_currentObjectID,SQLITE3_TEXT);
 			$query->bindValue('data',serialize($this->_currentObject),SQLITE3_BLOB);
 			$result = $query->execute();
-			if ($result === false)
-				throw new Exception($this->_DBHandle->lastErrorMsg());
+			if ($result === false) throw new Exception($this->_DBHandle->lastErrorMsg());
 			$this->_currentCellIsDirty = false;
 		}
 		$this->_currentObjectID = $this->_currentObject = null;
-	}	//	function _storeData()
+	}
 
-
-    /**
-     * Add or Update a cell in cache identified by coordinate address
-     *
-     * @param	string			$pCoord		Coordinate address of the cell to update
-     * @param	PHPExcel_Cell	$cell		Cell to update
-	 * @return	void
-     * @throws	Exception
-     */
 	public function addCacheData($pCoord, PHPExcel_Cell $cell) {
-		if (($pCoord !== $this->_currentObjectID) && ($this->_currentObjectID !== null)) {
-			$this->_storeData();
-		}
-
+		if (($pCoord !== $this->_currentObjectID) && ($this->_currentObjectID !== null)) $this->_storeData();
 		$this->_currentObjectID = $pCoord;
 		$this->_currentObject = $cell;
 		$this->_currentCellIsDirty = true;
-
 		return $cell;
-	}	//	function addCacheData()
+	}
 
-
-    /**
-     * Get cell at a specific coordinate
-     *
-     * @param 	string 			$pCoord		Coordinate of the cell
-     * @throws 	Exception
-     * @return 	PHPExcel_Cell 	Cell that was found, or null if not found
-     */
 	public function getCacheData($pCoord) {
-		if ($pCoord === $this->_currentObjectID) {
-			return $this->_currentObject;
-		}
+		if ($pCoord === $this->_currentObjectID) return $this->_currentObject;
 		$this->_storeData();
-
 		$query = "SELECT value FROM kvp_".$this->_TableName." WHERE id='".$pCoord."'";
 		$cellResult = $this->_DBHandle->querySingle($query);
-		if ($cellResult === false) {
-			throw new Exception($this->_DBHandle->lastErrorMsg());
-		} elseif (is_null($cellResult)) {
-			//	Return null if requested entry doesn't exist in cache
-			return null;
-		}
-
-		//	Set current entry to the requested entry
+		if ($cellResult === false) throw new Exception($this->_DBHandle->lastErrorMsg());
+		elseif (is_null($cellResult)) return null;
 		$this->_currentObjectID = $pCoord;
-
 		$this->_currentObject = unserialize($cellResult);
-		//	Re-attach the parent worksheet
 		$this->_currentObject->attach($this->_parent);
-
-		//	Return requested entry
 		return $this->_currentObject;
-	}	//	function getCacheData()
+	}
 
-
-	/**
-	 *	Is a value set for an indexed cell?
-	 *
-	 * @param	string		$pCoord		Coordinate address of the cell to check
-	 * @return	boolean
-	 */
 	public function isDataSet($pCoord) {
-		if ($pCoord === $this->_currentObjectID) {
-			return true;
-		}
-
-		//	Check if the requested entry exists in the cache
+		if ($pCoord === $this->_currentObjectID) return true;
 		$query = "SELECT id FROM kvp_".$this->_TableName." WHERE id='".$pCoord."'";
 		$cellResult = $this->_DBHandle->querySingle($query);
 		if ($cellResult === false) {
