@@ -1,23 +1,9 @@
 <?php
-/**
- * @class  referer
- * @author haneul (haneul0318@gmail.com)
- * @enhanced by KnDol (kndol@kndol.net)
- * @brief  referer module's class 
- **/
-class referer extends ModuleObject {
-	/**
-	 * constructor
-	 *
-	 * @return void
-	 */
-	function referer()
-	{
+class referer extends ModuleObject
+{
+	function referer() {
 	}
 
-	/**
-	 * @brief Install referer module 
-	 **/
 	function moduleInstall() {
 		return new Object();
 	}
@@ -25,29 +11,28 @@ class referer extends ModuleObject {
 	function getColumnLength(&$oDB, $table) {
 		$len = 0;
 		$table = $oDB->prefix . $table;
-debugPrint($table);
-		switch($oDB->db_type)
-		{
+		debugPrint($table);
+		switch($oDB->db_type) {
 			case 'mysql':
 			case 'mysql_innodb':
 			case 'mysqli':
 			case 'mysqli_innodb':
 			case 'mssql':
 				$query = "SELECT character_maximum_length FROM information_schema.columns WHERE table_name = '".$table."' AND column_name = 'remote'";
-debugPrint($query);
+				debugPrint($query);
 				$output = $oDB->_query($query);
 				$output = $oDB->_fetch($output);
-debugPrint($output);
+				debugPrint($output);
 				$len = $output->character_maximum_length;
-				break;
+			break;
 			case 'cubrid':
 				$query = "SELECT prec FROM db_attribute WHERE class_name = '".$table."' AND attr_name = 'remote'";
-debugPrint($query);
+				debugPrint($query);
 				$output = $oDB->_query($query);
 				$output = $oDB->_fetch($output);
-debugPrint($output);
+				debugPrint($output);
 				$len = $output->prec;
-				break;
+			break;
 		}
 		return $len;
 	}
@@ -56,8 +41,7 @@ debugPrint($output);
 		$query = "";
 		if($this->getColumnLength($oDB, $table) != 40) {
 			$table = $oDB->prefix . $table;
-			switch($oDB->db_type)
-			{
+			switch($oDB->db_type) {
 				case 'mysql':
 				case 'mysql_innodb':
 				case 'mysqli':
@@ -75,12 +59,8 @@ debugPrint($output);
 		}
 	}
 
-	/**
-	 * @brief 설치가 이상이 없는지 체크하는 method
-	 **/
 	function checkUpdate() {
  		$oDB = &DB::getInstance();
-		
 		if(!$oDB->isColumnExists("referer_log", "idx")) return true;
 		if(!$oDB->isColumnExists("referer_log", "remote")) return true;
 		if(!$oDB->isColumnExists("referer_log", "member_srl")) return true;
@@ -102,68 +82,35 @@ debugPrint($output);
 		if(!$oDB->isTableExists("referer_country_statistics")) return true;
 		if($this->getColumnLength($oDB, "referer_log") != 40) return true;
 		if($this->getColumnLength($oDB, "referer_remote_statistics") != 40) return true;
-
 		return false;
 	}
 
-	/**
-	 * @brief 업데이트 실행
-	 **/
 	function moduleUpdate() {
 		$oDB = &DB::getInstance();
-
-		if(!$oDB->isColumnExists("referer_log", "idx")
-			|| !$oDB->isColumnExists("referer_statistics", "idx")) {
+		if(!$oDB->isColumnExists("referer_log", "idx") || !$oDB->isColumnExists("referer_statistics", "idx")) {
 			$oDB->DropTable("referer_log");
 			$oDB->DropTable("referer_statistics");
 			$oDB->createTableByXmlFile($this->module_path.'schemas/referer_log.xml');
 			$oDB->createTableByXmlFile($this->module_path.'schemas/referer_statistics.xml');
 		}
-		if(!$oDB->isColumnExists("referer_log", "member_srl")) {
-			$oDB->addColumn("referer_log", "member_srl", 'number', 11);
-		}
-		if(!$oDB->isColumnExists("referer_log", "request_uri")) {
-			$oDB->addColumn("referer_log", "request_uri", 'varchar', 250);
-		}
-		if(!$oDB->isColumnExists("referer_log", "ref_mid")) {
-			$oDB->addColumn("referer_log", "ref_mid", 'varchar', 40);
-		}
-		if(!$oDB->isColumnExists("referer_log", "ref_document_srl")) {
-			$oDB->addColumn("referer_log", "ref_document_srl", 'number', 11);
-		}
-		if(!$oDB->isColumnExists("referer_log", "country_code")) {
-			$oDB->addColumn("referer_log", "country_code", 'char', 2);
-		}
-		if(!$oDB->isColumnExists("referer_remote_statistics", "country_code")) {
-			$oDB->addColumn("referer_remote_statistics", "country_code", 'char', 2);
-		}
-		if(!$oDB->isTableExists("referer_remote_statistics")) {
-			$oDB->createTableByXmlFile($this->module_path.'schemas/referer_remote_statistics.xml');
-		}
-		if(!$oDB->isTableExists("referer_uagent_statistics")) {
-			$oDB->createTableByXmlFile($this->module_path.'schemas/referer_uagent_statistics.xml');
-		}
-		if(!$oDB->isTableExists("referer_user_statistics")) {
-			$oDB->createTableByXmlFile($this->module_path.'schemas/referer_user_statistics.xml');
-		}
-		if(!$oDB->isTableExists("referer_page_statistics")) {
-			$oDB->createTableByXmlFile($this->module_path.'schemas/referer_page_statistics.xml');
-		}
-		if(!$oDB->isTableExists("referer_country_statistics")) {
-			$oDB->createTableByXmlFile($this->module_path.'schemas/referer_country_statistics.xml');
-		}
+		if(!$oDB->isColumnExists("referer_log", "member_srl")) $oDB->addColumn("referer_log", "member_srl", 'number', 11);
+		if(!$oDB->isColumnExists("referer_log", "request_uri")) $oDB->addColumn("referer_log", "request_uri", 'varchar', 250);
+		if(!$oDB->isColumnExists("referer_log", "ref_mid")) $oDB->addColumn("referer_log", "ref_mid", 'varchar', 40);
+		if(!$oDB->isColumnExists("referer_log", "ref_document_srl")) $oDB->addColumn("referer_log", "ref_document_srl", 'number', 11);
+		if(!$oDB->isColumnExists("referer_log", "country_code")) $oDB->addColumn("referer_log", "country_code", 'char', 2);
+		if(!$oDB->isColumnExists("referer_remote_statistics", "country_code")) $oDB->addColumn("referer_remote_statistics", "country_code", 'char', 2);
+		if(!$oDB->isTableExists("referer_remote_statistics")) $oDB->createTableByXmlFile($this->module_path.'schemas/referer_remote_statistics.xml');
+		if(!$oDB->isTableExists("referer_uagent_statistics")) $oDB->createTableByXmlFile($this->module_path.'schemas/referer_uagent_statistics.xml');
+		if(!$oDB->isTableExists("referer_user_statistics")) $oDB->createTableByXmlFile($this->module_path.'schemas/referer_user_statistics.xml');
+		if(!$oDB->isTableExists("referer_page_statistics")) $oDB->createTableByXmlFile($this->module_path.'schemas/referer_page_statistics.xml');
+		if(!$oDB->isTableExists("referer_country_statistics")) $oDB->createTableByXmlFile($this->module_path.'schemas/referer_country_statistics.xml');
 		$this->changeColumnLength($oDB, "referer_log");
 		$this->changeColumnLength($oDB, "referer_remote_statistics");
-
 		return new Object(0, 'success_updated');
 	}
 
-	/**
-	 * @brief 삭제시 동작
-	 */
 	function moduleUninstall() {
 		$oDB = &DB::getInstance();
-
 		$oDB->DropTable("referer_log");
 		$oDB->DropTable("referer_statistics");
 		$oDB->DropTable("referer_remote_statistics");
@@ -173,20 +120,15 @@ debugPrint($output);
 		$oDB->DropTable("referer_country_statistics");
 	}
 
-	/**
-	 * @brief 캐시 파일 재생성
-	 **/
 	function recompileCache() {
 	}
-	
+
 	function getMemberSrlFromUserID($user_id) {
 		if ($user_id == '_Bots_') {
 			$member_srl = -1;
-		}
-		else if ($user_id == '_Not_Logined_') {
+		} else if ($user_id == '_Not_Logined_') {
 			$member_srl = 0;
-		}
-		else {
+		} else {
 			$oMemberModel = &getModel('member');
 			$member_info = $oMemberModel->getMemberInfoByUserID($user_id);
 			$member_srl = $member_info->member_srl;
@@ -197,11 +139,9 @@ debugPrint($output);
 	function getUserIDFromMemberSrl($member_srl) {
 		if ($member_srl == -1) {
 			$user_id = '_Bots_';
-		}
-		else if ($member_srl == 0) {
+		} else if ($member_srl == 0) {
 			$user_id = '_Not_Logined_';
-		}
-		else {
+		} else {
 			$oMemberModel = &getModel('member');
 			$member_info = $oMemberModel->getMemberInfoByMemberSrl($member_srl);
 			$user_id = $member_info->user_id;
@@ -211,18 +151,14 @@ debugPrint($output);
 
 	function getUserStringFromMemberSrl($member_srl, $href="", $title="") {
 		$lang = Context::get('lang');
-
 		if ($href) $user = '<a href="' . $href . '" title="'.$title.'">'.$user.'</a>';
-
 		if ($member_srl == -1) {
 			$user = $lang->ua_bot;
 			if ($href) $user = '<a href="' . $href . '" title="'.$title.'">'.$user.'</a>';
-		}
-		else if ($member_srl == 0) {
+		} else if ($member_srl == 0) {
 			$user = $lang->not_logged_in;
 			if ($href) $user = '<a href="' . $href . '" title="'.$title.'">'.$user.'</a>';
-		}
-		else {
+		} else {
 			$oMemberModel = &getModel('member');
 			$member_info = $oMemberModel->getMemberInfoByMemberSrl($member_srl);
 			$user = $member_info->user_id;
@@ -239,5 +175,3 @@ debugPrint($output);
 		return $user;
 	}
 }
-/* End of file referer.class.php */
-/* Location: ./modules/referer/referer.class.php */
