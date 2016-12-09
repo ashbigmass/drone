@@ -3,7 +3,7 @@ require_once(_XE_PATH_.'modules/document/document.item.php');
 
 class document extends ModuleObject {
 	var $tmp_dir = './files/cache/tmp';
-	var $search_option = array('title','content','title_content','user_name',); // /< Search options
+	var $search_option = array('title','content','title_content','user_name',);
 	var $statusList = array('private'=>'PRIVATE', 'public'=>'PUBLIC', 'secret'=>'SECRET', 'temp'=>'TEMP');
 	function moduleInstall() {
 		$oModuleController = getController('module');
@@ -142,7 +142,7 @@ class document extends ModuleObject {
 		if($oDB->isColumnExists('documents', 'allow_comment') && $oDB->isColumnExists('documents', 'comment_status')) $oDB->dropColumn('documents', 'allow_comment');
 		if($oDB->isColumnExists('documents', 'lock_comment') && $oDB->isColumnExists('documents', 'comment_status')) $oDB->dropColumn('documents', 'lock_comment');
 		if(!$oDB->isIndexExists("documents", "idx_module_status")) $oDB->addIndex("documents", "idx_module_status", array("module_srl","status"));
-		if(!$oModuleModel->getTrigger('module.procModuleAdminCopyModule', 'document', 'controller', 'triggerCopyModuleExtraKeys', 'after')) 
+		if(!$oModuleModel->getTrigger('module.procModuleAdminCopyModule', 'document', 'controller', 'triggerCopyModuleExtraKeys', 'after'))
 			$oModuleController->insertTrigger('module.procModuleAdminCopyModule', 'document', 'controller', 'triggerCopyModuleExtraKeys', 'after');
 		if(!$oModuleModel->getTrigger('module.procModuleAdminCopyModule', 'document', 'controller', 'triggerCopyModule', 'after'))
 			$oModuleController->insertTrigger('module.procModuleAdminCopyModule', 'document', 'controller', 'triggerCopyModule', 'after');

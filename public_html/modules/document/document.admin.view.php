@@ -61,11 +61,11 @@ class documentAdminView extends document {
 
 	function dispDocumentAdminDeclared() {
 		$args =new stdClass();
-		$args->page = Context::get('page'); // /< Page
-		$args->list_count = 30; // /< the number of posts to display on a single page
-		$args->page_count = 10; // /< the number of pages that appear in the page navigation
-		$args->sort_index = 'document_declared.declared_count'; // /< sorting values
-		$args->order_type = 'desc'; // /< sorting values by order
+		$args->page = Context::get('page');
+		$args->list_count = 30;
+		$args->page_count = 10;
+		$args->sort_index = 'document_declared.declared_count';
+		$args->order_type = 'desc';
 		$oDocumentModel = getModel('document');
 		$statusNameList = $oDocumentModel->getStatusNameList();
 		$declared_output = executeQuery('document.getDeclaredList', $args);
@@ -103,11 +103,11 @@ class documentAdminView extends document {
 	}
 
 	function dispDocumentAdminTrashList() {
-		$args->page = Context::get('page'); // /< Page
-		$args->list_count = 30; // /< the number of posts to display on a single page
-		$args->page_count = 10; // /< the number of pages that appear in the page navigation
-		$args->sort_index = 'list_order'; // /< sorting values
-		$args->order_type = 'desc'; // /< sorting values by order
+		$args->page = Context::get('page');
+		$args->list_count = 30;
+		$args->page_count = 10;
+		$args->sort_index = 'list_order';
+		$args->order_type = 'desc';
 		$args->module_srl = Context::get('module_srl');
 		$oDocumentAdminModel = getAdminModel('document');
 		$output = $oDocumentAdminModel->getDocumentTrashList($args);
