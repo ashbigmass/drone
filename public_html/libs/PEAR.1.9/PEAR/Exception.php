@@ -194,9 +194,7 @@ class PEAR_Exception extends Exception
 		$this->getCauseMessage($causes);
 		$causeMsg = '';
 		foreach ($causes as $i => $cause) {
-			$causeMsg .= str_repeat(' ', $i) . $cause['class'] . ': '
-					. $cause['message'] . ' in ' . $cause['file']
-					. ' on line ' . $cause['line'] . "\n";
+			$causeMsg .= str_repeat(' ', $i) . $cause['class'] . ': ' . $cause['message'] . ' in ' . $cause['file'] . ' on line ' . $cause['line'] . "\n";
 		}
 		return $causeMsg . $this->getTraceAsString();
 	}

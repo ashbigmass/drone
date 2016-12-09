@@ -25,9 +25,7 @@ class Net_URL2
 		foreach ($options as $optionName => $value) {
 			if (array_key_exists($optionName, $this->_options)) $this->_options[$optionName] = $value;
 		}
-		preg_match('!^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?!',
-			$url,
-			$matches);
+		preg_match('!^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?!', $url, $matches);
 		$this->_scheme = !empty($matches[1]) ? $matches[2] : false;
 		$this->setAuthority(!empty($matches[3]) ? $matches[4] : false);
 		$this->_path = $matches[5];

@@ -94,7 +94,6 @@ class PEAR
 			$setmode	 = &$GLOBALS['_PEAR_default_error_mode'];
 			$setoptions  = &$GLOBALS['_PEAR_default_error_options'];
 		}
-
 		switch ($mode) {
 			case PEAR_ERROR_EXCEPTION:
 			case PEAR_ERROR_RETURN:
@@ -154,14 +153,7 @@ class PEAR
 		}
 	}
 
-	function &raiseError($message = null,
-						 $code = null,
-						 $mode = null,
-						 $options = null,
-						 $userinfo = null,
-						 $error_class = null,
-						 $skipmsg = false)
-	{
+	function &raiseError($message = null, $code = null, $mode = null, $options = null, $userinfo = null, $error_class = null, $skipmsg = false) {
 		if (is_object($message)) {
 			$code		= $message->getCode();
 			$userinfo	= $message->getUserInfo();

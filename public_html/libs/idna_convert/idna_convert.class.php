@@ -1,6 +1,6 @@
 <?php
-class idna_convert {
-
+class idna_convert
+{
 	private $version = '0.9.0';
 	protected $sub_version = 'main';
 	protected $_punycode_prefix = 'xn--';
@@ -32,9 +32,7 @@ class idna_convert {
 	public function __construct($options = false) {
 		$this->slast = $this->_sbase + $this->_lcount * $this->_vcount * $this->_tcount;
 		if (is_array($options)) $this->set_parameter($options);
-		if (self::$_mb_string_overload === null) {
-			self::$_mb_string_overload = (extension_loaded('mbstring') && (ini_get('mbstring.func_overload') & 0x02) === 0x02);
-		}
+		if (self::$_mb_string_overload === null) self::$_mb_string_overload = (extension_loaded('mbstring') && (ini_get('mbstring.func_overload') & 0x02) === 0x02);
 	}
 
 	public function get_version() {
@@ -148,9 +146,9 @@ class idna_convert {
 			if (!$return) $return = $input;
 		}
 		switch (($one_time_encoding) ? $one_time_encoding : $this->_api_encoding) {
-			case 'utf8':		return $return; // break;
-			case 'ucs4_string': return $this->_ucs4_to_ucs4_string($this->_utf8_to_ucs4($return));  // break;
-			case 'ucs4_array':  return $this->_utf8_to_ucs4($return); // break;
+			case 'utf8':		return $return;
+			case 'ucs4_string': return $this->_ucs4_to_ucs4_string($this->_utf8_to_ucs4($return));
+			case 'ucs4_array':  return $this->_utf8_to_ucs4($return);
 			default:			$this->_error('Unsupported output format'); return false;
 		}
 	}
@@ -331,7 +329,7 @@ class idna_convert {
 					for ($q = $delta, $k = $this->_base; 1; $k += $this->_base) {
 						$t = ($k <= $bias) ? $this->_tmin : (($k >= $bias + $this->_tmax) ? $this->_tmax : $k - $bias);
 						if ($q < $t) break;
-						$encoded .= $this->_encode_digit(intval($t + (($q - $t) % ($this->_base - $t)))); //v0.4.5 Changed from ceil() to intval()
+						$encoded .= $this->_encode_digit(intval($t + (($q - $t) % ($this->_base - $t))));
 						$q = (int) (($q - $t) / ($this->_base - $t));
 					}
 					$encoded .= $this->_encode_digit($q);

@@ -14,7 +14,7 @@ if (substr(PHP_OS, 0, 3) == 'WIN') {
 } else {
 	define('OS_WINDOWS', false);
 	define('OS_UNIX',	true);
-	define('PEAR_OS',	'Unix'); // blatant assumption
+	define('PEAR_OS',	'Unix');
 }
 
 $GLOBALS['_PEAR_default_error_mode']	 = PEAR_ERROR_RETURN;
@@ -135,12 +135,12 @@ class PEAR
 		$deleted = false;
 		if ((is_array($error_code) && (0 != count($error_code)))) {
 			foreach ($error_code as $key => $error) $deleted =  $this->_checkDelExpect($error) ? true : false;
-			return $deleted ? true : PEAR::raiseError("The expected error you submitted does not exist"); // IMPROVE ME
+			return $deleted ? true : PEAR::raiseError("The expected error you submitted does not exist");
 		} elseif (!empty($error_code)) {
 			if ($this->_checkDelExpect($error_code)) return true;
-			return PEAR::raiseError("The expected error you submitted does not exist"); // IMPROVE ME
+			return PEAR::raiseError("The expected error you submitted does not exist");
 		}
-		return PEAR::raiseError("The expected error you submitted is empty"); // IMPROVE ME
+		return PEAR::raiseError("The expected error you submitted is empty");
 	}
 
 	function &raiseError($message = null, $code = null, $mode = null, $options = null, $userinfo = null, $error_class = null, $skipmsg = false) {
@@ -362,7 +362,6 @@ class PEAR_Error
 			}
 			die(sprintf($format, $msg));
 		}
-
 		if ($this->mode & PEAR_ERROR_CALLBACK && is_callable($this->callback)) call_user_func($this->callback, $this);
 		if ($this->mode & PEAR_ERROR_EXCEPTION) {
 			trigger_error("PEAR_ERROR_EXCEPTION is obsolete, use class PEAR_Exception for exceptions", E_USER_WARNING);
@@ -423,20 +422,20 @@ class PEAR_Error
 				$callback = $this->callback;
 			}
 			return sprintf('[%s: message="%s" code=%d mode=callback '.
-							'callback=%s prefix="%s" info="%s"]',
-							strtolower(get_class($this)), $this->message, $this->code,
-							$callback, $this->error_message_prefix,
-							$this->userinfo);
+				'callback=%s prefix="%s" info="%s"]',
+				strtolower(get_class($this)), $this->message, $this->code,
+				$callback, $this->error_message_prefix,
+				$this->userinfo);
 		}
 		if ($this->mode & PEAR_ERROR_PRINT) $modes[] = 'print';
 		if ($this->mode & PEAR_ERROR_TRIGGER) $modes[] = 'trigger';
 		if ($this->mode & PEAR_ERROR_DIE) $modes[] = 'die';
 		if ($this->mode & PEAR_ERROR_RETURN) $modes[] = 'return';
 		return sprintf('[%s: message="%s" code=%d mode=%s level=%s '.
-						'prefix="%s" info="%s"]',
-						strtolower(get_class($this)), $this->message, $this->code,
-						implode("|", $modes), $levels[$this->level],
-						$this->error_message_prefix,
-						$this->userinfo);
+			'prefix="%s" info="%s"]',
+			strtolower(get_class($this)), $this->message, $this->code,
+			implode("|", $modes), $levels[$this->level],
+			$this->error_message_prefix,
+			$this->userinfo);
 	}
 }

@@ -164,11 +164,9 @@ class FirePHP {
 				throw $this->newException('Headers already sent in '.$filename.' on line '.$linenum.'. Cannot send log data to FirePHP. You must have Output Buffering enabled via ob_start() or output_buffering ini directive.');
 			}
 		}
-
 		$Type = null;
 		$Label = null;
 		$Options = array();
-
 		if(func_num_args()==1) {
 		} else {
 			if(func_num_args()==2) {
@@ -182,12 +180,8 @@ class FirePHP {
 					case self::EXCEPTION:
 					case self::TABLE:
 					case self::GROUP_START:
-					case self::GROUP_END:
-						$Type = func_get_arg(1);
-					break;
-					default:
-						$Label = func_get_arg(1);
-					break;
+					case self::GROUP_END: $Type = func_get_arg(1); break;
+					default: $Label = func_get_arg(1); break;
 				}
 			} else {
 				if(func_num_args()==3) {
@@ -204,22 +198,14 @@ class FirePHP {
 				}
 			}
 		}
-
 		if(!$this->detectClientExtension()) return false;
-
 		$meta = array();
 		$skipFinalObjectEncode = false;
-
 		if($Object instanceof Exception) {
 			$meta['file'] = $this->_escapeTraceFile($Object->getFile());
 			$meta['line'] = $Object->getLine();
 			$trace = $Object->getTrace();
-			if($Object instanceof ErrorException
-				&& isset($trace[0]['function'])
-				&& $trace[0]['function']=='errorHandler'
-				&& isset($trace[0]['class'])
-				&& $trace[0]['class']=='FirePHP') {
-
+			if($Object instanceof ErrorException && isset($trace[0]['function']) && $trace[0]['function']=='errorHandler' && isset($trace[0]['class']) && $trace[0]['class']=='FirePHP') {
 				$severity = false;
 				switch($Object->getSeverity()) {
 					case E_WARNING: $severity = 'E_WARNING'; break;
@@ -232,7 +218,6 @@ class FirePHP {
 					case E_DEPRECATED: $severity = 'E_DEPRECATED'; break;
 					case E_USER_DEPRECATED: $severity = 'E_USER_DEPRECATED'; break;
 				}
-
 				$Object = array('Class'=>get_class($Object),
 					'Message'=>$severity.': '.$Object->getMessage(),
 					'File'=>$this->_escapeTraceFile($Object->getFile()),
@@ -329,8 +314,7 @@ class FirePHP {
 				$part = $parts[$i];
 				if ($part) {
 					if(count($parts)>2) {
-						$this->setHeader('X-Wf-1-'.$structure_index.'-'.'1-'.$this->messageIndex,
-							(($i==0)?strlen($msg):'') . '|' . $part . '|' . (($i<count($parts)-2)?'\\':''));
+						$this->setHeader('X-Wf-1-'.$structure_index.'-'.'1-'.$this->messageIndex, (($i==0)?strlen($msg):'') . '|' . $part . '|' . (($i<count($parts)-2)?'\\':''));
 					} else {
 						$this->setHeader('X-Wf-1-'.$structure_index.'-'.'1-'.$this->messageIndex, strlen($part) . '|' . $part . '|');
 					}
