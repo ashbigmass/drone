@@ -1,98 +1,15 @@
 <?php
-/**
- * PHPExcel
- *
- * Copyright (c) 2006 - 2012 PHPExcel
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- *
- * @category   PHPExcel
- * @package    PHPExcel_Shared
- * @copyright  Copyright (c) 2006 - 2012 PHPExcel (http://www.codeplex.com/PHPExcel)
- * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt	LGPL
- * @version    ##VERSION##, ##DATE##
- */
-
-
-/**
- * PHPExcel_Shared_String
- *
- * @category   PHPExcel
- * @package    PHPExcel_Shared
- * @copyright  Copyright (c) 2006 - 2012 PHPExcel (http://www.codeplex.com/PHPExcel)
- */
 class PHPExcel_Shared_String
 {
-	/**	Constants				*/
-	/**	Regular Expressions		*/
-	//	Fraction
 	const STRING_REGEXP_FRACTION	= '(-?)(\d+)\s+(\d+\/\d+)';
-
-
-	/**
-	 * Control characters array
-	 *
-	 * @var string[]
-	 */
 	private static $_controlCharacters = array();
-
-	/**
-	 * SYLK Characters array
-	 *
-	 * $var array
-	 */
 	private static $_SYLKCharacters = array();
-
-	/**
-	 * Decimal separator
-	 *
-	 * @var string
-	 */
 	private static $_decimalSeparator;
-
-	/**
-	 * Thousands separator
-	 *
-	 * @var string
-	 */
 	private static $_thousandsSeparator;
-
-	/**
-	 * Currency code
-	 *
-	 * @var string
-	 */
 	private static $_currencyCode;
-
-	/**
-	 * Is mbstring extension avalable?
-	 *
-	 * @var boolean
-	 */
 	private static $_isMbstringEnabled;
-
-	/**
-	 * Is iconv extension avalable?
-	 *
-	 * @var boolean
-	 */
 	private static $_isIconvEnabled;
 
-	/**
-	 * Build control characters array
-	 */
 	private static function _buildControlCharacters() {
 		for ($i = 0; $i <= 31; ++$i) {
 			if ($i != 9 && $i != 10 && $i != 13) {
@@ -103,11 +20,7 @@ class PHPExcel_Shared_String
 		}
 	}
 
-	/**
-	 * Build SYLK characters array
-	 */
-	private static function _buildSYLKCharacters()
-	{
+	private static function _buildSYLKCharacters() {
 		self::$_SYLKCharacters = array(
 			"\x1B 0"  => chr(0),
 			"\x1B 1"  => chr(1),
@@ -268,54 +181,26 @@ class PHPExcel_Shared_String
 		);
 	}
 
-	/**
-	 * Get whether mbstring extension is available
-	 *
-	 * @return boolean
-	 */
-	public static function getIsMbstringEnabled()
-	{
-		if (isset(self::$_isMbstringEnabled)) {
-			return self::$_isMbstringEnabled;
-		}
-
-		self::$_isMbstringEnabled = function_exists('mb_convert_encoding') ?
-			true : false;
-
+	public static function getIsMbstringEnabled() {
+		if (isset(self::$_isMbstringEnabled)) return self::$_isMbstringEnabled;
+		self::$_isMbstringEnabled = function_exists('mb_convert_encoding') ? true : false;
 		return self::$_isMbstringEnabled;
 	}
 
-	/**
-	 * Get whether iconv extension is available
-	 *
-	 * @return boolean
-	 */
-	public static function getIsIconvEnabled()
-	{
-		if (isset(self::$_isIconvEnabled)) {
-			return self::$_isIconvEnabled;
-		}
-
-		// Fail if iconv doesn't exist
+	public static function getIsIconvEnabled() {
+		if (isset(self::$_isIconvEnabled)) return self::$_isIconvEnabled;
 		if (!function_exists('iconv')) {
 			self::$_isIconvEnabled = false;
 			return false;
 		}
-
-		// Sometimes iconv is not working, and e.g. iconv('UTF-8', 'UTF-16LE', 'x') just returns false,
 		if (!@iconv('UTF-8', 'UTF-16LE', 'x')) {
 			self::$_isIconvEnabled = false;
 			return false;
 		}
-
-		// Sometimes iconv_substr('A', 0, 1, 'UTF-8') just returns false in PHP 5.2.0
-		// we cannot use iconv in that case either (http://bugs.php.net/bug.php?id=37773)
 		if (!@iconv_substr('A', 0, 1, 'UTF-8')) {
 			self::$_isIconvEnabled = false;
 			return false;
 		}
-
-		// CUSTOM: IBM AIX iconv() does not work
 		if ( defined('PHP_OS') && @stristr(PHP_OS, 'AIX')
 				&& defined('ICONV_IMPL') && (@strcasecmp(ICONV_IMPL, 'unknown') == 0)
 				&& defined('ICONV_VERSION') && (@strcasecmp(ICONV_VERSION, 'unknown') == 0) )
@@ -323,130 +208,53 @@ class PHPExcel_Shared_String
 			self::$_isIconvEnabled = false;
 			return false;
 		}
-
-		// If we reach here no problems were detected with iconv
 		self::$_isIconvEnabled = true;
 		return true;
 	}
 
 	public static function buildCharacterSets() {
-		if(empty(self::$_controlCharacters)) {
-			self::_buildControlCharacters();
-		}
-		if(empty(self::$_SYLKCharacters)) {
-			self::_buildSYLKCharacters();
-		}
+		if(empty(self::$_controlCharacters)) self::_buildControlCharacters();
+		if(empty(self::$_SYLKCharacters)) self::_buildSYLKCharacters();
 	}
 
-	/**
-	 * Convert from OpenXML escaped control character to PHP control character
-	 *
-	 * Excel 2007 team:
-	 * ----------------
-	 * That's correct, control characters are stored directly in the shared-strings table.
-	 * We do encode characters that cannot be represented in XML using the following escape sequence:
-	 * _xHHHH_ where H represents a hexadecimal character in the character's value...
-	 * So you could end up with something like _x0008_ in a string (either in a cell value (<v>)
-	 * element or in the shared string <t> element.
-	 *
-	 * @param 	string	$value	Value to unescape
-	 * @return 	string
-	 */
 	public static function ControlCharacterOOXML2PHP($value = '') {
 		return str_replace( array_keys(self::$_controlCharacters), array_values(self::$_controlCharacters), $value );
 	}
 
-	/**
-	 * Convert from PHP control character to OpenXML escaped control character
-	 *
-	 * Excel 2007 team:
-	 * ----------------
-	 * That's correct, control characters are stored directly in the shared-strings table.
-	 * We do encode characters that cannot be represented in XML using the following escape sequence:
-	 * _xHHHH_ where H represents a hexadecimal character in the character's value...
-	 * So you could end up with something like _x0008_ in a string (either in a cell value (<v>)
-	 * element or in the shared string <t> element.
-	 *
-	 * @param 	string	$value	Value to escape
-	 * @return 	string
-	 */
 	public static function ControlCharacterPHP2OOXML($value = '') {
 		return str_replace( array_values(self::$_controlCharacters), array_keys(self::$_controlCharacters), $value );
 	}
 
-	/**
-	 * Try to sanitize UTF8, stripping invalid byte sequences. Not perfect. Does not surrogate characters.
-	 *
-	 * @param string $value
-	 * @return string
-	 */
-	public static function SanitizeUTF8($value)
-	{
+	public static function SanitizeUTF8($value) {
 		if (self::getIsIconvEnabled()) {
 			$value = @iconv('UTF-8', 'UTF-8', $value);
 			return $value;
 		}
-
 		if (self::getIsMbstringEnabled()) {
 			$value = mb_convert_encoding($value, 'UTF-8', 'UTF-8');
 			return $value;
 		}
-
-		// else, no conversion
 		return $value;
 	}
 
-	/**
-	 * Check if a string contains UTF8 data
-	 *
-	 * @param string $value
-	 * @return boolean
-	 */
 	public static function IsUTF8($value = '') {
 		return utf8_encode(utf8_decode($value)) === $value;
 	}
 
-	/**
-	 * Formats a numeric value as a string for output in various output writers forcing
-	 * point as decimal separator in case locale is other than English.
-	 *
-	 * @param mixed $value
-	 * @return string
-	 */
 	public static function FormatNumber($value) {
-		if (is_float($value)) {
-			return str_replace(',', '.', $value);
-		}
+		if (is_float($value)) return str_replace(',', '.', $value);
 		return (string) $value;
 	}
 
-	/**
-	 * Converts a UTF-8 string into BIFF8 Unicode string data (8-bit string length)
-	 * Writes the string using uncompressed notation, no rich text, no Asian phonetics
-	 * If mbstring extension is not available, ASCII is assumed, and compressed notation is used
-	 * although this will give wrong results for non-ASCII strings
-	 * see OpenOffice.org's Documentation of the Microsoft Excel File Format, sect. 2.5.3
-	 *
-	 * @param string $value UTF-8 encoded string
-	 * @return string
-	 */
-	public static function UTF8toBIFF8UnicodeShort($value, $arrcRuns = array())
-	{
-		// character count
+	public static function UTF8toBIFF8UnicodeShort($value, $arrcRuns = array()) {
 		$ln = self::CountCharacters($value, 'UTF-8');
-
-		// option flags
 		if(empty($arrcRuns)){
-			$opt = (self::getIsIconvEnabled() || self::getIsMbstringEnabled()) ?
-				0x0001 : 0x0000;
+			$opt = (self::getIsIconvEnabled() || self::getIsMbstringEnabled()) ? 0x0001 : 0x0000;
 			$data = pack('CC', $ln, $opt);
-			// characters
 			$data .= self::ConvertEncoding($value, 'UTF-16LE', 'UTF-8');
-		}
-		else {
+		} else {
 			$data = pack('vC', $ln, 0x08);
 			$data .= pack('v', count($arrcRuns));
-			// characters
 			$data .= $value;
 			foreach ($arrcRuns as $cRun){
 				$data .= pack('v', $cRun['strlen']);
@@ -456,75 +264,28 @@ class PHPExcel_Shared_String
 		return $data;
 	}
 
-	/**
-	 * Converts a UTF-8 string into BIFF8 Unicode string data (16-bit string length)
-	 * Writes the string using uncompressed notation, no rich text, no Asian phonetics
-	 * If mbstring extension is not available, ASCII is assumed, and compressed notation is used
-	 * although this will give wrong results for non-ASCII strings
-	 * see OpenOffice.org's Documentation of the Microsoft Excel File Format, sect. 2.5.3
-	 *
-	 * @param string $value UTF-8 encoded string
-	 * @return string
-	 */
-	public static function UTF8toBIFF8UnicodeLong($value)
-	{
-		// character count
+	public static function UTF8toBIFF8UnicodeLong($value) {
 		$ln = self::CountCharacters($value, 'UTF-8');
-
-		// option flags
-		$opt = (self::getIsIconvEnabled() || self::getIsMbstringEnabled()) ?
-			0x0001 : 0x0000;
-
-		// characters
+		$opt = (self::getIsIconvEnabled() || self::getIsMbstringEnabled()) ? 0x0001 : 0x0000;
 		$chars = self::ConvertEncoding($value, 'UTF-16LE', 'UTF-8');
-
 		$data = pack('vC', $ln, $opt) . $chars;
 		return $data;
 	}
 
-	/**
-	 * Convert string from one encoding to another. First try iconv, then mbstring, or no convertion
-	 *
-	 * @param string $value
-	 * @param string $to Encoding to convert to, e.g. 'UTF-8'
-	 * @param string $from Encoding to convert from, e.g. 'UTF-16LE'
-	 * @return string
-	 */
-	public static function ConvertEncoding($value, $to, $from)
-	{
+	public static function ConvertEncoding($value, $to, $from) {
 		if (self::getIsIconvEnabled()) {
 			$value = iconv($from, $to, $value);
 			return $value;
 		}
-
 		if (self::getIsMbstringEnabled()) {
 			$value = mb_convert_encoding($value, $to, $from);
 			return $value;
 		}
-		if($from == 'UTF-16LE'){
-			return self::utf16_decode($value, false);
-		}else if($from == 'UTF-16BE'){
-			return self::utf16_decode($value);
-		}
-		// else, no conversion
+		if($from == 'UTF-16LE') return self::utf16_decode($value, false);
+		else if($from == 'UTF-16BE') return self::utf16_decode($value);
 		return $value;
 	}
 
-	/**
-	 * Decode UTF-16 encoded strings.
-	 *
-	 * Can handle both BOM'ed data and un-BOM'ed data.
-	 * Assumes Big-Endian byte order if no BOM is available.
-	 * This function was taken from http://php.net/manual/en/function.utf8-decode.php
-	 * and $bom_be parameter added.
-	 *
-	 * @param   string  $str  UTF-16 encoded data to decode.
-	 * @return  string  UTF-8 / ISO encoded data.
-	 * @access  public
-	 * @version 0.2 / 2010-05-13
-	 * @author  Rasmus Andersson {@link http://rasmusandersson.se/}
-	 * @author vadik56
-	 */
 	public static function utf16_decode( $str, $bom_be=true ) {
 		if( strlen($str) < 2 ) return $str;
 		$c0 = ord($str{0});
@@ -541,57 +302,18 @@ class PHPExcel_Shared_String
 		return $newstr;
 	}
 
-	/**
-	 * Get character count. First try mbstring, then iconv, finally strlen
-	 *
-	 * @param string $value
-	 * @param string $enc Encoding
-	 * @return int Character count
-	 */
-	public static function CountCharacters($value, $enc = 'UTF-8')
-	{
-		if (self::getIsIconvEnabled()) {
-			return iconv_strlen($value, $enc);
-		}
-
-		if (self::getIsMbstringEnabled()) {
-			return mb_strlen($value, $enc);
-		}
-
-		// else strlen
+	public static function CountCharacters($value, $enc = 'UTF-8') {
+		if (self::getIsIconvEnabled()) return iconv_strlen($value, $enc);
+		if (self::getIsMbstringEnabled()) return mb_strlen($value, $enc);
 		return strlen($value);
 	}
 
-	/**
-	 * Get a substring of a UTF-8 encoded string
-	 *
-	 * @param string $pValue UTF-8 encoded string
-	 * @param int $start Start offset
-	 * @param int $length Maximum number of characters in substring
-	 * @return string
-	 */
-	public static function Substring($pValue = '', $pStart = 0, $pLength = 0)
-	{
-		if (self::getIsIconvEnabled()) {
-			return iconv_substr($pValue, $pStart, $pLength, 'UTF-8');
-		}
-
-		if (self::getIsMbstringEnabled()) {
-			return mb_substr($pValue, $pStart, $pLength, 'UTF-8');
-		}
-
-		// else substr
+	public static function Substring($pValue = '', $pStart = 0, $pLength = 0) {
+		if (self::getIsIconvEnabled()) return iconv_substr($pValue, $pStart, $pLength, 'UTF-8');
+		if (self::getIsMbstringEnabled()) return mb_substr($pValue, $pStart, $pLength, 'UTF-8');
 		return substr($pValue, $pStart, $pLength);
 	}
 
-
-	/**
-	 * Identify whether a string contains a fractional numeric value,
-	 *    and convert it to a numeric if it is
-	 *
-	 * @param string &$operand string value to test
-	 * @return boolean
-	 */
 	public static function convertToNumberIfFraction(&$operand) {
 		if (preg_match('/^'.self::STRING_REGEXP_FRACTION.'$/i', $operand, $match)) {
 			$sign = ($match[1] == '-') ? '-' : '+';
@@ -600,130 +322,54 @@ class PHPExcel_Shared_String
 			return true;
 		}
 		return false;
-	}	//	function convertToNumberIfFraction()
+	}
 
-	/**
-	 * Get the decimal separator. If it has not yet been set explicitly, try to obtain number
-	 * formatting information from locale.
-	 *
-	 * @return string
-	 */
-	public static function getDecimalSeparator()
-	{
+	public static function getDecimalSeparator() {
 		if (!isset(self::$_decimalSeparator)) {
 			$localeconv = localeconv();
-			self::$_decimalSeparator = ($localeconv['decimal_point'] != '')
-				? $localeconv['decimal_point'] : $localeconv['mon_decimal_point'];
-
-			if (self::$_decimalSeparator == '') {
-				// Default to .
-				self::$_decimalSeparator = '.';
-			}
+			self::$_decimalSeparator = ($localeconv['decimal_point'] != '') ? $localeconv['decimal_point'] : $localeconv['mon_decimal_point'];
+			if (self::$_decimalSeparator == '') self::$_decimalSeparator = '.';
 		}
 		return self::$_decimalSeparator;
 	}
 
-	/**
-	 * Set the decimal separator. Only used by PHPExcel_Style_NumberFormat::toFormattedString()
-	 * to format output by PHPExcel_Writer_HTML and PHPExcel_Writer_PDF
-	 *
-	 * @param string $pValue Character for decimal separator
-	 */
-	public static function setDecimalSeparator($pValue = '.')
-	{
+	public static function setDecimalSeparator($pValue = '.') {
 		self::$_decimalSeparator = $pValue;
 	}
 
-	/**
-	 * Get the thousands separator. If it has not yet been set explicitly, try to obtain number
-	 * formatting information from locale.
-	 *
-	 * @return string
-	 */
-	public static function getThousandsSeparator()
-	{
+	public static function getThousandsSeparator() {
 		if (!isset(self::$_thousandsSeparator)) {
 			$localeconv = localeconv();
-			self::$_thousandsSeparator = ($localeconv['thousands_sep'] != '')
-				? $localeconv['thousands_sep'] : $localeconv['mon_thousands_sep'];
+			self::$_thousandsSeparator = ($localeconv['thousands_sep'] != '') ? $localeconv['thousands_sep'] : $localeconv['mon_thousands_sep'];
 		}
 		return self::$_thousandsSeparator;
 	}
 
-	/**
-	 * Set the thousands separator. Only used by PHPExcel_Style_NumberFormat::toFormattedString()
-	 * to format output by PHPExcel_Writer_HTML and PHPExcel_Writer_PDF
-	 *
-	 * @param string $pValue Character for thousands separator
-	 */
-	public static function setThousandsSeparator($pValue = ',')
-	{
+	public static function setThousandsSeparator($pValue = ',') {
 		self::$_thousandsSeparator = $pValue;
 	}
 
-	/**
-	 *	Get the currency code. If it has not yet been set explicitly, try to obtain the
-	 *		symbol information from locale.
-	 *
-	 * @return string
-	 */
-	public static function getCurrencyCode()
-	{
+	public static function getCurrencyCode() {
 		if (!isset(self::$_currencyCode)) {
 			$localeconv = localeconv();
-			self::$_currencyCode = ($localeconv['currency_symbol'] != '')
-				? $localeconv['currency_symbol'] : $localeconv['int_curr_symbol'];
-
-			if (self::$_currencyCode == '') {
-				// Default to $
-				self::$_currencyCode = '$';
-			}
+			self::$_currencyCode = ($localeconv['currency_symbol'] != '') ? $localeconv['currency_symbol'] : $localeconv['int_curr_symbol'];
+			if (self::$_currencyCode == '') self::$_currencyCode = '$';
 		}
 		return self::$_currencyCode;
 	}
 
-	/**
-	 * Set the currency code. Only used by PHPExcel_Style_NumberFormat::toFormattedString()
-	 *		to format output by PHPExcel_Writer_HTML and PHPExcel_Writer_PDF
-	 *
-	 * @param string $pValue Character for currency code
-	 */
-	public static function setCurrencyCode($pValue = '$')
-	{
+	public static function setCurrencyCode($pValue = '$') {
 		self::$_currencyCode = $pValue;
 	}
 
-	/**
-	 * Convert SYLK encoded string to UTF-8
-	 *
-	 * @param string $pValue
-	 * @return string UTF-8 encoded string
-	 */
-	public static function SYLKtoUTF8($pValue = '')
-	{
-		// If there is no escape character in the string there is nothing to do
-		if (strpos($pValue, '') === false) {
-			return $pValue;
-		}
-
-		foreach (self::$_SYLKCharacters as $k => $v) {
-			$pValue = str_replace($k, $v, $pValue);
-		}
-
+	public static function SYLKtoUTF8($pValue = '') {
+		if (strpos($pValue, '') === false) return $pValue;
+		foreach (self::$_SYLKCharacters as $k => $v) $pValue = str_replace($k, $v, $pValue);
 		return $pValue;
 	}
 
-	/**
-	 * Retrieve any leading numeric part of a string, or return the full string if no leading numeric
-	 *	(handles basic integer or float, but not exponent or non decimal)
-	 *
-	 * @param	string	$value
-	 * @return	mixed	string or only the leading numeric part of the string
-	 */
-	public static function testStringAsNumeric($value)
-	{
-		if (is_numeric($value))
-			return $value;
+	public static function testStringAsNumeric($value) {
+		if (is_numeric($value)) return $value;
 		$v = floatval($value);
 		return (is_numeric(substr($value,0,strlen($v)))) ? $v : $value;
 	}
