@@ -1,57 +1,30 @@
 <?php
-/* Copyright (C) NAVER <http://www.navercorp.com> */
-/**
- * @class  pageAdminController
- * @author NAVER (developers@xpressengine.com)
- * @brief page of the module admin controller class
- */
 class pageAdminController extends page
 {
-	/**
-	 * @brief Initialization
-	 */
-	function init()
-	{
+	function init() {
 	}
 
-	/**
-	 * @brief Add a Page
-	 */
-	function procPageAdminInsert()
-	{
-		// Create model/controller object of the module module
+	function procPageAdminInsert() {
 		$oModuleController = getController('module');
 		$oModuleModel = getModel('module');
-		// Set board module
 		$args = Context::getRequestVars();
 		$args->module = 'page';
-		$args->mid = $args->page_name;	//because if mid is empty in context, set start page mid
+		$args->mid = $args->page_name;
 		$args->path = (!$args->path) ? '' : $args->path;
 		$args->mpath = (!$args->mpath) ? '' : $args->mpath;
 		unset($args->page_name);
-
 		if($args->use_mobile != 'Y') $args->use_mobile = '';
-		// Check if an original module exists by using module_srl
-		if($args->module_srl)
-		{
+		if($args->module_srl) {
 			$columnList = array('module_srl');
 			$module_info = $oModuleModel->getModuleInfoByModuleSrl($args->module_srl, $columnList);
-			if($module_info->module_srl != $args->module_srl)
-			{
+			if($module_info->module_srl != $args->module_srl) {
 				unset($args->module_srl);
-			}
-			else
-			{
-				foreach($args as $key=>$val)
-				{
-					$module_info->{$key} = $val;
-				}
+			} else {
+				foreach($args as $key=>$val) $module_info->{$key} = $val;
 				$args = $module_info;
 			}
 		}
-
-		switch ($args->page_type)
-		{
+		switch ($args->page_type) {
 			case 'WIDGET' :
 				{
 					unset($args->skin);
@@ -74,14 +47,10 @@ class pageAdminController extends page
 					break;
 				}
 		}
-		// Insert/update depending on module_srl
-		if(!$args->module_srl)
-		{
+		if(!$args->module_srl) {
 			$output = $oModuleController->insertModule($args);
 			$msg_code = 'success_registed';
-		}
-		else
-		{
+		} else {
 			$output = $oModuleController->updateModule($args);
 			$msg_code = 'success_updated';
 		}
@@ -324,7 +293,7 @@ class pageAdminController extends page
 		$target = ($obj->ismobile == 'Y') ? 'mdocument_srl' : 'document_srl';
 
 		// 이미 존재하는 경우 수정
-		if($oDocument->isExists() && $oDocument->document_srl == $obj->document_srl) 
+		if($oDocument->isExists() && $oDocument->document_srl == $obj->document_srl)
 		{
 			$output = $oDocumentController->updateDocument($oDocument, $obj);
 			$msg_code = 'success_updated';

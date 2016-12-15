@@ -1,25 +1,13 @@
 <?php
-/* Copyright (C) NAVER <http://www.navercorp.com> */
-/**
- * @class  message
- * @author NAVER (developers@xpressengine.com)
- * @brief high class of message module
- */
-class message extends ModuleObject {
-	/**
-	 * @brief Implement if additional tasks are necessary when installing
-	 */
+class message extends ModuleObject
+{
 	function moduleInstall() {
 		return new Object();
 	}
 
-	/**
-	 * @brief a method to check if successfully installed
-	 */
 	function checkUpdate() {
 		$oModuleModel = getModel('module');
 		$config = $oModuleModel->getModuleConfig('message');
-
 		if($config->skin) {
 			$config_parse = explode('.', $config->skin);
 			if (count($config_parse) > 1) {
@@ -30,17 +18,12 @@ class message extends ModuleObject {
 		return false;
 	}
 
-	/**
-	 * @brief Execute update
-	 */
 	function moduleUpdate() {
 		$oModuleModel = getModel('module');
 		$config = $oModuleModel->getModuleConfig('message');
-
 		if($config->skin) {
 			$config_parse = explode('.', $config->skin);
 			if (count($config_parse) > 1) {
-				// 경로설정 다시 해 주세요
 				$xec_path = './themes/%s/modules/message/';
 				$template_path = sprintf($xec_path, $config_parse[0]);
 				if(is_dir($template_path)) {
@@ -52,10 +35,4 @@ class message extends ModuleObject {
 		}
 		return new Object();
 	}
-
-	/**
-	 * @brief Re-generate the cache file
-	 */
 }
-/* End of file message.class.php */
-/* Location: ./modules/message/message.class.php */
