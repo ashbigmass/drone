@@ -1,0 +1,16 @@
+<query id="getLogsCount" action="select">
+    <tables>
+        <table name="stats_log" />
+    </tables>
+    <columns>
+        <column name="count(*) as count" />
+    </columns>
+    <conditions>
+        <condition operation="equal" column="site_srl" var="site_srl" pipe="and" />
+        <condition operation="equal" column="module_srl" var="module_srl" pipe="and" />
+        <condition operation="equal" column="document_srl" var="document_srl" pipe="and"  />
+        <condition operation="equal" column="stats_log.user_ip_address" var="user_ip_address" pipe="and"  />
+        <condition operation="like" column="stats_log.user_referer" var="user_referer" pipe="and"  />
+        <condition operation="like" column="stats_log.user_agent" var="user_agent" pipe="and"  />
+    </conditions>
+</query>

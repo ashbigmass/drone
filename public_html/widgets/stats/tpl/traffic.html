@@ -1,0 +1,121 @@
+<include target="header.html" />
+
+<include target="date.html" />
+
+	<div id="traffic_wrap">
+		<div class="daily_wrap module_wrap">
+			<h3 class="module_title">{$lang->title_dailytraffic}</h3>
+			
+			<div class="daily_wrap">
+				<!--@if($dailys)-->
+				<table class="table">
+					<thead>
+						<th></th>
+						<th>{$lang->title_pageview}</th>
+						<th>{$lang->title_uniqueview}</th>
+						<th>{$lang->title_uniqueview_ratio} <span class="tip help" title="{$lang->help_uniqueview_ratio}">?</span></th>
+						<th>{$lang->title_robotview}<!--@if($stats_configs->stats_ignore_bot == 'Y')--> <span class="tip help" title="{$lang->ignore_bot_message}">!</span><!--@end--></th>
+					</thead>
+					<tbody>
+					<!--@foreach($dailys as $daily)-->
+					<tr>
+						<td class="date">
+							{substr($daily->regtext,0,10)}
+						</td>
+						<td class="page_view">
+							<!--@if($daily->page_view > 0)-->
+							<span class="fill" style="width:{round($daily->page_view/$full_daily_page_view_count*100)}%"></span>
+							<!--@end-->
+							<span class="count">{number_format($daily->page_view)}</span>
+						</td>
+						<td class="unique_view">
+							<!--@if($daily->unique_view > 0)-->
+							<span class="fill" style="width:{round($daily->unique_view/$full_daily_unique_view_count*100)}%"></span>
+							<!--@end-->
+							<span class="count">{number_format($daily->unique_view)}</span>
+						</td>
+						<td class="unique_ratio">
+							<!--@if($daily->unique_view > 0)-->
+							<span class="fill" style="width:{round($daily->unique_view / $daily->page_view*100)}%"></span>
+							<!--@end-->
+							<span class="count">{round($daily->unique_view / $daily->page_view*100,1)}%</span>
+						</td>
+						<td class="robot_view">
+							<!--@if($daily->robot_view > 0)-->
+							<span class="fill" style="width:{round($daily->robot_view/$full_daily_robot_view_count*100)}%"></span>
+							<!--@end-->
+							<span class="count">{number_format($daily->robot_view)}</span>
+						</td>
+					</tr>
+					<!--@end-->
+					</tbody>
+				</table>
+				<!--@else-->
+				<div class="empty">{$lang->message_nodata}</div>
+				<!--@end-->
+			</div>
+		</div>
+
+		<div class="agent_wrap module_wrap">
+			<div class="platform_wrap">
+				<h3 class="module_title">{$lang->title_popular_platform}</h3>
+				<!--@if($platforms)-->
+				<table class="table">
+					<thead>
+						<th></th>
+						<th>{$lang->title_accesscount}</th>
+					</thead>
+					<tbody>
+					<!--@foreach($platforms as $platform)-->
+					<tr>
+						<td class="platform">
+							{$platform->value}
+						</td>
+						<td class="view_count">
+							<!--@if($platform->sum_count > 0)-->
+							<span class="fill" style="width:{round($platform->sum_count/$full_platform_count*100)}%"></span>
+							<!--@end-->
+							<span class="count">{$platform->sum_count}</span>
+						</td>
+					</tr>
+					<!--@end-->
+					</tbody>
+				</table>
+				<!--@else-->
+				<div class="empty">{$lang->message_nodata}</div>
+				<!--@end-->
+			</div>
+			<div class="browser_wrap">
+				<h3 class="module_title">{$lang->title_popular_browser}</h3>
+
+				<!--@if($browsers)-->
+				<table class="table">
+					<thead>
+						<th></th>
+						<th>{$lang->title_accesscount}</th>
+					</thead>
+					<tbody>
+					<!--@foreach($browsers as $browser)-->
+					<tr>
+						<td class="browser">
+							{$browser->value}
+						</td>
+						<td class="view_count">
+							<!--@if($browser->sum_count > 0)-->
+							<span class="fill" style="width:{round($browser->sum_count/$full_browser_count*100)}%"></span>
+							<!--@end-->
+							<span class="count">{$browser->sum_count}</span>
+						</td>
+					</tr>
+					<!--@end-->
+					</tbody>
+				</table>
+				<!--@else-->
+				<div class="empty">{$lang->message_nodata}</div>
+				<!--@end-->
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+
+<include target="footer.html" />

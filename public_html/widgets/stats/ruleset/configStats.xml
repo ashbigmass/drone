@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ruleset version="1.0">
+    <fields>
+        <field name="stats_ignore_admin" required="true" />
+        <field name="stats_ignore_bot" required="true" />
+        <field name="stats_ignore_ip" />
+        <field name="stats_enable_admin_layer" />
+    </fields>
+</ruleset>

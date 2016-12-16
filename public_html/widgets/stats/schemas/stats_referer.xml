@@ -1,0 +1,6 @@
+<table name="stats_referer">
+	<column name="site_srl" type="number" size="11" unique="idx_stats_referer" />
+	<column name="referer" type="varchar" size="250" unique="idx_stats_referer" />
+	<column name="count" type="number" size="11" default="0" />
+    <column name="insert_time" type="date" unique="idx_stats_referer" />
+</table>

@@ -1,0 +1,20 @@
+<query id="getDocumentCount" action="select">
+    <tables>
+        <table name="modules" />
+        <table name="documents" type="left join">
+             <conditions>
+             <condition operation="equal" column="documents.module_srl" default="modules.module_srl" />
+             </conditions>
+        </table>
+    </tables>
+    <columns>
+        <column name="count(*)" alias="count" />
+    </columns>
+    <conditions>
+        <condition operation="equal" column="modules.site_srl" var="site_srl" pipe="and" />
+        <condition operation="equal" column="documents.status" var="status" default="PUBLIC" pipe="and" />
+
+        <condition operation="more" column="documents.regdate" var="from" pipe="and"  />
+        <condition operation="less" column="documents.regdate" var="to" pipe="and"  />
+    </conditions>
+</query>

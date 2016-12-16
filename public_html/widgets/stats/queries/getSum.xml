@@ -1,0 +1,19 @@
+<query id="getSum" action="select">
+    <tables>
+        <table name="stats" />
+    </tables>
+    <columns>
+        <column name="type, SUM(count) as sum_count, SUM(bot_count) as sum_bot_count, SUM(mobile_count) as sum_mobile_count" />
+    </columns>
+    <conditions>
+        <condition operation="equal" column="site_srl" var="site_srl" pipe="and" />
+        <condition operation="in" column="type" var="type" pipe="and" />
+        <condition operation="equal" column="depth" var="depth" pipe="and" />
+
+        <condition operation="more" column="insert_time" var="from" pipe="and"  />
+        <condition operation="less" column="insert_time" var="to" pipe="and"  />
+    </conditions>
+    <groups>
+       <group column="type" />
+    </groups> 
+</query>

@@ -1,0 +1,32 @@
+<style type="text/css">
+	.__amd_stats_layer_popup { position:fixed; bottom:20px; left:20px; color:#fff; background:#000; background-color:rgba(0,0,0,0.9); box-shadow:0px 2px 2px rgba(0,0,0,0.1); padding:10px; border-radius:6px; z-index:9999; }
+	.__amd_pageview_wrap { padding:4px; min-width:40px; }
+	.__amd_about_wrap { font-size:12px; color:#999; margin-bottom:5px; text-align:left; }
+		.__amd_about_wrap a { color:#999; text-decoration: none; }
+		.__amd_about_wrap a:hover { text-decoration: underline; }
+		
+	.__amd_clear { clear:both; }
+
+	.__amd_pageview_wrap { height:30px; }
+		.__amd_wrap { float:left; width:60px; position:relative; }
+		.__amd_wrap .__amd_title { position:absolute; font-size:12px; color:#999;}
+		.__amd_wrap .__amd_value { margin-left:20px; font-size:22px; font-weight:bold; text-align:center; font-family:Helvetica, Tahoma, Geneva, sans-serif; text-align:right; }
+</style>
+
+<div class="__amd_stats_layer_popup">
+	<div class="__amd_pageview_wrap">
+		<div class="__amd_wrap" style="margin-right:10px; border-right:1px solid #333; padding-right:20px; ">
+			<div class="__amd_title">PV</div>
+			<div class="__amd_value">{$pv.format}</div>
+		</div>
+		<div class="__amd_wrap">
+			<div class="__amd_title">UV</div>
+			<div class="__amd_value">{$uv.format}</div>
+		</div>
+		<div clas="__amd_clear"></div>
+	</div>
+
+	<div class="__amd_about_wrap">
+		<a href="{$goto_admin_url}">{$from} ~ {$to}</a>
+	</div>
+</div>

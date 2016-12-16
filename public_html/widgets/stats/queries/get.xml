@@ -1,0 +1,14 @@
+<query id="get" action="select">
+    <tables>
+        <table name="stats" />
+    </tables>
+    <columns>
+        <column name="*" />
+    </columns>
+    <conditions>
+        <condition operation="equal" column="site_srl" var="site_srl" pipe="and" />
+        <condition operation="equal" column="type" var="type" pipe="and" />
+        <condition operation="equal" column="value" var="value" pipe="and" />
+        <condition operation="equal" column="insert_time" var="insert_time" pipe="and"  />
+    </conditions>
+</query>

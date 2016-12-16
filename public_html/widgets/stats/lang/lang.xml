@@ -1,0 +1,284 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<lang>
+	<item name="stats">
+		<value xml:lang="ko"><![CDATA[통계]]></value>
+	</item>
+	<item name="ignore_admin_stats">
+		<value xml:lang="ko"><![CDATA[관리자 제외]]></value>
+	</item>
+	<item name="ignore_admin_help_message">
+		<value xml:lang="ko"><![CDATA[관리자를 통계에서 제외하고 싶을 경우 선택해주세요.]]></value>
+	</item>
+	<item name="ignore_bot_stats">
+		<value xml:lang="ko"><![CDATA[로봇(봇) 제외]]></value>
+	</item>
+	<item name="ignore_bot_help_message">
+		<value xml:lang="ko"><![CDATA[봇의 접속 통계가 필요 없거나 과도한 접속으로 통계에서 제외하고 싶을 경우 선택해주세요.]]></value>
+	</item>
+	<item name="ignore_bot_message">
+		<value xml:lang="ko"><![CDATA[현재 봇(로봇)의 기록을 무시하도록 설정되어 있습니다.]]></value>
+	</item>
+	<item name="ignore_ip_stats">
+		<value xml:lang="ko"><![CDATA[특정 IP 주소 제외]]></value>
+	</item>
+	<item name="ignore_ip_help_message">
+		<value xml:lang="ko"><![CDATA[통계에서 제외할 IP 주소를 입력해주세요. 여러 개를 입력할 때는 줄을 나누어 입력해주세요.]]></value>
+	</item>
+	<item name="enable_admin_layer">
+		<value xml:lang="ko"><![CDATA[관리자 레이어]]></value>
+	</item>
+	<item name="enable_admin_layer_help_message">
+		<value xml:lang="ko"><![CDATA[관리자가 현재 접속한 페이지의 페이지 통계를 확인할 수 있는 레이어를 띄웁니다.]]></value>
+	</item>
+	<item name="cmd_ignore_yes">
+		<value xml:lang="ko"><![CDATA[제외함]]></value>
+	</item>
+	<item name="cmd_ignore_no">
+		<value xml:lang="ko"><![CDATA[제외하지 않음]]></value>
+	</item>
+	<item name="cmd_layer_use_yes">
+		<value xml:lang="ko"><![CDATA[레이어 사용함]]></value>
+	</item>
+	<item name="cmd_layer_use_no">
+		<value xml:lang="ko"><![CDATA[레이어 사용안함]]></value>
+	</item>
+
+	<item name="menu_overview">
+		<value xml:lang="ko"><![CDATA[오버뷰]]></value>
+	</item>
+	<item name="menu_traffic">
+		<value xml:lang="ko"><![CDATA[트래픽]]></value>
+	</item>
+	<item name="menu_referer">
+		<value xml:lang="ko"><![CDATA[리퍼러]]></value>
+	</item>
+	<item name="menu_contents">
+		<value xml:lang="ko"><![CDATA[컨텐츠]]></value>
+	</item>
+	<item name="menu_searchterm">
+		<value xml:lang="ko"><![CDATA[검색어]]></value>
+	</item>
+	<item name="menu_log">
+		<value xml:lang="ko"><![CDATA[로그]]></value>
+	</item>
+	<item name="menu_setting">
+		<value xml:lang="ko"><![CDATA[설정]]></value>
+	</item>
+
+	<item name="date_range_3">
+		<value xml:lang="ko"><![CDATA[3일간]]></value>
+	</item>
+	<item name="date_range_7">
+		<value xml:lang="ko"><![CDATA[7일간]]></value>
+	</item>
+	<item name="date_range_15">
+		<value xml:lang="ko"><![CDATA[15일간]]></value>
+	</item>
+
+	<item name="title_popular_module">
+		<value xml:lang="ko"><![CDATA[인기 모듈]]></value>
+	</item>
+	<item name="description_popular_module">
+		<value xml:lang="ko"><![CDATA[기간내 가장 많이 접근한 모듈들에 대한 정보입니다.]]></value>
+	</item>
+	<item name="title_module">
+		<value xml:lang="ko"><![CDATA[모듈]]></value>
+	</item>
+	<item name="title_title">
+		<value xml:lang="ko"><![CDATA[제목]]></value>
+	</item>
+	<item name="title_author">
+		<value xml:lang="ko"><![CDATA[작성자]]></value>
+	</item>
+	<item name="title_regdate">
+		<value xml:lang="ko"><![CDATA[작성일]]></value>
+	</item>
+	<item name="title_viewcount">
+		<value xml:lang="ko"><![CDATA[조회]]></value>
+	</item>
+	<item name="title_popular_document">
+		<value xml:lang="ko"><![CDATA[인기 문서]]></value>
+	</item>
+	<item name="help_more_popular_document">
+		<value xml:lang="ko"><![CDATA[더 자세한 문서 통계를 확인합니다.]]></value>
+	</item>
+	<item name="message_nosearch">
+		<value xml:lang="ko"><![CDATA[검색결과가 없습니다.]]></value>
+	</item><item name="message_nodata">
+		<value xml:lang="ko"><![CDATA[자료가 부족합니다.]]></value>
+	</item>
+	<item name="title_select_searchtype">
+		<value xml:lang="ko"><![CDATA[검색형태]]></value>		
+	</item>
+	<item name="title_searchlog">
+		<value xml:lang="ko"><![CDATA[검색된 로그]]></value>
+	</item>
+	<item name="title_alllog">
+		<value xml:lang="ko"><![CDATA[전체 로그]]></value>
+	</item>
+	<item name="help_alllog">
+		<value xml:lang="ko"><![CDATA[로그 메뉴는 전체 기간의 기록을 보여 드립니다.]]></value>
+	</item>
+	<item name="search">
+		<value xml:lang="ko"><![CDATA[검색]]></value>
+	</item>
+	<item name="search_cancel">
+		<value xml:lang="ko"><![CDATA[검색 취소]]></value>
+	</item>
+	<item name="title_ID">
+		<value xml:lang="ko"><![CDATA[ID]]></value>
+	</item>
+	<item name="title_date">
+		<value xml:lang="ko"><![CDATA[날짜]]></value>
+	</item>
+	<item name="title_ipaddress">
+		<value xml:lang="ko"><![CDATA[아이피 주소]]></value>
+	</item>
+	<item name="title_useragent">
+		<value xml:lang="ko"><![CDATA[접속 환경]]></value>
+	</item>
+	<item name="title_platform">
+		<value xml:lang="ko"><![CDATA[플랫폼 (OS)]]></value>
+	</item>
+	<item name="title_referer">
+		<value xml:lang="ko"><![CDATA[리퍼러]]></value>
+	</item>
+	<item name="title_srl">
+		<value xml:lang="ko"><![CDATA[SRL]]></value>
+	</item>
+	<item name="title_detail">
+		<value xml:lang="ko"><![CDATA[자세히]]></value>
+	</item>
+	<item name="help_search_referer_log">
+		<value xml:lang="ko"><![CDATA[같은 리퍼러의 로그를 검색합니다.]]></value>
+	</item>
+	<item name="help_search_browser_log">
+		<value xml:lang="ko"><![CDATA[같은 브라우저의 로그를 검색합니다.]]></value>
+	</item>
+	<item name="help_search_platform_log">
+		<value xml:lang="ko"><![CDATA[같은 플랫폼의 로그를 검색합니다.]]></value>
+	</item>
+	<item name="help_search_ipaddress_log">
+		<value xml:lang="ko"><![CDATA[같은 아이피 주소의 로그를 검색합니다.]]></value>
+	</item>
+
+	<item name="help_install_addon">
+		<value xml:lang="ko"><![CDATA[<strong>통계 애드온</strong>이 설치되어 있지 않거나 꺼져있습니다. 이 애드온은 꼭 필요합니다. :)]]></value>
+	</item>
+	<item name="cmd_addon_setting">
+		<value xml:lang="ko"><![CDATA[애드온 설정]]></value>
+	</item>
+	<item name="help_today_message">
+		<value xml:lang="ko"><![CDATA[오늘의 통계를 어제와 비교하여 한눈에 보여 드립니다.]]></value>
+	</item>
+	<item name="title_today">
+		<value xml:lang="ko"><![CDATA[오늘]]></value>
+	</item>
+	<item name="title_document">
+		<value xml:lang="ko"><![CDATA[문서]]></value>
+	</item>
+	<item name="title_pageview">
+		<value xml:lang="ko"><![CDATA[페이지 뷰]]></value>
+	</item>
+	<item name="title_uniqueview">
+		<value xml:lang="ko"><![CDATA[유니크 뷰]]></value>
+	</item>
+	<item name="title_robotview">
+		<value xml:lang="ko"><![CDATA[로봇 뷰]]></value>
+	</item>
+	<item name="title_dailytraffic">
+		<value xml:lang="ko"><![CDATA[일일 트래픽]]></value>
+	</item>
+	<item name="title_mobile">
+		<value xml:lang="ko"><![CDATA[모바일]]></value>
+	</item>
+	<item name="title_robot">
+		<value xml:lang="ko"><![CDATA[로봇]]></value>
+	</item>
+	<item name="title_browser">
+		<value xml:lang="ko"><![CDATA[브라우저]]></value>
+	</item>
+	<item name="help_dailytraffic">
+		<value xml:lang="ko"><![CDATA[오늘까지의 최근 트래픽 변화량을 보여줍니다.]]></value>
+	</item>
+	<item name="help_mobile">
+		<value xml:lang="ko"><![CDATA[사이트 내 모바일 점유율 정보입니다.]]></value>
+	</item>
+	<item name="help_robot">
+		<value xml:lang="ko"><![CDATA[사이트에 접속하는 로봇(bot) 접속 점유율 정보입니다.]]></value>
+	</item>
+	<item name="help_browser">
+		<value xml:lang="ko"><![CDATA[사이트 내 접유율 1위 브라우저의 점유율 정보입니다.]]></value>
+	</item>
+	<item name="title_top1">
+		<value xml:lang="ko"><![CDATA[1위]]></value>
+	</item>
+	<item name="title_more">
+		<value xml:lang="ko"><![CDATA[더보기..]]></value>
+	</item>
+	<item name="title_popular_searchterm">
+		<value xml:lang="ko"><![CDATA[인기 검색어]]></value>
+	</item>
+	<item name="help_more_popular_searchterm">
+		<value xml:lang="ko"><![CDATA[더 자세한 검색어 통계를 확인합니다.]]></value>
+	</item>
+	<item name="title_searchterm">
+		<value xml:lang="ko"><![CDATA[검색어]]></value>
+	</item>
+	<item name="title_count">
+		<value xml:lang="ko"><![CDATA[횟수]]></value>
+	</item>
+	<item name="title_popular_referer">
+		<value xml:lang="ko"><![CDATA[인기 리퍼러]]></value>
+	</item>
+	<item name="help_more_popular_referer">
+		<value xml:lang="ko"><![CDATA[더 자세한 리퍼러 통계를 확인합니다.]]></value>
+	</item>
+
+	<item name="title_popular_referer_site">
+		<value xml:lang="ko"><![CDATA[인기 리퍼러 - 도메인(사이트)]]></value>
+	</item>
+	<item name="description_popular_referer_site">
+		<value xml:lang="ko"><![CDATA[기간내 가장 많이 유입된 사이트들입니다. Direct 는 직접 방문했을 때를 뜻합니다.]]></value>
+	</item>
+	<item name="title_popular_referer_page">
+		<value xml:lang="ko"><![CDATA[인기 리퍼러 - 페이지]]></value>
+	</item>
+
+	<item name="title_popular_searchterm_outside">
+		<value xml:lang="ko"><![CDATA[인기 검색어 (외부)]]></value>
+	</item>
+	<item name="description_popular_searchterm_outside">
+		<value xml:lang="ko"><![CDATA[네이버, 구글과 같은 검색엔진을 통해 사이트로 유입된 검색어들입니다.]]></value>
+	</item>
+	<item name="title_popular_searchterm_inside">
+		<value xml:lang="ko"><![CDATA[인기 검색어 (내부)]]></value>
+	</item>
+	<item name="description_popular_searchterm_inside">
+		<value xml:lang="ko"><![CDATA[내부에서 검색된 검색어 기록들입니다.]]></value>
+	</item>
+
+	<item name="title_uniqueview_ratio">
+		<value xml:lang="ko"><![CDATA[유니크 비율]]></value>
+	</item>
+	<item name="help_uniqueview_ratio">
+		<value xml:lang="ko"><![CDATA[유니크 / 페이지 뷰]]></value>
+	</item>
+	<item name="title_popular_platform">
+		<value xml:lang="ko"><![CDATA[인기 플랫폼]]></value>
+	</item>
+	<item name="title_accesscount">
+		<value xml:lang="ko"><![CDATA[접근 수]]></value>
+	</item>
+	<item name="title_popular_browser">
+		<value xml:lang="ko"><![CDATA[인기 브라우저]]></value>
+	</item>
+
+	<item name="title_module_log">
+		<value xml:lang="ko"><![CDATA[모듈 로그]]></value>
+	</item>
+	<item name="title_document_log">
+		<value xml:lang="ko"><![CDATA[문서 로그]]></value>
+	</item>
+</lang>
+

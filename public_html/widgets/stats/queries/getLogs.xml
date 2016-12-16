@@ -1,0 +1,32 @@
+<query id="getLogs" action="select">
+    <tables>
+        <table name="stats_log" />
+        <table name="documents" type="left join">
+             <conditions>
+                <condition operation="equal" column="documents.document_srl" default="stats_log.document_srl" />
+             </conditions>
+        </table>
+        <table name="modules" type="left join">
+             <conditions>
+                <condition operation="equal" column="modules.module_srl" default="stats_log.module_srl" />
+             </conditions>
+        </table>
+    </tables>
+    <columns>
+        <column name="stats_log.*, modules.module as module_name, modules.mid as module_mid, modules.browser_title as module_title, documents.title as document_title, documents.content as document_title, documents.regdate as document_regdate" />
+    </columns>
+    <conditions>
+        <condition operation="equal" column="stats_log.site_srl" var="site_srl" pipe="and" />
+        <condition operation="equal" column="stats_log.module_srl" var="module_srl" pipe="and" />
+        <condition operation="equal" column="stats_log.document_srl" var="document_srl" pipe="and"  />
+        <condition operation="equal" column="stats_log.user_ip_address" var="user_ip_address" pipe="and"  />
+        <condition operation="like" column="stats_log.user_referer" var="user_referer" pipe="and"  />
+        <condition operation="like" column="stats_log.user_agent" var="user_agent" pipe="and"  />
+    </conditions>
+    <navigation>
+        <list_count var="limit" default="5" />         
+        <page_count var="page" default="1" /> 
+        <page var="page" default="1" /> 
+        <index var="order" default="stats_log.insert_time" order="desc" /> 
+    </navigation>
+</query>

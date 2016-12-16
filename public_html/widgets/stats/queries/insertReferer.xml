@@ -1,0 +1,11 @@
+<query id="insertReferer" action="insert">
+    <tables>
+        <table name="stats_referer" />
+    </tables>
+    <columns>
+        <column name="site_srl" var="site_srl" notnull="notnull" />
+        <column name="referer" var="referer" notnull="notnull" />
+        <column name="count" var="count" default="0" />
+        <column name="insert_time" var="insert_time" notnull="notnull" />
+    </columns>
+</query>

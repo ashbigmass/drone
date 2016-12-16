@@ -1,0 +1,14 @@
+<query id="checkAddons" action="select">
+    <tables>
+        <table name="addons_site" />
+    </tables>
+    <columns>
+        <column name="*" />
+    </columns>
+    <conditions>
+        <condition operation="equal" column="site_srl" var="site_srl" pipe="and" />
+        <condition operation="equal" column="addon" var="addon" pipe="and" />
+        <condition operation="equal" column="is_used" var="is_used" pipe="and" />
+        <condition operation="equal" column="is_used_m" var="is_used_m" pipe="or"  />
+    </conditions>
+</query>

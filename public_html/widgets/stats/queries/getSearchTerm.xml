@@ -1,0 +1,24 @@
+<query id="getSearchTerm" action="select">
+    <tables>
+        <table name="stats" />
+    </tables>
+    <columns>
+        <column name="value, sum(count) as sum_count" />
+    </columns>
+    <conditions>
+        <condition operation="equal" column="site_srl" var="site_srl" pipe="and" />
+        <condition operation="like" column="type" var="type" pipe="and" />
+        <condition operation="equal" column="value" var="value" pipe="and" />
+
+
+        <condition operation="more" column="insert_time" var="from" pipe="and"  />
+        <condition operation="less" column="insert_time" var="to" pipe="and"  />
+    </conditions>
+    <navigation>
+        <list_count var="limit" default="5" /> 
+        <index var="order" default="sum(count)" order="desc" /> 
+    </navigation>
+    <groups>
+       <group column="value" />
+    </groups> 
+</query>

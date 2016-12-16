@@ -1,0 +1,170 @@
+.clear { clear:both; }
+
+span.circle { display:inline-block; border-radius:50%; width:8px; height:8px; vertical-align: middle; }
+span.tip { cursor:pointer;}
+span.help { display:inline-block; font-size:10px; line-height:15px; width:15px; font-weight:bold; text-align:center; vertical-align:top; background:#333; color:#fff; box-shadow:0px 1px 1px rgba(0,0,0,0.1); border-radius:3px; cursor:pointer; margin-left:2px; }
+
+.empty { color:#aaa; text-align:center; }
+	.x tr.empty td { text-align:center; }
+
+.document_info,
+.module_info { border:1px solid #ccc; padding:10px; margin-bottom:10px; margin-top:10px; border-radius:4px; }
+
+.document_info .info1,
+.module_info .info1 { font-size:12px; border-bottom:1px solid #eee; padding-bottom:10px; margin-bottom:10px; }
+.document_info .info1 .label,
+.module_info .info1 .label { font-weight:bold; }
+
+.document_info .info2,
+.module_info .info2 { }
+
+.module_wrap {}
+	.module_wrap h3.module_title { color:#000; font-size:18px; font-weight:bold; position:relative; }
+	.module_wrap h3.module_title .sub { display:inline-block; position:absolute; right:0; font-size:12px; line-height:30px; }
+	.module_wrap h3.module_title .sub .sub_item { margin-left:10px; display:inline-block; }
+
+	.module_wrap h3.module_title a { color:#000; }
+	.module_wrap h3.module_title a:hover { text-decoration: underline; }
+
+	.module_wrap h3.module_title .more { position:absolute; right:0; display:inline-block; padding-left:4px; padding-right:4px; height:25px; line-height:25px; text-align:center; font-size:12px; color:#888; background:#f4f4f4; border:1px solid #ccc; border-radius:2px; }
+	.module_wrap h3.module_title .more:hover { text-decoration:none; }
+
+	.module_wrap h3.module_title .count { font-weight:normal; color:#aaa; }
+
+	.module_wrap p.module_description { margin-bottom:40px; color:#999; }
+
+.module_wrap table { width:100%; }
+	.module_wrap table td.id { width:20px; }
+	.module_wrap table td.rank { width:20px; }
+	.module_wrap table td.count { width:40px; }
+	.module_wrap table td.date { width:80px; }
+	.module_wrap table td.ip_address { width:80px; }
+	.module_wrap table td.referer { width:120px; }
+
+	.module_wrap table h3 { margin-top:0; margin-bottom:6px; }
+	.module_wrap table p { color:#aaa; }
+
+.x_page-header { position:relative; }
+	.x_page-header ul.menu { position:absolute; right:0; top:0; line-height:36px; }
+
+	.x_page-header ul.menu { list-style:none; border-top:1px solid #ddd; border-right:1px solid #ddd; }
+	.x_page-header ul.menu li { display:inline-block; float:left; border-left:1px solid #ddd; }
+
+	.x_page-header ul.menu li a { color:#666; display:inline-block; background:#f8f8f8; line-height:35px; border-bottom:1px solid #ddd; padding-left:12px; padding-right:12px; }
+	.x_page-header ul.menu li a:hover { text-decoration:none; background:#fafafa; }
+
+	.x_page-header ul.menu li.selected { }
+	.x_page-header ul.menu li.selected a { background:#fff; line-height:36px; font-weight:bold; color:#000; border-bottom:1px solid #fff; }
+
+	.x_page-header ul.menu .icon { vertical-align:middle; margin-right:4px; color:#bbb; }
+	.x_page-header ul.menu a:hover .icon { color:#666; }
+	.x_page-header ul.menu li.selected .icon { color:#000; }
+
+.date_wrap { position:relative; text-align:center; border-bottom:1px solid #eee; height:13px; margin-bottom:40px; }
+	.date_wrap h3.date { font-size:20px; display:inline-block; margin:0; padding-left:20px; padding-right:20px; background:#fff; }
+	.date_wrap h3.date .sep { color:#aaa; }
+
+.date_wrap .select_date { position:absolute; list-style:none; margin:0; padding:0; right:20px; top:2px; border:1px solid #ccc; }
+	.date_wrap .select_date li { float:left; border-right:1px solid #ccc; }
+	.date_wrap .select_date li a { color:#333; display:inline-block; width:60px; text-align:center; line-height:20px; height:20px; background:#fff; }
+	.date_wrap .select_date li a:hover { text-decoration:none; background:#fefefe; }
+
+	.date_wrap .select_date li:last-child { border-right:0; }
+
+	.date_wrap .select_date li.selected a { background:#f4f4f4; }
+	
+.paging { text-align:center; }
+	.paging strong.page { display:inline-block; color:#000; padding-left:10px; padding-right:10px; line-height:28px; font-size:14px; border:1px solid #ccc; margin-left:2px; margin-right:2px; }
+	.paging a.page { display:inline-block; color:#333; padding-left:10px; padding-right:10px; line-height:28px; font-size:14px; background:#f4f4f4; border:1px solid #ccc; margin-left:2px; margin-right:2px; }
+	.paging a.page:hover { text-decoration: none; `}
+
+#overview_wrap {}
+	#overview_wrap .notice_wrap {}
+		#overview_wrap .notice_wrap ul { list-style:none; margin:0; padding:0; }
+		#overview_wrap .notice_wrap ul li { background:#fffde3; border:1px solid #ccc; padding:10px; margin-bottom:20px; border-radius:2px; }
+		#overview_wrap .notice_wrap ul li a.button {}
+		#overview_wrap .notice_wrap ul li strong { font-weight:bold; color:#000; }
+
+	#overview_wrap .daily_graph_wrap { padding:20px; border-radius:4px; border:1px solid #ddd; box-shadow:0px 1px 1px rgba(0,0,0,0.1); }
+	
+	#overview_wrap .traffic_wrap { margin-bottom:40px; }
+
+	#overview_wrap .today_wrap { margin-bottom:40px; }
+		#overview_wrap .today_wrap .today_data_wrap {  border:1px solid #ddd; border-radius:4px; background:#f4f4f4; padding-bottom:10px; box-shadow:inset 0px 1px 0px rgba(255,255,255,0.5), 0px 1px 1px rgba(0,0,0,0.1); }
+		#overview_wrap .today_wrap ul { list-style:none; margin:0; padding:0; margin-top:10px; }
+		#overview_wrap .today_wrap ul li { display:block; float:left; width:25%; padding-top:20px; padding-bottom:20px; border-right:1px solid #ddd; box-sizing:border-box; }
+		#overview_wrap .today_wrap ul li:last-child { border-right:0; }
+
+		#overview_wrap .today_wrap ul li .label { display:block; color:#aaa; font-size:14px; margin-top:8px; padding-left:20px; }
+		#overview_wrap .today_wrap ul li .count { display:block; font-weight:bold; font-size:30px; padding-left:20px; text-shadow:0px 1px 1px #fff; }
+				#overview_wrap .today_wrap ul li .update { display:inline-block; font-weight:normal; font-size:15px; margin-left:4px; color:#999; text-shadow:none; }
+				
+				#overview_wrap .today_wrap ul li .minus { color:#bbb; }
+				#overview_wrap .today_wrap ul li .plus { color:#00ABFF; }
+				#overview_wrap .today_wrap ul li .zero { display:none; }
+	
+	#overview_wrap .report_wrap { border:1px solid #ddd; border-radius:4px; background:#f4f4f4; box-shadow:0px 1px 1px rgba(0,0,0,0.1);}
+	#overview_wrap .report_wrap .report_data { padding-left:15px; padding-right:15px; padding-bottom:20px; }
+	#overview_wrap .report_wrap .title { position:relative; }
+		#overview_wrap .report_wrap .title .sub { position:absolute; font-weight:normal; color:#999; right:0; }
+
+	#overview_wrap .report_wrap .graph_wrap { position:relative; }
+	#overview_wrap .report_wrap .percent { position:absolute; left:0; top:0; right:0; text-align:center; font-size:20px; color:#333; font-weight:bold; line-height:150px; }
+		#overview_wrap .report_wrap .percent .percent_text { color:#999; font-size:15px; }
+
+	#overview_wrap .report_wrap .mobile_view { float:left; width:33%; border-right:1px solid #ccc; }
+	#overview_wrap .report_wrap .robot_view { float:left; width:33%; border-right:1px solid #ccc;  }
+	#overview_wrap .report_wrap .browser_view { float:left; width:33%; }
+
+	#overview_wrap .status_wrap { margin-top:40px; border-top:1px solid #ccc; padding-top:20px; }
+		#overview_wrap .status_wrap .document_wrap { float:left; width:48%; margin-right:2%; }
+		#overview_wrap .status_wrap .referer_wrap { float:left; width:48%; margin-left:2%; }
+			#overview_wrap .status_wrap .referer_wrap .top_referer_wrap { margin-top:40px; }
+
+#traffic_wrap {}
+	#traffic_wrap td { position:relative; }
+	#traffic_wrap td .fill { display:block; position:absolute; left:0; top:0; bottom:0; background:#f8f8f8; }
+	#traffic_wrap td .count { position:relative; z-index:1; }
+
+	#traffic_wrap .daily_wrap {}
+		#traffic_wrap .daily_wrap table { width:100%; }
+		#traffic_wrap .daily_wrap table .unique_ratio { width:100px; }
+		
+	#traffic_wrap .agent_wrap { margin-top:50px; border-top:1px solid #eee; padding-top:30px; }	
+		#traffic_wrap .agent_wrap table { width:100%; }
+		#traffic_wrap .agent_wrap .platform_wrap { float:left; width:49%; margin-right:1%; }
+		#traffic_wrap .agent_wrap .browser_wrap { float:left; width:49%; margin-left:1%; }
+
+	.graph_wrap .graph_data { float:left; width:40%; }
+	.graph_wrap .graph_list { float:right; width:60%; }	
+		.graph_wrap .graph_list ul { list-style:none; margin:0; padding:0; }
+		.graph_wrap .graph_list ul li { width:50%; float:left; margin-bottom:15px; }
+		.graph_wrap .graph_list ul li .color { float:left; width:40px; height:40px; display:block; margin-right:10px; border-radius:2px; }
+		.graph_wrap .graph_list ul li .percent { font-weight:bold; font-size:18px; line-height:20px; color:#000; display:block; }
+		.graph_wrap .graph_list ul li .percent .count { display:inline-block; font-size:12px; color:#666; margin-left:4px; }
+		.graph_wrap .graph_list ul li .title { color:#888; overflow:hidden; }
+		.graph_wrap .graph_list ul li .title img { width:10px; height:10px; vertical-align:middle; margin-right:6px; }
+		.graph_wrap .graph_list ul li .title .sub { display:inline-block; color:#bbb; margin-left:5px; }
+
+#referer_wrap {}
+	#referer_wrap .referer_wrap { margin-top:40px; }
+
+#document_wrap {}
+	#document_wrap .top_document_wrap { margin-top:40px; }
+	#document_wrap .top_document_wrap table { width:100%; }
+
+#search_terms_wrap {}
+	#search_terms_wrap .isearch_terms_wrap { }
+	#search_terms_wrap .inside_search_terms_wrap { margin-top:50px; border-top:1px solid #eee; padding-top:30px; }
+
+#log_wrap {}
+	#log_wrap .log_list_wrap {}
+	#log_wrap .log_list_wrap .form_wrap {}
+
+	#log_wrap .log_list_wrap .detail_wrap { margin-top:4px; }
+
+		#log_wrap .log_list_wrap .detail { display:inline-block; background:#fefefe; font-size:11px; padding:4px; line-height:12px; border:1px solid #ccc; color:#333; border-radius:2px; }
+		#log_wrap .log_list_wrap .detail:hover { text-decoration: none; background:#f4f4f4; }
+
+		#log_wrap .log_list_wrap .full { display:none; border-top:1px solid #eee; margin-top:10px; padding-top:10px; }
+

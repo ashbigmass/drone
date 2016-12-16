@@ -1,0 +1,382 @@
+<include target="header.html" />
+
+<div id="overview_wrap">
+	<!--@if(!$addon_on)-->
+	<div class="notice_wrap">
+		<ul class="notice_list">
+			<li>
+				<p>
+					{$lang->help_install_addon}
+				</p>
+
+				<a class="button" href="{getUrl('module','admin','act','dispAddonAdminIndex')}">{$lang->cmd_addon_setting}</a>
+			</li>
+		</ul>
+	</div>
+	<!--@end-->
+
+	<div class="today_wrap module_wrap">
+		<h3 class="module_title">{$lang->title_today} <span class="tip help" title="{$lang->help_today_message}">?</span></h3>
+		<div class="today_data_wrap">
+			<ul>
+				<li>
+					<span class="count">
+						{number_format($todays->document)}
+					</span>
+					<span class="label">{$lang->title_document}</span>
+				</li>
+				<li>
+					<span class="count">
+						{number_format($todays->page_view)}
+						<!--@if($yesterdays)-->
+							{@ $update = $todays->page_view - $yesterdays->page_view; }
+							<span class="update {$update>0?'plus':($update<0?'minus':'zero')}">{$update > 0 ? '<i class="icon-up"></i> ' : ($update<0?'<i class="icon-down"></i> ':'')}{number_format(abs($update))}</span>
+						<!--@end-->
+					</span>
+					<span class="label">{$lang->title_pageview}</span>
+				</li>
+				<li>
+					<span class="count">
+						{number_format($todays->unique_view)}
+						<!--@if($yesterdays)-->
+						{@ $update = $todays->unique_view - $yesterdays->unique_view; }
+							<span class="update {$update>0?'plus':($update<0?'minus':'zero')}">{$update > 0 ? '<i class="icon-up"></i> ' : ($update<0?'<i class="icon-down"></i> ':'')}{number_format(abs($update))}</span>
+						<!--@end-->
+					</span>
+					<span class="label">{$lang->title_uniqueview}</span>
+				</li>
+				<li>
+					<span class="count">
+						{number_format($todays->robot_view)}
+						<!--@if($yesterdays)-->						
+							{@ $update = $todays->robot_view - $yesterdays->robot_view; }
+
+							<span class="update {$update>0?'plus':($update<0?'minus':'zero')}">{$update > 0 ? '<i class="icon-up"></i> ' : ($update<0?'<i class="icon-down"></i> ':'')}{number_format(abs($update))}</span>
+						<!--@end-->
+					</span>
+					<span class="label">{$lang->title_robotview}<!--@if($stats_configs->stats_ignore_bot == 'Y')--> <span class="tip help" title="{$lang->ignore_bot_message}">!</span><!--@end--></span>
+				</li>
+			</ul>
+
+			<div class="clear"></div>
+		</div>
+	</div>
+
+
+	<include target="date.html" />
+
+
+	<div class="traffic_wrap module_wrap">
+		<h3 class="module_title">{$lang->title_dailytraffic} <span class="tip help" title="{$lang->help_dailytraffic">?</span> <span id="dailys_label" class="sub"></span></h3>
+		<div class="daily_graph_wrap">
+        	<div id="dailys" class="graph" style="width:100%; height:200px;"></div>
+		</div>
+	</div>
+
+	<div class="report_wrap">
+		<div class="mobile_view">
+			<div class="report_data">
+				<h3 class="title">{$lang->title_mobile} <span class="tip help" title="{$lang->help_mobile}">?</span></h3>
+				<div class="graph_wrap">
+					<div id="mobile_view_graph" style="width:100%; height:150px;"></div>
+					<div class="percent">{round($full_mobile_view/$full_unique_view*100,1)}<span class="percent_text">%</span></div>
+				</div>
+			</div>
+		</div>
+		<div class="robot_view">		
+			<div class="report_data">
+				<h3 class="title">{$lang->title_robot} <span class="tip help" title="{$lang->help_robot}">?</span></h3>
+
+				<div class="graph_wrap">
+					<div id="robot_view_graph" style="width:100%; height:150px;"></div>
+					<div class="percent">{round($full_robot_view/$full_page_view*100,1)}<span class="percent_text">%</span></div>
+				</div>
+			</div>
+		</div>
+		<div class="browser_view">			
+			<div class="report_data">
+				<h3 class="title">{$lang->title_browser} <span class="tip help" title="{$lang->help_browser}">?</span> <span class="sub">({$lang->title_top1} : {$browser->value})</span></h3>
+
+				<div class="graph_wrap">
+					<div id="browser_view_graph" style="width:100%; height:150px;"></div>
+					<div class="percent">{round($browser->sum_count/$full_unique_view*100,1)}<span class="percent_text">%</span></div>
+				</div>
+			</div>
+		</div>
+		<div class="clear"></div>
+	</div>
+
+	<div class="status_wrap module_wrap">
+		<div class="document_wrap">
+			<h3 class="module_title">{$lang->title_popular_document} <a class="more tip" title="{$lang->help_more_popular_document}" href="{getUrl('menu', 'document')}">{$lang->title_more}</a></h3>
+
+			<div class="top_document_wrap">
+				<!--@if($documents)-->
+				<table class="table">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>{$lang->title_document}</th>
+							<th>{$lang->title_viewcount}</th>
+							<th>{$lang->title_author}</th>
+						</tr>
+					</thead>
+					<tbody>
+					{@ $index = 1}
+					<!--@foreach($documents as $document)-->
+					<tr>						
+						<td class="rank">#{$index++}</td>
+						<td>
+							<h3><a href="{getUrl('','mid',$document->mid,'document_srl',$document->document_srl)}" target="_blank">{cut_str($document->title,20)}</a></h3>
+							{cut_str(strip_tags($document->content), 60)}
+						</td>
+						<td class="count">{$document->sum_count}</td>
+						<td class="nick_name">{$document->nick_name}</td>
+					</tr>
+					<!--@end-->
+					</tbody>
+				</table>
+				<!--@else-->
+				<div class="empty">{$lang->message_nodata}</div>
+				<!--@end-->
+			</div>
+
+		</div>
+
+		<div class="referer_wrap">			
+			<div class="top_search_term_wrap">
+				<h3 class="module_title">{$lang->title_popular_searchterm} <a class="more tip" title="{$lang->help_more_popular_searchterm}" href="{getUrl('menu', 'search')}">{$lang->title_more}</a></h3>
+
+				<!--@if($search_terms)-->
+				<table class="table">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>{$lang->title_searchterm}</th>
+							<th>{$lang->title_count}</th>
+						</tr>
+					</thead>
+					<tbody>	
+					{@ $index = 1;}
+					<!--@foreach($search_terms as $search_term)-->
+					<tr>						
+						<td class="rank">#{$index++}</td>
+						<td>{$search_term->value}</td>
+						<td class="count">{$search_term->sum_count}</td>
+					</tr>
+					<!--@end-->
+					</tbody>
+				</table>
+				<!--@else-->
+				<div class="empty">{$lang->message_nodata}</div>
+				<!--@end-->
+			</div>
+			
+			<div class="top_referer_wrap">
+				<h3 class="module_title">{$lang->title_popular_referer} <a class="more tip" title="{$lang->help_more_popular_referer}" href="{getUrl('menu', 'referer')}">{$lang->title_more}</a></h3>
+
+				<!--@if($referers)-->
+
+				<table class="table">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>{$lang->title_referer}</th>
+							<th>{$lang->title_count}</th>
+						</tr>
+					</thead>
+					<tbody>					
+					{@ $index = 1;}
+					<!--@foreach($referers as $referer)-->
+					<tr>
+						<td class="rank">#{$index++}</td>
+						<td>{$referer->value}</td>
+						<td class="count">{$referer->sum_count}</td>
+					</tr>
+					<!--@end-->
+					</tbody>
+				</table>
+				<!--@else-->
+				<div class="empty">{$lang->message_nodata}</div>
+				<!--@end-->
+			</div>
+		</div>
+		<div class="clear"></div>
+	</div>
+
+</div>
+
+<load target="js/plugins/flot/jquery.flot.js" />
+<load target="js/plugins/flot/jquery.flot.symbol.js" />
+<load target="js/plugins/flot/jquery.flot.resize.js" />
+<load target="js/plugins/flot/jquery.flot.pie.js" />
+<load target="js/plugins/for.flot.js" />
+
+<script type="text/javascript">
+    jQuery(function () {
+        var labels = [{$daily_labels}];
+        var datasets = [
+            {
+                checked: true,
+                label_text: "{$lang->title_pageview}",
+                name: 'pageview',
+                color:'#aaaaaa',
+                data: [{$daily_page_views}],
+                shadowSize:0,
+                points: {show:true, radius:4},
+                lines: { show:true},
+                yaxis: 1,
+            },
+            {
+                checked: false,
+                label_text: "{$lang->title_uniqueview}",
+                name: "uniqueview",
+                color:'#333333',
+                data: [{$daily_unique_views}],
+                shadowSize:0,
+                points: {show:true, radius:4},
+                lines: { show:true, fill:true, fillColor: { colors: [ { opacity: 0.3 }, { opacity: 0.3 } ] }},
+                yaxis: 1,
+            }, 
+            {
+                checked: false,
+                label_text: "{$lang->title_robotview}",
+                name: "robotview", 
+                color:'#af2b26',
+                data: [{$daily_robot_views}],
+                shadowSize:0,
+                points: {show:true, radius:4},
+                lines: { show:true, fill:true, fillColor: { colors: [ { opacity: 0.3 }, { opacity: 0.3 } ] }},
+                yaxis: 1,
+            }      
+        ];
+           
+        var $dailys_label = jQuery("#dailys_label"); 
+        jQuery.each(datasets, function(index, data) {
+        	$dailys_label.append('<span class="sub_item ' + data.name + '" style="color:' + data.color + ';"><span class="circle" style="background:' + data.color + '"></span> ' + data.label_text + '</span>');
+        });
+        
+        function plotAccordingToChoices() {
+
+            var data = [];
+            jQuery.each(datasets, function(index, dataset) {
+                    data.push(dataset);
+            });
+            
+            if (data.length > 0) {
+                jQuery.plot("#dailys", data, {
+                    grid: { hoverable: true, clickable: true, borderWidth:0, backgroundColor:null },
+                    yaxis: {show:true, showLabel:true, showGrid:true, autoscaleMargin:1, labelWidth:40 },
+                    xaxis: {show:true, tickFormatter:function(v) { return typeof(labels[v]) != 'undefined' ? labels[v] : ''; }}
+                    });
+            }
+        }
+            
+        var previousPoint = null, previousSeries = null;
+        jQuery("#dailys").bind("plothover", function (event, pos, item) {
+                if (item) {
+                    if (previousPoint != item.dataIndex || previousSeries != item.seriesIndex) {
+                        previousPoint = item.dataIndex;
+                        previousSeries = item.seriesIndex;
+                        
+                        hideTooltip();
+                        var x = item.datapoint[0],
+                            y = item.datapoint[1];
+                        
+                        var dataset = datasets[item.seriesIndex];
+                        
+                        var label = dataset.label_text;
+                        var value = numberFormat(y);
+                        var value2 = typeof(dataset.addData) == 'undefined' ? '' : numberFormat(dataset.addData[item.dataIndex]);
+                        
+                        showTooltip(item.pageX, item.pageY, label + ' : ' + value + (value2 ? " (" + value2 + ")" : ''));
+                    }
+                } else {
+                    hideTooltip();
+                    previousPoint = null;
+                }
+        });
+
+        plotAccordingToChoices();
+    });
+</script>
+
+<!-- 모바일 그래프 -->
+<script type="text/javascript">
+	jQuery(function () {
+	    var datas = [];
+	    <!--@foreach(array_reverse($mobile_graph) as $graph)-->
+	        datas.push({label:"{$graph->label}", data:{$graph->count}, color:"{$graph->color}"});
+	    <!--@end-->
+
+	    jQuery.plot(jQuery("#mobile_view_graph"), datas,
+	        {  
+	            series: {pie: { show: true,
+	                            radius: 1,
+	                            innerRadius:40,
+	                            stroke: { width:0 },
+	                            label: {
+	                             	show:false
+	                             }
+	                     }}
+	                     ,
+	                legend: {
+	                    show: false,
+	                }
+	         });
+	});
+</script>
+
+<!-- 브라우저 그래프 -->
+<script type="text/javascript">
+	jQuery(function () {
+	    var datas = [];
+	    <!--@foreach(array_reverse($browser_graph) as $graph)-->
+	        datas.push({label:"{$graph->label}", data:{$graph->count}, color:"{$graph->color}"});
+	    <!--@end-->
+
+	    jQuery.plot(jQuery("#browser_view_graph"), datas,
+	        {  
+	            series: {pie: { show: true,
+	                            radius: 1,
+	                            innerRadius:40,
+	                            stroke: { width:0 },
+	                            label: {
+	                             	show:false
+	                             }
+	                     }}
+	                     ,
+	                legend: {
+	                    show: false,
+	                }
+	         });
+	});
+</script>
+
+<!-- 로봇 그래프 -->
+<script type="text/javascript">
+	jQuery(function () {
+	    var datas = [];
+	    <!--@foreach(array_reverse($robot_graph) as $graph)-->
+	        datas.push({label:"{$graph->label}", data:{$graph->count}, color:"{$graph->color}"});
+	    <!--@end-->
+
+	    jQuery.plot(jQuery("#robot_view_graph"), datas,
+	        {  
+	            series: {pie: { show: true,
+	                            radius: 1,
+	                            innerRadius:40,
+	                            stroke: { width:0 },
+	                            label: {
+	                             	show:false
+	                             }
+	                     }}
+	                     ,
+	                legend: {
+	                    show: false,
+	                }
+	         });
+	});
+</script>
+
+<include target="footer.html" />

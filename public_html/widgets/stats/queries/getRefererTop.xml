@@ -1,0 +1,21 @@
+<query id="getATop" action="select">
+    <tables>
+        <table name="stats_referer" />
+    </tables>
+    <columns>
+        <column name="referer, sum(count) as sum_count" />
+    </columns>
+    <conditions>
+        <condition operation="equal" column="site_srl" var="site_srl" pipe="and" />
+
+        <condition operation="more" column="insert_time" var="from" pipe="and"  />
+        <condition operation="less" column="insert_time" var="to" pipe="and"  />
+    </conditions>
+    <navigation>
+        <list_count var="limit" default="5" /> 
+        <index var="order" default="sum(count)" order="desc" /> 
+    </navigation>
+    <groups>
+       <group column="referer" />
+    </groups> 
+</query>

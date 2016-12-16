@@ -1,0 +1,10 @@
+<table name="stats">
+    <column name="site_srl" type="number" size="11" unique="site_stats" />
+    <column name="type" type="varchar" size="64" unique="site_stats" />
+    <column name="depth" type="number" size="1"  />
+    <column name="count" type="number" size="11"  />
+    <column name="value" type="varchar" size="250" unique="site_stats" />
+    <column name="bot_count" type="number" size="11" default="0" />
+    <column name="mobile_count" type="number" size="11" default="0" />
+    <column name="insert_time" type="date" unique="site_stats" />
+</table>

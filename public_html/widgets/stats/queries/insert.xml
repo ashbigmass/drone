@@ -1,0 +1,15 @@
+<query id="insert" action="insert">
+    <tables>
+        <table name="stats" />
+    </tables>
+    <columns>
+        <column name="site_srl" var="site_srl" notnull="notnull" />
+        <column name="type" var="type" notnull="notnull" />
+        <column name="depth" var="depth" default="0" />
+        <column name="count" var="count" default="0" />
+        <column name="value" var="value" default="" />
+        <column name="bot_count" var="bot_count" default="0" />
+        <column name="mobile_count" var="mobile_count" default="0" />
+        <column name="insert_time" var="insert_time" notnull="notnull" />
+    </columns>
+</query>

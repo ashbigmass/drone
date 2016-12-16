@@ -1,0 +1,19 @@
+<load target="js/stats.js" />
+<load target="css/xe_min.css" />
+
+<load target="plugin.css" />
+<load target="stats.css" />
+
+<div class="x_page-header">
+	<h1>{$lang->stats} {$lang->cmd_management}</h1>
+	<ul class="menu">
+		<li class="selected"|cond="$menu == 'overview'"><a href="{getUrl('menu', 'overview','page','','search_type','','search_value','')}"><span class="icon icon-align"></span>{$lang->menu_overview}</a></li>
+		<li class="selected"|cond="$menu == 'traffic'"><a href="{getUrl('menu', 'traffic','page','','search_type','','search_value','')}"><span class="icon icon-graph"></span>{$lang->menu_traffic}</a></li>
+		<li class="selected"|cond="$menu == 'referer'"><a href="{getUrl('menu', 'referer','page','','search_type','','search_value','')}"><span class="icon icon-earth"></span>{$lang->menu_referer}</a></li>
+		<li class="selected"|cond="$menu == 'document'"><a href="{getUrl('menu', 'document','page','','search_type','','search_value','')}"><span class="icon icon-document"></span>{$lang->menu_contents}</a></li>
+		<li class="selected"|cond="$menu == 'search'"><a href="{getUrl('menu', 'search','page','','search_type','','search_value','')}"><span class="icon icon-search"></span>{$lang->menu_searchterm}</a></li>
+		<li class="selected"|cond="$menu == 'log'"><a href="{getUrl('menu', 'log','page','','search_type','','search_value','')}"><span class="icon icon-gem"></span>{$lang->menu_log}</a></li>
+		<li class="selected"|cond="$menu == 'setting'"><a href="{getUrl('menu', 'setting','page','','search_type','','search_value','')}"><span class="icon icon-setting"></span>{$lang->menu_setting}</a></li>
+	</ul>
+
+</div>

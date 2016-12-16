@@ -1,0 +1,92 @@
+<include target="header.html" />
+
+<include target="date.html" />
+
+<div id="document_wrap">
+	<div class="graph_wrap top_module_wrap module_wrap">		
+		<h3 class="module_title">{$lang->title_popular_module}</h3>		
+		<p class="module_description">{$lang->description_popular_module}</p>
+
+		<div class="graph_data">
+			<div id="module_graph" class="graph" style="width:100%; height:200px;"></div>
+		</div>
+		<div class="graph_list">
+			<ul>
+				<!--@foreach($module_datas as $module)-->
+					<li id="document_{md5($module->label)}">
+						<span class="color" style="background:{$module->color};"></span>
+						<span class="percent">{round($module->count/$module_full_count*100,1)}% <span class="count">({number_format($module->count)})</span></span>
+						<span class="title">{cut_str($module->label,10)} <span class="sub">/{$module->mid}</span></span>
+					</li>
+				<!--@end-->
+			</ul>
+		</div>
+		<div class="clear"></div>
+	</div>
+
+	<div class="top_document_wrap module_wrap">
+		<h3 class="module_title">{$lang->title_popular_document}</h3>
+
+		<table class="table">
+			<thead>
+			<tr>
+				<th></th>
+				<th>{$lang->title_module}</th>
+				<th>{$lang->title_title}</th>
+				<th>{$lang->title_author}</th>
+				<th>{$lang->title_regdate}</th>
+				<th>{$lang->title_viewcount}</th>
+			</tr>
+			</thead>
+			<!--@if($document_datas)-->
+				<!--@foreach($document_datas as $index => $document)-->
+					<tr>
+						<td class="rank">#{++$index}</td>
+						<td><a href="{getUrl('','mid',$document->mid)}" target="_blank">{$document->module}</a></td>
+						<td><a href="{getUrl('','document_srl',$document->document_srl)}" target="_blank">{$document->title}</a></td>
+						<td>{$document->nick_name}</td>
+						<td>{zdate($document->regdate,'Y-m-d')}</td>
+						<td class="count">{$document->sum_count}</td>
+					</tr>
+				<!--@end-->
+			<!--@else-->
+				<tr class="empty"><td colspan="6">{$lang->message_nodata}</td></tr>
+			<!--@end-->
+		</table>
+	</div>
+</div>
+
+<load target="js/plugins/flot/jquery.flot.js" />
+<load target="js/plugins/flot/jquery.flot.symbol.js" />
+<load target="js/plugins/flot/jquery.flot.resize.js" />
+<load target="js/plugins/flot/jquery.flot.pie.js" />
+<load target="js/plugins/for.flot.js" />
+
+
+<script type="text/javascript">
+	jQuery(function () {
+	    var datas = [];
+	    <!--@foreach(array_reverse($module_datas) as $module)-->
+	        datas.push({label:"{$module->label}", data:{$module->count}, color:"{$module->color}"});
+	    <!--@end-->
+
+	    jQuery.plot(jQuery("#module_graph"), datas,
+	        {  
+	            series: {pie: { show: true,
+	                            radius: 1,
+	                            innerRadius:0,
+	                            stroke: { width:2 },
+	                            label: {
+	                             	show:false
+	                             }
+	                     }}
+	                     ,
+	                legend: {
+	                    show: false,
+	                }
+	         });
+	});
+</script>
+
+
+<include target="footer.html" />

@@ -1,0 +1,90 @@
+<include target="header.html" />
+
+<include target="date.html" />
+
+<div id="referer_wrap">
+	<div class="graph_wrap module_wrap">
+		<h3 class="module_title">{$lang->title_popular_referer_site}</h3>
+		<p class="module_description">{$lang->description_popular_referer_site}</p>
+
+		<div class="graph_data">
+			<div id="referer_graph" class="graph" style="width:100%; height:200px;"></div>
+		</div>
+		<div class="graph_list">
+			<ul>
+				<!--@foreach($referer_domains as $domain)-->
+					<li id="referer_{md5($domain->label)}">
+						<span class="color" style="background:{$domain->color};"></span>
+						<span class="percent">{round($domain->count/$referer_full_count*100,1)}% <span class="count">({number_format($domain->count)})</span></span>
+						<span class="title">{$domain->label}</span>
+					</li>
+				<!--@end-->
+			</ul>
+		</div>
+		<div class="clear"></div>
+	</div>
+
+	<div class="referer_wrap module_wrap">
+		<h3 class="module_title">{$lang->title_popular_referer_page}</h3>
+
+		<table class="table">
+			<thead>
+				<th>#</th>
+				<th>{$lang->title_referer}</th>
+				<th>{$lang->title_count}</th>
+			</thead>
+			<tbody>
+				{@ $index=1}
+				<!--@foreach($detail_referers as $referer)-->
+				<tr>
+					<td class="rank">{$index++}</td>
+					<td>
+					<!--@if($referer->link)-->
+						<a href="{$referer->link}" target="_blank">{$referer->referer}</a>
+					<!--@else-->
+						{$referer->referer}
+					<!--@end-->
+					</td>
+					<td class="count">{$referer->sum_count}</td>
+				</tr>
+				<!--@else-->
+				<tr class="empty"><td colspan="3">자료가 부족합니다</td></tr>
+				<!--@end-->
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<load target="js/plugins/flot/jquery.flot.js" />
+<load target="js/plugins/flot/jquery.flot.symbol.js" />
+<load target="js/plugins/flot/jquery.flot.resize.js" />
+<load target="js/plugins/flot/jquery.flot.pie.js" />
+<load target="js/plugins/for.flot.js" />
+
+
+<script type="text/javascript">
+	jQuery(function () {
+	    var datas = [];
+	    <!--@foreach(array_reverse($referer_domains) as $domain)-->
+	        datas.push({label:"{$domain->label}", data:{$domain->count}, color:"{$domain->color}"});
+	    <!--@end-->
+
+	    jQuery.plot(jQuery("#referer_graph"), datas,
+	        {  
+	            series: {pie: { show: true,
+	                            radius: 1,
+	                            innerRadius:0,
+	                            stroke: { width:2 },
+	                            label: {
+	                             	show:false
+	                             }
+	                     }}
+	                     ,
+	                legend: {
+	                    show: false,
+	                }
+	         });
+	});
+</script>
+
+<include target="footer.html" />

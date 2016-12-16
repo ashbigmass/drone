@@ -1,0 +1,28 @@
+<query id="getModule" action="select">
+    <tables>
+        <table name="stats" />
+        <table name="modules" type="left join">
+             <conditions>
+                <condition operation="equal" column="modules.module_srl" default="stats.value" />
+             </conditions>
+        </table>
+    </tables>
+    <columns>
+        <column name="stats.*, sum(stats.count) as sum_count, modules.module as module_name, modules.mid as module_mid, modules.browser_title as module_title" />
+    </columns>
+    <conditions>
+        <condition operation="equal" column="stats.site_srl" var="site_srl" pipe="and" />
+        <condition operation="like" column="stats.type" var="type" pipe="and" />
+        <condition operation="equal" column="stats.depth" var="depth" pipe="and" />
+
+        <condition operation="more" column="stats.insert_time" var="from" pipe="and"  />
+        <condition operation="less" column="stats.insert_time" var="to" pipe="and"  />
+    </conditions>
+    <navigation>
+        <list_count var="limit" default="5" /> 
+        <index var="order" default="stats.count" order="desc" /> 
+    </navigation>
+    <groups>
+       <group column="stats.value" />
+    </groups> 
+</query>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module version="1.1.1">
+    <title xml:lang="ko">통계</title>
+    <description xml:lang="ko">통계 프로그램입니다.</description>
+    <version>1.1.1</version>
+    <date>2015-01-28</date>
+    <category>statistics</category>
+
+    <author email_address="me@amado.kr" link="http://amado.kr/">
+        <name xml:lang="ko">아마도 개발소</name>
+        <name xml:lang="en">AMADO Factory</name>
+    </author>
+</module>

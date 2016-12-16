@@ -1,0 +1,151 @@
+<include target="header.html" />
+
+<div id="log_wrap">
+	<div class="log_list_wrap module_wrap">
+		<h3 class="module_title">
+			<!--@if(!empty($search_type))-->
+				{$lang->title_searchlog} <span class="count">({$page_navigation->total_count})</span>
+			<!--@else-->
+				{$lang->title_alllog} <span class="count">({$page_navigation->total_count ? $page_navigation->total_count : 0})</span> <span class="tip help" title="{$lang->help_alllog}">!</span>
+			<!--@end-->
+		</h3>
+
+		<div class="form_wrap">
+			<form class="x_input-append" action="./" method="get">
+				<input type="hidden" name="module" value="{$module}" />
+				<input type="hidden" name="act" value="{$act}" />
+				<input type="hidden" name="menu" value="{$menu}" />
+				<input type="hidden" name="selected_range" value="{$selected_range}" />
+				<input type="hidden" name="page" value="1" />
+
+				<select name="search_type" style="margin-right:8px;">
+					<option value="0">{$lang->title_select_searchtype}</option>
+					<option selected="selected"|cond="$search_type == 'ip_address'" value="ip_address">{$lang->title_ipaddress}</option>
+					<option selected="selected"|cond="$search_type == 'platform'" value="platform">{$lang->title_platform}</option>
+					<option selected="selected"|cond="$search_type == 'referer'" value="referer">{$lang->title_referer}</option>
+				<!--@if($search_type == 'srl')-->
+					<option selected="selected"|cond="$search_type == 'srl'" value="srl">{$lang->title_srl}</option>
+				<!--@end-->
+				</select>
+
+				<input type="search" name="search_value" value="{$search_value}" style="width:140px">		
+				<button class="x_btn x_btn-inverse" type="submit">{$lang->search}</button>
+
+			<!--@if(!empty($search_type))-->
+				<a href="{getUrl('search_type','','search_value','','page','1')}" class="x_btn">{$lang->search_cancel}</a>
+			<!--@end-->
+			</form>
+		</div>
+
+		<!--@if($search_link_value)-->
+			<!--@if($search_link_value->type == 'document')-->
+				<hr />
+				<h3>{$lang->title_document_log}</h3>
+				<div class="document_info">
+					<div class="info1">
+						<span class="label">SRL</span> : {$search_link_value->data->document_srl},
+						<span class="label">Nickname</span> : {$search_link_value->data->nick_name}
+					</div>
+					<div class="info2">
+						<a href="{getUrl('','document_srl',$search_link_value->data->document_srl)}" target="_blank">{$search_link_value->data->title}</a>
+					</div>
+				</div>
+			<!--@end-->
+
+			<!--@if($search_link_value->type == 'module')-->
+			
+			<hr />
+			<h3>{$lang->title_module_log}</h3>
+			<div class="module_info">
+				<div class="info1">
+					<span class="label">SRL</span> : {$search_link_value->data->module_srl}, 
+					<span class="label">Mid</span> : {$search_link_value->data->mid}
+				</div>
+				<div class="info2">
+					<a href="{getUrl('','mid',$search_link_value->data->mid)}" target="_blank">{$search_link_value->data->browser_title}</a>
+				</div>
+			</div>
+
+			<!--@end-->
+
+		<!--@end-->
+
+		<table class="table">
+			<thead>
+				<th>{$lang->title_id}</th>
+				<th>{$lang->title_date}</th>
+				<th>{$lang->title_ipaddress}</th>
+				<th>{$lang->title_useragent}</th>
+				<th>{$lang->title_referer}</th>
+			</thead>
+			<tbody>
+			<!--@if(!$logs)-->
+				<!--@if(!empty($search_type) || !empty($search_value))-->
+				<tr class="empty"><td colspan="5">{$lang->message_nosearch}</td></tr>
+				<!--@else-->
+				<tr class="empty"><td colspan="5">{$lang->message_nodata}</td></tr>
+				<!--@end-->
+			<!--@else-->
+				<!--@foreach($logs as $log)-->
+					<tr>
+						<td class="id">{$log->id}</td>
+						<td class="date">{zdate($log->insert_time,'Y-m-d H:i:s')}</td>
+						<td class="ip_address"><a class="tip" title="{$lang->help_search_ipaddress_log}"href="{getUrl('search_type','ip_address','search_value',$log->user_ip_address,'page',1)}">{$log->user_ip_address}</td>
+						<td id="log_agent_{$log->id}" class="agent">
+							<!--@if($log->user_agent_parse)-->
+								<div class="summary">
+									<a class="tip" title="{$lang->help_search_platform_log}" href="{getUrl('search_type','platform','search_value',$log->user_agent_parse['platform'],'page',1)}">{$log->user_agent_parse['platform']}</a>
+									<!--@if(!empty($log->user_agent_parse['browser']))-->,
+									<a class="tip" title="{$lang->help_search_browser_log}" href="{getUrl('search_type','browser','search_value',$log->user_agent_parse['browser'], 'page', '1')}">{$log->user_agent_parse['browser']}</a>
+									<!--@end-->
+									<!--@if(!empty($log->user_agent_parse['version']))--> -
+									{$log->user_agent_parse['version']}<!--@end-->
+
+									<div class="detail_wrap">
+										<a href="#" class="detail" onclick="detailView('#log_agent_{$log->id}'); return false;">{$lang->title_detail}</a>
+									</div>
+								</div>
+								<div class="full">{$log->user_agent}</div>
+							<!--@else-->
+							<!--@end-->
+						</td>
+						<td id="log_referer_{$log->id}" class="referer">
+							<!--@if($log->user_referer_parse)-->
+								<div class="summary">
+									http://<a class="tip" title="{$lang->help_search_referer_log}" href="{getUrl('search_type','referer','search_value',$log->user_referer_parse['domain'],'page',1)}">{$log->user_referer_parse['domain']}</a><!--@if(!empty($log->user_referer_parse['path']))-->{$log->user_referer_parse['path']}<!--@end-->
+
+									<div class="detail_wrap">
+										<a href="#" class="detail" onclick="detailView('#log_referer_{$log->id}'); return false;">{$lang->title_detail}</a>
+									</div>
+								</div>
+								<div class="full"><a href="{$log->user_referer}" target="_blank">{$log->user_referer}</a></div>
+							<!--@else-->
+							<!--@end-->
+						</td>
+					</tr>
+				<!--@end-->
+			<!--@end-->
+			</tbody>
+		</table>
+
+		<div class="paging">
+			<!--@while($page_no = $page_navigation->getNextPage())-->
+				<!--@if($page == $page_no)-->
+					<strong class="page">{$page_no}</strong>
+				<!--@else-->
+					<a class="page" href="{getUrl('page',$page_no)}">{$page_no}</a>
+				<!--@end-->
+			<!--@end-->
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	function detailView(id) {
+		var $obj = jQuery(id);
+		$obj.find('.detail_wrap').slideUp();
+		$obj.find('.full').slideDown();
+	}
+</script>
+
+<include target="footer.html" />

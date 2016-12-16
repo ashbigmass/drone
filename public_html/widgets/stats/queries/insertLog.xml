@@ -1,0 +1,18 @@
+<query id="insertLog" action="insert">
+    <tables>
+        <table name="stats_log" />
+    </tables>
+    <columns>
+        <column name="site_srl" var="site_srl" notnull="notnull" />
+        <column name="module_srl" var="module_srl" notnull="notnull" />
+        <column name="document_srl" var="document_srl" notnull="notnull" />
+        <column name="user_session_id" var="user_session_id" notnull="notnull" />
+        <column name="user_agent" var="user_agent" notnull="notnull" />
+        <column name="user_referer" var="user_referer" notnull="notnull" />
+        <column name="user_ip_address" var="user_ip_address" notnull="notnull" />
+        <column name="user_now" var="user_now" notnull="notnull" />
+        <column name="is_bot" var="is_bot" default="0" />
+        <column name="is_mobile" var="is_mobile" default="0" />
+        <column name="insert_time" var="insert_time" notnull="notnull" />
+    </columns>
+</query>

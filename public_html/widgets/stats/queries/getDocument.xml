@@ -1,0 +1,33 @@
+<query id="getDocument" action="select">
+    <tables>
+        <table name="stats" />
+        <table name="documents" type="left join">
+             <conditions>
+                <condition operation="equal" column="documents.document_srl" default="stats.value" />
+             </conditions>
+        </table>
+        <table name="modules" type="left join">
+             <conditions>
+                <condition operation="equal" column="modules.module_srl" default="documents.module_srl" />
+             </conditions>
+        </table>
+    </tables>
+    <columns>
+        <column name="stats.value, modules.module, modules.mid, documents.document_srl, documents.title, documents.content, documents.nick_name, documents.regdate, sum(stats.count) as sum_count" />
+    </columns>
+    <conditions>
+        <condition operation="equal" column="stats.site_srl" var="site_srl" pipe="and" />
+        <condition operation="like" column="stats.type" var="type" pipe="and" />
+        <condition operation="equal" column="stats.depth" var="depth" pipe="and" />
+
+        <condition operation="more" column="stats.insert_time" var="from" pipe="and"  />
+        <condition operation="less" column="stats.insert_time" var="to" pipe="and"  />
+    </conditions>
+    <navigation>
+        <list_count var="limit" default="5" /> 
+        <index var="order" default="sum(stats.count)" order="desc" /> 
+    </navigation>
+    <groups>
+       <group column="value" />
+    </groups> 
+</query>
