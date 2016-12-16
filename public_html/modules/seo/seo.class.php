@@ -87,7 +87,6 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 {$gaq_push}
 </script>
 GASCRIPT;
-
 			Context::addHtmlHeader($ga_script . PHP_EOL);
 		}
 		if ($config->na_id && !($config->na_except_admin == 'Y' && $logged_info->is_admin == 'Y')) {
@@ -108,9 +107,7 @@ NASCRIPT;
 		$oModuleModel = getModel('module');
 		$seo_config = $this->getConfig();
 		if($seo_config->enable === 'Y') {
-			foreach ($this->triggers as $trigger) {
-				if (!$oModuleModel->getTrigger($trigger[0], $trigger[1], $trigger[2], $trigger[3], $trigger[4])) return TRUE;
-			}
+			foreach ($this->triggers as $trigger) if (!$oModuleModel->getTrigger($trigger[0], $trigger[1], $trigger[2], $trigger[3], $trigger[4])) return TRUE;
 		}
 		return FALSE;
 	}
@@ -121,9 +118,8 @@ NASCRIPT;
 		$seo_config = $this->getConfig();
 		if($seo_config->enable === 'Y') {
 			foreach ($this->triggers as $trigger) {
-				if (!$oModuleModel->getTrigger($trigger[0], $trigger[1], $trigger[2], $trigger[3], $trigger[4])) {
+				if (!$oModuleModel->getTrigger($trigger[0], $trigger[1], $trigger[2], $trigger[3], $trigger[4]))
 					$oModuleController->insertTrigger($trigger[0], $trigger[1], $trigger[2], $trigger[3], $trigger[4]);
-				}
 			}
 		}
 		return new Object(0, 'success_updated');

@@ -1,0 +1,144 @@
+<!--#include("./header.html")-->
+
+<!--@if(Context::get('type')!='status')-->
+<h3 class="sub_title">{$lang->send_list}</h3>
+<!--@else-->
+<h3 class="sub_title">메일전송 현황</h3>
+<!--@end-->
+
+<table class="index_table">
+<span>Total:{$total_count}, Page:{$page}/{$total_page}</span>
+	<thead>
+		<tr>
+			<th rowspan="2">no.</th>
+			<th>{$lang->sender_nickname}</th>
+			<th>{$lang->sender_email}</th>
+			<th>{$lang->regdate}</th>
+			<th>{$lang->receive_nickname}</th>
+			<th>{$lang->receive_email}</th>
+			<!--@if(Context::get('type')!='status')--><th>{$lang->send_start}</th><!--@else--><th>상태</th><!--@end-->
+			<th>{$lang->delete}</th>
+		</tr>
+		<tr style="border-bottom:1px solid #000;">
+			<th colspan="2">{$lang->title}</td>
+			<th colspan="6">{$lang->content}</td>
+		</tr>
+	</thead>
+	<tbody>
+		<!--@foreach($mail_info as $key => $val)-->
+		<tr style="border-top:2px solid #ddd;">
+			<td rowspan="2">{$key}</td>
+			<td>{cut_str($val->ggmailing_sender_nickname,8,'...')}</td>
+			<td>{cut_str($val->ggmailing_sender_email,10,'...')}</td>
+			<td>{zdate($val->regdate,'Y-m-d H:i:s')}</td>
+			<td>
+			{@ $nick_name = explode(',',$val->ggmailing_receive_nickname);	}
+			<!--@for($i=0;$nick_name[$i];$i++)-->
+			{@ $cnt = $i; }
+			<!--@end-->
+			{$nick_name[0]} 
+			<!--@if($config->sender_num > 1 && $nick_name[1])-->{$lang->outof} {$cnt}{$lang->persons}<!--@end-->
+			</td>
+			<td>
+			{@ $email_address = explode(',',$val->ggmailing_receive_email);	}
+			<!--@for($i=0;$email_address[$i];$i++)-->
+			{@ $cnt = $i; }
+			<!--@end-->
+			{$email_address[0]} 
+			<!--@if($config->sender_num > 1 && $email_address[1])-->{$lang->outof} {$cnt}{$lang->email}<!--@end-->
+			</td>
+			<script>
+				jQuery(document).ready(function() {
+					var url = './index.php';
+
+					var formData = new FormData();
+
+					var act = 'dispGgmailingRequest';
+					formData.append("act",act);
+					var ggmailing_document_srl = '{$val->ggmailing_document_srl}';
+					formData.append("ggmailing_document_srl",ggmailing_document_srl);
+					var ggmailing_send_srl = '{$val->ggmailing_send_srl}';
+					formData.append("ggmailing_send_srl",ggmailing_send_srl);
+
+					jQuery.ajax({
+						url: url,
+						type: 'POST',
+						data: formData,
+						async: true,
+						success: function (data) {
+							//alert(data);
+							var result = JSON.parse(data);
+							if(result.is_sendok == 'Y') document.getElementById('ggstatus_{$key}').innerHTML = '{$lang->send_complete}';
+							else if(result.is_sendok == 'B') document.getElementById('ggstatus_{$key}').innerHTML = '대기열';
+							else if(result.is_sendok == 'W') document.getElementById('ggstatus_{$key}').innerHTML = '전송대기';
+							else if(result.is_sendok == 'S') document.getElementById('ggstatus_{$key}').innerHTML = '전송중';
+							else if(result.is_sendok == 'E') document.getElementById('ggstatus_{$key}').innerHTML = '오류';
+							else if(!result) document.getElementById('ggstatus_{$key}').innerHTML = '서버점검중';
+							else jQuery("#ggsend_{$key}").show();
+						},
+						global: false,
+						cache: false,
+						contentType: false,
+						processData: false
+					});
+					return false;
+				})
+			</script>
+			<td width="60" class="center">
+				<div id="ggstatus_{$key}"></div>
+				<!--@if(Context::get('type')!='status')-->
+				<form action="./" method="post" id="ggsend_{$key}" style="display:none;">
+				<input type="hidden" name="module" value="admin" />
+				<input type="hidden" name="act" value="procGgmailingAdminSendOk" />
+				<input type="hidden" name="ggmailing_send_srl" value="{$val->ggmailing_send_srl}" />
+				<input type="hidden" name="page" value="{$page}" />
+				<input type="submit" class="xet_btn medium light" value="{$lang->send_start}" />
+				</form>
+				<!--@else-->
+				전송안됨
+				<!--@end-->
+			</td>
+			
+			<td width="60" class="center">
+				<form action="./" method="post" name="delform_{$key}">
+				<input type="hidden" name="module" value="admin" />
+				<input type="hidden" name="act" value="procGgmailingAdminDel" />
+				<input type="hidden" name="ggmailing_send_srl" value="{$val->ggmailing_send_srl}" />
+				<a href="#" onclick="javascript:if(confirm('삭제하시겠습니까?')) document.delform_{$key}.submit(); else return false;" class="xet_btn medium red">{$lang->delete}</a>
+				</form>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">{cut_str($val->ggmailing_title,10,'...')}</td>
+			<td colspan="6">{cut_str(htmlspecialchars($val->ggmailing_content),150,'...')}</td>
+		</tr>
+		<!--@end-->
+	</table>
+</table>
+<!--@if(Context::get('type')!='status')-->
+<div style="width:100%;margin:10px 0 auto;text-align:right;">
+	<form action="./" method="post" name="sendall">
+	<input type="hidden" name="module" value="admin" />
+	<input type="hidden" name="act" value="procGgmailingAdminAllSendOk" />
+	<input type="hidden" name="page" value="{$page}" />
+	<a href="#" onclick="javascript:if(confirm('대기중인 모든 메일을 전송하시겠습니까?')) document.sendall.submit(); else return false;" class="xet_btn medium blue">모든 대기중인 메일을 전송</a>
+	</form>
+</div>
+<!--@end-->
+<form action="./" method="post" class="ggm_pagination">
+	<input type="hidden" name="error_return_url" value="" />
+	<input type="hidden" name="module" value="{$module}" />
+	<input type="hidden" name="act" value="{$act}" />
+	<ul>
+		<li class="disabled"|cond="!$page || $page == 1"><a href="{getUrl('page', '')}">&laquo; {$lang->first_page}</a></li>
+
+		<!--@while($page_no = $page_navigation->getNextPage())-->
+		{@$last_page = $page_no}
+		<li class="active"|cond="$page_no == $page"><a href="{getUrl('page', $page_no)}">{$page_no}</a></li>
+		<!--@end-->
+
+		<li class="disabled"|cond="$page == $page_navigation->last_page"><a href="{getUrl('page', $page_navigation->last_page)}" title="{$page_navigation->last_page}">{$lang->last_page} &raquo;</a></li>
+	</ul>
+</form>
+
+<!--#include("./footer.html")-->
