@@ -1,5 +1,4 @@
 <?php
-
 class TrashVO
 {
 	var $trashSrl;
@@ -14,99 +13,94 @@ class TrashVO
 	var $nickName;
 	var $regdate;
 
-	function getTrashSrl()
-	{
+	function getTrashSrl() {
 		return $this->trashSrl;
 	}
-	function setTrashSrl($trashSrl)
-	{
+
+	function setTrashSrl($trashSrl) {
 		$this->trashSrl = $trashSrl;
 	}
-	function getTitle()
-	{
+
+	function getTitle() {
 		if(empty($this->title)) return $lang->untitle;
 		return htmlspecialchars($this->title, ENT_COMPAT | ENT_HTML401, 'UTF-8', false);
 	}
-	function setTitle($title)
-	{
+
+	function setTitle($title) {
 		$this->title = $title;
 	}
-	function getOriginModule()
-	{
+
+	function getOriginModule() {
 		if(empty($this->originModule)) return 'document';
 		return $this->originModule;
 	}
-	function setOriginModule($originModule)
-	{
+
+	function setOriginModule($originModule) {
 		$this->originModule = $originModule;
 	}
-	function getSerializedObject()
-	{
+
+	function getSerializedObject() {
 		return $this->serializedObject;
 	}
-	function setSerializedObject($serializedObject)
-	{
+
+	function setSerializedObject($serializedObject) {
 		$this->serializedObject = $serializedObject;
 	}
-	function getUnserializedObject()
-	{
+
+	function getUnserializedObject() {
 		return $this->unserializedObject;
 	}
-	function setUnserializedObject($serializedObject)
-	{
+
+	function setUnserializedObject($serializedObject) {
 		$this->unserializedObject = unserialize($serializedObject);
 	}
-	function getDescription()
-	{
+
+	function getDescription() {
 		return htmlspecialchars($this->description, ENT_COMPAT | ENT_HTML401, 'UTF-8', false);
 	}
-	function setDescription($description)
-	{
+
+	function setDescription($description) {
 		$this->description = $description;
 	}
-	function getIpaddress()
-	{
+
+	function getIpaddress() {
 		return $this->ipaddress;
 	}
-	function setIpaddress($ipaddress)
-	{
+
+	function setIpaddress($ipaddress) {
 		$this->ipaddress = $ipaddress;
 	}
-	function getRemoverSrl()
-	{
+
+	function getRemoverSrl() {
 		return $this->removerSrl;
 	}
-	function setRemoverSrl($removerSrl)
-	{
+
+	function setRemoverSrl($removerSrl) {
 		$this->removerSrl = $removerSrl;
 	}
-	function getUserId()
-	{
+
+	function getUserId() {
 		return $this->userId;
 	}
-	function setUserId($userId)
-	{
+
+	function setUserId($userId) {
 		$this->userId = $userId;
 	}
-	function getNickName()
-	{
+
+	function getNickName() {
 		return htmlspecialchars($this->nickName, ENT_COMPAT | ENT_HTML401, 'UTF-8', false);
 	}
-	function setNickName($nickName)
-	{
+
+	function setNickName($nickName) {
 		$this->nickName = $nickName;
 	}
-	function getRegdate()
-	{
-		if(empty($this->regdate)) return date('YmdHis');
 
+	function getRegdate() {
+		if(empty($this->regdate)) return date('YmdHis');
 		return $this->regdate;
 	}
-	function setRegdate($regdate)
-	{
+
+	function setRegdate($regdate) {
 		$this->regdate = $regdate;
 	}
 }
-
-/* End of file Trash.php */
-/* Location: ./modules/trash/model/Trash.php */
