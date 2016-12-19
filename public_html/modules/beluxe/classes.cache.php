@@ -1,19 +1,9 @@
 <?php
-/**
- * @class  BeluxeCache
- * @author phiDel (xe.phidel@gmail.com)
- * @brief cache class of the BoardDX module
- */
-
 class BeluxeCache
 {
-	/* @brief Create a cache of column config */
-	function columnConfigList($a_modsrl)
-	{
-		// 저장된 목록 설정값을 구하고 없으면 기본 값으로 설정
+	function columnConfigList($a_modsrl) {
 		$cmModule = &getModel('module');
 		$lst_cfg = (array) $cmModule->getModulePartConfig('beluxe', $a_modsrl);
-
 		$vt_vars = array(
 			'no'=>array('1','','Y','N','N'),
 			'category_srl'=>array('2','','N','N','N'),
@@ -36,53 +26,37 @@ class BeluxeCache
 			'thumbnail'=>array('19'),
 			'tag'=>array('20')
 		);
-
 		$args->module_srl = $a_modsrl;
 		$args->sort_index = 'var_idx';
 		$args->order = 'asc';
 		$out = executeQueryArray('document.getDocumentExtraKeys', $args);
 		if($out->toBool() && count($out->data)) $vt_vars = array_merge($vt_vars, $out->data);
-
-		foreach($vt_vars as $key => $val)
-		{
-			if(gettype($val) == 'object')
-			{
+		foreach($vt_vars as $key => $val) {
+			if(gettype($val) == 'object') {
 				$kname = 'extra_vars' . $val->idx;
 				$item = $lst_cfg[$kname];
-
-				if(is_array($item))
-				{
+				if(is_array($item)) {
 					$aSort[$kname] = (9000 - $item[0]) * -1;
 					$val->color = $item[1];
 					$val->display = $item[2];
 					$val->sort = $item[3];
 					$val->search = $item[4];
-				}
-				else
-				{
+				} else {
 					$aSort[$kname] = 9000 + $key;
 				}
-
 				$ext_vars[$kname] = array(
 					$a_modsrl, $val->idx, $val->name, $val->type, $val->default,
 					$val->desc,	$val->is_required, $val->search, $val->value,
 					$val->eid, $val->color, $val->display, $val->sort
 				);
-			}
-			else
-			{
+			} else {
 				$item = $lst_cfg[$key];
-
-				if(is_array($item))
-				{
+				if(is_array($item)) {
 					$aSort[$key] = (9000 - $item[0]) * -1;
 					$val = $item;
-				}
-				else
-				{
+				} else {
 					$aSort[$key] = count($aSort) + 1;
 				}
-
 				$ext_vars[$key] = array(
 					$a_modsrl, -1, $key, 'text', 'N', '\'\'',
 					'N', (string) $val[4], '', $key, (string) $val[1], (string) $val[2],
@@ -90,42 +64,29 @@ class BeluxeCache
 				);
 			}
 		}
-
 		array_multisort($aSort, $ext_vars);
-
-		// Get module information (to obtain mid)
 		$cmModule = &getModel('module');
 		$oMi = $cmModule->getModuleInfoByModuleSrl($a_modsrl, array('mid', 'site_srl'));
 		$mid = $oMi->mid;
-
 		$cmAdmModule = &getAdminModel('module');
 		$site_srl = $oMi->site_srl;
-
 		$obj = array();
-
-		foreach($ext_vars as $key=>$val)
-		{
+		foreach($ext_vars as $key=>$val) {
 			$obj[$key] = new ExtraItem($val[0], $val[1], $val[2], $val[3], $val[4], $val[5], $val[6], $val[7], $val[8], $val[9]);
 			$obj[$key]->color = $val[10];
 			$obj[$key]->display = $val[11];
 			$obj[$key]->sort = $val[12];
 		}
-
 		return $obj;
 	}
 
-	/* @brief Create a cache of Categories */
-	function categoryList($a_modsrl, $a_root)
-	{
-		/** modules/document/document.model.php **/
+	function categoryList($a_modsrl, $a_root) {
 		function _arrangeCategory(&$p_lst, $list, $depth) {
 			if (!count($list)) return;
-
 			$idx = 0;
 			$list_order = array();
 			$mid = Context::get('mid');
 			$cate_srl = Context::get('category_srl');
-
 			foreach ($list as $key => $val) {
 				$obj = new stdClass();
 				$obj->depth = $depth;
@@ -142,11 +103,8 @@ class BeluxeCache
 				$obj->childs = array();
 				$obj->total_document_count = $obj->document_count = (int)$val['document_count'];
 				$p_lst[0]->total_document_count += $obj->document_count;
-
 				$t_prsrl = (int)$obj->parent_srl;
 				$list_order[$idx++] = $obj->category_srl;
-
-				// unserialize type and description
 				$desc = $val['description'];
 				$desc = (strpos($desc, '|@|') !== FALSE) ? explode('|@|', $desc) : array('', '', $desc);
 				$obj->description = $desc[2];
@@ -160,13 +118,11 @@ class BeluxeCache
 					'clist_count' => is_numeric($navi[4]) ? $navi[4] : $p_lst[$t_prsrl]->navigation->clist_count,
 					'dlist_count' => is_numeric($navi[5]) ? $navi[5] : $p_lst[$t_prsrl]->navigation->dlist_count
 				);
-
 				if ($t_prsrl) {
 					$parent_srl = $obj->parent_srl;
 					$doc_count = $obj->document_count;
 					$expand = $obj->expand;
 					$selected = $obj->selected;
-
 					while ($parent_srl) {
 						$p_lst[$parent_srl]->total_document_count+= $doc_count;
 						$p_lst[$parent_srl]->childs[] = $obj->category_srl;
@@ -176,32 +132,23 @@ class BeluxeCache
 						$parent_srl = $p_lst[$parent_srl]->parent_srl;
 					}
 				}
-
 				$p_lst[$key] = $obj;
 				if (count($val['list'])) _arrangeCategory($p_lst, $val['list'], $depth + 1);
 			}
-
 			if(count($list_order)) {
 				$p_lst[$list_order[0]]->first = true;
 				$p_lst[$list_order[count($list_order) - 1]]->last = true;
 			}
 		}
-
 		$cmDocument = &getModel('document');
 		$php = $cmDocument->getCategoryPhpFile($a_modsrl);
 		@include ($php);
-
 		$cate_list = array();
 		$cate_list[0] = $a_root;
 		$cate_list[0]->expand = true;
 		$cate_list[0]->selected = !Context::get('category_srl');
 		$cate_list[0]->total_document_count = 0;
-
 		_arrangeCategory($cate_list, $menu->list, 0);
-
 		return $cate_list;
 	}
 }
-
-/* End of file classes.cache.php */
-/* Location: ./modules/beluxe/classes.cache.php */
